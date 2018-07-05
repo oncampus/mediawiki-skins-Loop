@@ -1,0 +1,37 @@
+{
+	"name": "LoopSkin",
+	"namemsg": "loop-skinname",
+	"type": "skin",
+	"ValidSkinNames": {
+		"loop": "Loop"
+	},		
+	"author": [
+		"Marc Vorreiter"
+	],
+	"version": "2.0",
+	"url": "https://github.com/oncampus/mediawiki-skins-Loop",
+	"description":	"LoopSkin",
+	"descriptionmsg": "loopskin-desc",
+	"licence-name": "GPL-3.0-or-later",
+	"requires": {
+		"MediaWiki": ">= 1.29.0",
+		"extensions": {
+			"Loop": ">= 2.0"
+		}
+	},	
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteSkinPath": "Loop/resources"
+		
+	},
+	"MessagesDirs": {
+		"Loop": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"SkinLoop": "Loop.skin.php",
+		"LoopTemplate": "LoopTemplate.php"
+	},
+	"manifest_version": 2
+}
