@@ -6,7 +6,8 @@
 		"loop": "Loop"
 	},		
 	"author": [
-		"Marc Vorreiter"
+		"Marc Vorreiter",
+		"Dennis Krohn"
 	],
 	"version": "2.0",
 	"url": "https://github.com/oncampus/mediawiki-skins-Loop",
@@ -20,9 +21,19 @@
 		}
 	},	
 	"ResourceFileModulePaths": {
-		"localBasePath": "resources",
-		"remoteSkinPath": "Loop/resources"
+		"localBasePath": "",
+		"remoteSkinPath": "Loop"
 		
+	},
+	"ResourceModules": {
+		"skins.loop-bootstrap": {
+			"position": "top",
+			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
+		},
+		"skins.loop-icomoon": {
+			"position": "top",
+			"styles": "resources/icomoon/style.css"
+		}
 	},
 	"MessagesDirs": {
 		"Loop": [
