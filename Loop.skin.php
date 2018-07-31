@@ -18,6 +18,10 @@ class SkinLoop extends SkinTemplate {
 		$out->addHeadItem('meta_ie_edge', '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">');
 		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1.0' );
 		
+		$out->addModuleStyles( array(
+			'skins.loop-bootstrap',
+			'skins.loop-icons'
+		));
 	}
 
 	/**
@@ -28,7 +32,5 @@ class SkinLoop extends SkinTemplate {
 	function setupSkinUserCss( OutputPage $out ) {
 		parent::setupSkinUserCss( $out );
 	}
-
-	
 
 }
