@@ -30,9 +30,9 @@
 			"position": "top",
 			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
 		},
-		"skins.loop-icomoon": {
+		"skins.loop-icons": {
 			"position": "top",
-			"styles": "resources/icomoon/style.css"
+			"styles": "resources/loopicons/style.css"
 		}
 	},
 	"MessagesDirs": {

@@ -20,7 +20,7 @@ class SkinLoop extends SkinTemplate {
 		
 		$out->addModuleStyles( array(
 			'skins.loop-bootstrap',
-			'skins.loop-icomoon'
+			'skins.loop-icons'
 		));
 	}
 
@@ -32,7 +32,5 @@ class SkinLoop extends SkinTemplate {
 	function setupSkinUserCss( OutputPage $out ) {
 		parent::setupSkinUserCss( $out );
 	}
-
-	
 
 }

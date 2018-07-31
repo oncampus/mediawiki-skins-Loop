@@ -62,4 +62,3 @@ class LoopTemplate extends BaseTemplate {
 
 	}
 }
-?>
