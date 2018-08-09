@@ -19,8 +19,14 @@ class SkinLoop extends SkinTemplate {
 		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1.0' );
 		
 		$out->addModuleStyles( array(
+			'skins.loop-icons',
+			'skins.loop-oncampus',
 			'skins.loop-bootstrap',
-			'skins.loop-icons'
+			'skins.loop-jstree'
+		));
+		$out->addModules( array(
+			'skins.loop.js',
+			'skins.loop-jstree.js'
 		));
 	}
 

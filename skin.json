@@ -15,7 +15,7 @@
 	"descriptionmsg": "loopskin-desc",
 	"licence-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.29.0",
+		"MediaWiki": ">= 1.31.0",
 		"extensions": {
 			"Loop": ">= 2.0"
 		}
@@ -30,9 +30,35 @@
 			"position": "top",
 			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
 		},
+		
 		"skins.loop-icons": {
 			"position": "top",
 			"styles": "resources/loopicons/style.css"
+		},
+		"skins.loop-jstree": {
+			"position": "top",
+			"styles": "vendor/vakata/jstree/dist/themes/default/style.min.css"
+		},
+		"skins.loop.js": {
+			"position": "bottom",
+			"scripts": [
+					"resources/js/loop.js"
+				]
+		},
+		"skins.loop-jstree.js": {
+			"position": "bottom",
+			"scripts": [
+					"vendor/vakata/jstree/dist/jstree.js"
+				]
+		},
+		"skins.loop-oncampus": {
+			"class": "ResourceLoaderSkinModule",
+			"position": "top",
+			"styles": {
+				"resources/styles/loop-oncampus/loop-oncampus.less": {
+					"media": "screen"
+				}
+			}
 		}
 	},
 	"MessagesDirs": {

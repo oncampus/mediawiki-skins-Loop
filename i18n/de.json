@@ -1,9 +1,18 @@
 {
 	"@metadata": {
 		"authors": [
-			"Marc Vorreiter"
+			"Marc Vorreiter",
+			"Dennis Krohn"
 		]
 	},
 	"loop-skinname": "LOOP Skin",
-	"loopskin-desc": "Skin für die Learning Object Online Platform"
+	"loopskin-desc": "Skin für die Learning Object Online Platform",
+	"loopstructure-default-newpage-content": "Dies ist eine neu erstellte Seite.",
+	"loop-navigation-label-home": "Hauptseite",
+	"loop-navigation-label-previous-chapter": "Voriges Kapitel",
+	"loop-navigation-label-previous-page": "Vorige Seite",
+	"loop-navigation-label-toc": "Inhaltsverzeichnis",
+	"loop-navigation-label-next-page": "Nächste Seite",
+	"loop-navigation-label-next-chapter": "Nächstes Kapitel",
+	"full-text-search": "Suche"
 }
