@@ -1,9 +1,18 @@
 {
 	"@metadata": {
 		"authors": [
-			"Marc Vorreiter"
+			"Marc Vorreiter",
+			"Dennis Krohn"
 		]
 	},
 	"loop-skinname": "LOOP Skin",
-	"loopskin-desc": "Description of the LOOP Skin"
+	"loopskin-desc": "Description of the LOOP Skin",
+	"loopstructure-default-newpage-content": "Standard content for new pages",
+	"loop-navigation-label-home": "Navigation home-button aria-label",
+	"loop-navigation-label-previous-chapter": "Navigation previous-chapter-button aria-label",
+	"loop-navigation-label-previous-page": "Navigation previous-page-button aria-label",
+	"loop-navigation-label-toc": "Navigation toc-button aria-label",
+	"loop-navigation-label-next-page": "Navigation next-page-button aria-label",
+	"loop-navigation-label-next-chapter": "Navigation previous-chapter-button aria-label",
+	"full-text-search": "Placeholder text for search bars"
 }
