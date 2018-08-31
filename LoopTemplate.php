@@ -94,7 +94,7 @@ class LoopTemplate extends BaseTemplate {
 							</div>
 							<div class="row">
 								<div class="col-12 text-center mt-3">
-									<?php //$this->outputBottomNavigation(); ?>
+									<?php $this->outputBottomNavigation( $loopStructure ); ?>
 								</div>
 							</div> <!--End of row-->
 						</div>
@@ -279,7 +279,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$previousPage = $lsi->previousArticle;
 		}
-		//echo '<script>console.log("'.$lsi.'");</script>';
+		
 		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text().'" ';
 		
 		if ( ! isset( $previousPage ) ) {
@@ -371,7 +371,74 @@ class LoopTemplate extends BaseTemplate {
 			<button type="button" class="btn btn-light page-nav-btn" aria-label=""><span class="ic ic-preferences"></span></button>
 			<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
 		</div>';
-	} //outputnavigation
+	} // end of outputnavigation
+	
+	private function outputBottomNavigation ( $loopStructure ) {
+
+		if( $loopStructure ) {
+
+			$bottomNav = '<div class="btn-group">';
+			
+			$article_id = $this->getSkin()->getTitle()->getArticleID();
+			$lsi = LoopStructureItem::newFromIds( $article_id );
+		
+			// Previous Page
+			if ( $lsi ) {
+				$previousPage = $lsi->previousArticle;
+			}
+			
+			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text().'" ';
+			
+			if ( ! isset( $previousPage ) ) {
+				$previous_page_button .= 'disabled="disabled"';
+			}
+			
+			$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
+			
+			if( isset( $previousPage ) ) {
+				$bottomNav .= Linker::link(
+					Title::newFromID( $previousPage ),
+					$previous_page_button,
+					array('class' => 'nav-btn'),
+					array()
+				);
+			} else {
+				$bottomNav .= '<a href="#">'.$previous_button.'</a>';
+			}
+			
+			// next button
+			if ( $lsi ) {
+				$nextPage = $lsi->nextArticle;
+			}
+			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' )->text().'" ';
+			
+			if ( ! isset( $nextPage ) ) {
+				$next_page_button .= 'disabled="disabled"';
+			}
+			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
+		
+			if( isset( $nextPage ) ) {
+				$bottomNav .= Linker::link(
+					Title::newFromID( $nextPage ),
+					$next_page_button,
+					array( 'class' => 'nav-btn' ),
+					array()
+				);
+			
+			} else {
+				$bottomNav .= '<a href="#">'.$next_button.'</a>';
+			}
+			
+			$bottomNav .= "</div>";
+			
+			// just print bottom nav if next or previous page exists
+			if( $previousPage || $nextPage ) {
+				echo $bottomNav;
+			} 
+			
+		}
+	
+	} // end output bottomnav
 	
 	private function outputTitle() {
 		
