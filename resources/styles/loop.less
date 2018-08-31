@@ -4,13 +4,29 @@
 body {
 	min-width: 290px;
 }
+h1 {
+	font-size: 2em;
+}
+h2 {
+	font-size: 1.8em;
+}
+h3 {
+	font-size: 1.6em;
+}
+h4 {
+	font-size: 1.5em;
+}
+a {
+	color: #d32121;
+}
 
 /* FIRST SECTION WITH BANNER, LOGO AND PAGE NAVIGATION */
 #banner {
-	background: red;
+	background-color: #d32121;
 }
-#loop-title {
+#loop-title, #loop-title:hover {
 	color: white;
+	text-decoration: none;
 }
 #banner-logo-container {
 	background: white;	
@@ -75,14 +91,30 @@ fieldset[disabled] .btn-light  {
 
 /* SECOND SECTION WITH BREADCRUMB, AUDIO BUTTON AND MOBILE SEARCH BAR */
 
+ol.breadcrumb {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	background: transparent;
+}
+.breadcrumb li~li:before {
+	content: "/";
+	padding: 0.5em;
+}
+.breadcrumb a {
+	color: #d32121;
+}
+
 /* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
 #content-wrapper {
-	background-color: #f0f0f0;
+	
 }
 #page-content {
 	background-color: white;
 }
-
+#toc-nav {
+	overflow-x: hidden;
+}
 #toc-navigation-wrapper {
 	background-color: transparent;
 }
@@ -91,7 +123,7 @@ fieldset[disabled] .btn-light  {
 }
 #toc-navigation-wrapper .panel-heading,
 #export-panel .panel-heading {
-	border-top: 2px solid red; /* todo nav-bg color */
+	border-top: 3px solid #d32121; /* todo accent color */
 	background-color: #f0f0f0;
 }
 .mobile-sidebar#toc-navigation-wrapper{
@@ -121,10 +153,13 @@ fieldset[disabled] .btn-light  {
 .jstree-default .jstree-node {
      margin-left: 8px;
 }
+.jstree-default .jstree-icon:empty {
+    width: 18px;
+}
 
 /* FOURTH SECTION WITH FOOTER */
 #first-footer{
-	background-color: rgb(233, 238, 242);;
+	background-color: rgb(233, 238, 242);
 }
 #first-footer-content {
 	
@@ -136,7 +171,20 @@ fieldset[disabled] .btn-light  {
 #second-footer-right {
 	font-size: 20px;
 }
-
+@media all and (max-width: 550px){
+	h1 {
+		font-size: 2em;
+	}
+	h2 {
+		font-size: 1.8em;
+	}
+	h3 {
+		font-size: 1.6em;
+	}
+	h4 {
+		font-size: 1.5em;
+	}
+}
 @media all and (max-width: 767px) and (min-width: 576px){
 	 #banner-container, #page-container, #breadcrumb-container {
 	 	max-width: 96% !important;
@@ -152,5 +200,18 @@ fieldset[disabled] .btn-light  {
 @media all and (max-width: 1200px) {
 	#toc-nav {
 		font-size: 14.5px;
+	}
+}
+
+@media all and (min-width: 1050px) {
+	#banner {
+		margin-left: -40px;
+		margin-right: -40px;
+	}
+}
+@media all and (min-width: 800px) and (max-width: 991px) {
+	#banner {
+		margin-left: -40px;
+		margin-right: -40px;
 	}
 }

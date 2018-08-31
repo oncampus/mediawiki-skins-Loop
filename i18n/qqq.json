@@ -14,5 +14,6 @@
 	"loop-navigation-label-toc": "Navigation toc-button aria-label",
 	"loop-navigation-label-next-page": "Navigation next-page-button aria-label",
 	"loop-navigation-label-next-chapter": "Navigation previous-chapter-button aria-label",
-	"full-text-search": "Placeholder text for search bars"
+	"full-text-search": "Placeholder text for search bars",
+	"loop-toc-headline": "Headline for TOC-Sidebar"
 }

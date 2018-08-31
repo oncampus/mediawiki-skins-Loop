@@ -29,8 +29,13 @@
 		"skins.loop-bootstrap": {
 			"position": "top",
 			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
+		},		
+		"skins.loop-bootstrap.js": {
+			"position": "bottom",
+			"scripts": [
+					"vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js"
+				]
 		},
-		
 		"skins.loop-icons": {
 			"position": "top",
 			"styles": "resources/loopicons/style.css"
