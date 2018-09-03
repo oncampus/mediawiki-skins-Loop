@@ -13,6 +13,8 @@ class LoopTemplate extends BaseTemplate {
 		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
+		
+		$this->offlineMode = $this->getSkin()->getUser()->getOption( 'loopofflinemode' , false, true );
 
 		$this->html( 'headelement' );
 		
@@ -30,7 +32,9 @@ class LoopTemplate extends BaseTemplate {
 									</a>
 								</div>
 								<div class="col-5 text-right pr-md-0 pr-sm-0 pr-lg-3">
-									<?php $this->outputUserMenu(); ?>
+									<?php if( ! $this->offlineMode ) { 
+										$this->outputUserMenu(); 
+									}?>
 								</div>
 							</div>
 						</div>
@@ -44,18 +48,20 @@ class LoopTemplate extends BaseTemplate {
 							<div class="container p-0" id="page-navigation-container">
 								<div class="row m-0 p-0" id="page-navigation-row">
 									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
-										<?php $this->outputNavigation( $loopStructure ) ?>
-										<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 mr-1 ml-1 float-right">
-											<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
-										</div>
+										<?php $this->outputNavigation( $loopStructure );
+											if( ! $this->offlineMode ) { ?>
+											<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 mr-1 ml-1 float-right">
+												<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
+											</div>
+										<?php }?>
 									</div>
 									
-									<?php //if( ! $this->offlineMode ) { ?>
+									<?php if( ! $this->offlineMode ) { ?>
 									<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 pr-3 float-left">
 										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 										<div class="clear"></div>
 									</div>
-									<?php //}?>
+									<?php }?>
 							</div> <!--End of row-->
 						</div> <!--End of container-->
 						</div>
@@ -72,9 +78,9 @@ class LoopTemplate extends BaseTemplate {
 									<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 								</div>
 								<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 text-right float-right" id="audio-wrapper">
-								<?php //if( ! $this->offlineMode && $text2Speech ) { ?>
+								<?php if( ! $this->offlineMode && $text2speech ) { ?>
 									<span id="playbutton" class="d-none mr-2 ic ic-play">play</span><span class="ic ic-audio"><?php //$this->outputAudioButton () ?></span><audio id="audiofile"></audio>
-								<?php //}?>
+								<?php }?>
 								</div>
 							</div>
 						</div> <!--End of row-->
@@ -191,7 +197,6 @@ class LoopTemplate extends BaseTemplate {
 			echo '	</div>
 				</div>
 			</div>';
-			
 			
 		} else {
 			
@@ -366,9 +371,11 @@ class LoopTemplate extends BaseTemplate {
 		
 		echo '</div>';
 		
-		echo '<div class="btn-group float-right">
-			<button type="button" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>
-			<button type="button" class="btn btn-light page-nav-btn" aria-label=""><span class="ic ic-preferences"></span></button>
+		echo '<div class="btn-group float-right">';
+		if( ! $this->offlineMode ) { 
+			echo '<button type="button" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+		}
+		echo '<button type="button" class="btn btn-light page-nav-btn" aria-label=""><span class="ic ic-preferences"></span></button>
 			<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
 		</div>';
 	} // end of outputnavigation
@@ -403,7 +410,7 @@ class LoopTemplate extends BaseTemplate {
 					array()
 				);
 			} else {
-				$bottomNav .= '<a href="#">'.$previous_button.'</a>';
+				$bottomNav .= '<a href="#">'.$previous_page_button.'</a>';
 			}
 			
 			// next button
@@ -426,13 +433,13 @@ class LoopTemplate extends BaseTemplate {
 				);
 			
 			} else {
-				$bottomNav .= '<a href="#">'.$next_button.'</a>';
+				$bottomNav .= '<a href="#">'.$next_page_button.'</a>';
 			}
 			
 			$bottomNav .= "</div>";
 			
 			// just print bottom nav if next or previous page exists
-			if( $previousPage || $nextPage ) {
+			if( $previous_page_button || $next_page_button ) {
 				echo $bottomNav;
 			} 
 			
