@@ -22,7 +22,8 @@ class SkinLoop extends SkinTemplate {
 			'skins.loop-icons',
 			'skins.loop-oncampus',
 			'skins.loop-bootstrap',
-			'skins.loop-jstree'
+			'skins.loop-jstree',
+		 	'skins.loop-plyr'
 		));
 		$out->addModules( array(
 			'skins.loop.js',

@@ -73,15 +73,13 @@ class LoopTemplate extends BaseTemplate {
 				<section>
 					<div class="container" id="breadcrumb-container">
 						<div class="row">
-							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" id="breadcrumb-wrapper">
-								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 float-left" id="breadcrumb-area">
+							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 p4-2 pl-sm-0 pr-sm-0" id="breadcrumb-wrapper">
+								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-0 float-left" id="breadcrumb-area">
 									<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 								</div>
-								<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 text-right float-right" id="audio-wrapper">
-								<?php if( ! $this->offlineMode && $text2speech ) { ?>
-									<span id="playbutton" class="d-none mr-2 ic ic-play">play</span><span class="ic ic-audio"><?php //$this->outputAudioButton () ?></span><audio id="audiofile"></audio>
-								<?php }?>
-								</div>
+								<?php if( ! $this->offlineMode ) { 
+									$this->outputAudioButton();
+								}?>
 							</div>
 						</div> <!--End of row-->
 					</div> 
@@ -603,5 +601,18 @@ class LoopTemplate extends BaseTemplate {
 				echo $lsi->getBreadcrumb();	
 			}
 		}	
+	}
+	
+	private function outputAudioButton( ) {
+		global $text2Speech, $wgOut;
+		
+		if ( $text2Speech ) {
+			$wgOut->addModules("skins.loop-plyr.js");
+			
+			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper">
+					<span id="t2s-button" class="ic ic-audio pr-sm-3"></span>
+					<audio id="t2s-audio"><source type="audio/mp3"></source></audio>
+				</div>';
+		}
 	}
 }

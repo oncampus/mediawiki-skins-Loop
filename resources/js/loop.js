@@ -32,10 +32,8 @@ $( document ).ready( function () {
 	/**
 	 * JS TREE 
 	 */
-	$.when( // assuring jstree is loaded and ready before executing
-			mw.loader.using( ['skins.loop-jstree.js'] ),
-			$.ready
-		).then( function ( ) {
+	 // assuring jstree is loaded and ready before executing
+			mw.loader.using( ['skins.loop-jstree.js'] ).then( function ( ) {
 			console.log("jstree")
 			  var tocNav = $('#toc-nav');
 			  var tocSpecialNav = $('#toc-specialpages');
@@ -62,3 +60,18 @@ $( document ).ready( function () {
 				  });
 		} );
 });
+
+mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
+	$("#t2s-button").click(function(){
+		$(this).hide()
+		const player = new Plyr("#t2s-audio", {
+			"volume": 1,
+			"autoplay": true,
+			"muted": false
+		});
+		$("#audio-wrapper").addClass("col-12 col-sm-5 col-md-3").removeClass("col-1");
+		$("#breadcrumb-area").addClass("col-12 col-sm-7 col-md-9").removeClass("col-11");
+	});
+});
+
+	
