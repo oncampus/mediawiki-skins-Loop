@@ -40,7 +40,7 @@
 		},
 		"skins.loop-jstree": {
 			"position": "top",
-			"styles": "vendor/vakata/jstree/dist/themes/default/style.min.css"
+			"styles": "resources/js/jstree/dist/themes/default/style.min.css"
 		},
 		"skins.loop.js": {
 			"position": "bottom",
@@ -57,7 +57,7 @@
 		"skins.loop-jstree.js": {
 			"position": "bottom",
 			"scripts": [
-					"vendor/vakata/jstree/dist/jstree.js"
+					"resources/js/jstree/dist/jstree.js"
 				]
 		},
 		"skins.loop-plyr.js": {
