@@ -15,5 +15,10 @@
 	"loop-navigation-label-next-page": "Navigation next-page-button aria-label",
 	"loop-navigation-label-next-chapter": "Navigation previous-chapter-button aria-label",
 	"full-text-search": "Placeholder text for search bars",
-	"loop-toc-headline": "Headline for TOC-Sidebar"
+	"loop-toc-headline": "Headline for TOC-Sidebar",
+	"loop-offlinemode-toogle-on": "Menu item for toggling offline mode on",
+	"loop-offlinemode-toogle-off": "Menu item for toggling offline mode off",
+	"loop-editmode-toogle-on": "Menu item for toggling edit mode on",
+	"loop-editmode-toogle-off": "Menu item for toggling edit mode off",
+	"loop-purge-cache": "Menu item for cache emptying"
 }

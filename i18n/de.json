@@ -15,5 +15,10 @@
 	"loop-navigation-label-next-page": "Nächste Seite",
 	"loop-navigation-label-next-chapter": "Nächstes Kapitel",
 	"full-text-search": "Suche",
-	"loop-toc-headline": "Inhalt"
+	"loop-toc-headline": "Inhalt",
+	"loop-offlinemode-toogle-on": "Offlinemodus einschalten",
+	"loop-offlinemode-toogle-off": "Offlinemodus ausschalten",
+	"loop-editmode-toogle-on": "Bearbeitungsmodus einschalten",
+	"loop-editmode-toogle-off": "Bearbeitungsmodus ausschalten",
+	"loop-purge-cache": "Cache leeren"
 }

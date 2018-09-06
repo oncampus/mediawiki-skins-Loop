@@ -15,6 +15,7 @@ class LoopTemplate extends BaseTemplate {
 		$loopStructure->loadStructureItems();
 		
 		$this->offlineMode = $this->getSkin()->getUser()->getOption( 'loopofflinemode' , false, true );
+		$this->editMode = $this->getSkin()->getUser()->getOption( 'loopeditmode' , false, true );
 
 		$this->html( 'headelement' );
 		
@@ -48,12 +49,26 @@ class LoopTemplate extends BaseTemplate {
 							<div class="container p-0" id="page-navigation-container">
 								<div class="row m-0 p-0" id="page-navigation-row">
 									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
-										<?php $this->outputNavigation( $loopStructure );
-											if( ! $this->offlineMode ) { ?>
-											<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 mr-1 ml-1 float-right">
+										<?php $this->outputNavigation( $loopStructure ); 
+											
+											echo '<div class="btn-group float-right">'; 
+											
+			 								if( ! $this->offlineMode ) { 
+												 echo '<button type="button" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+											}
+											
+											$this->outputPageEditMenu( );
+										?>
+											<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
+										</div>
+										
+										<?php if( ! $this->offlineMode ) { ?>
+										
+											<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 float-right">
 												<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 											</div>
-										<?php }?>
+											
+										<?php } ?>
 									</div>
 									
 									<?php if( ! $this->offlineMode ) { ?>
@@ -369,13 +384,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		echo '</div>';
 		
-		echo '<div class="btn-group float-right">';
-		if( ! $this->offlineMode ) { 
-			echo '<button type="button" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
-		}
-		echo '<button type="button" class="btn btn-light page-nav-btn" aria-label=""><span class="ic ic-preferences"></span></button>
-			<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
-		</div>';
+		
 	} // end of outputnavigation
 	
 	private function outputBottomNavigation ( $loopStructure ) {
@@ -615,4 +624,49 @@ class LoopTemplate extends BaseTemplate {
 				</div>';
 		}
 	}
+	private function outputPageEditMenu( ) {
+		
+		if ( $this->data["skin"]->getUser()->isAllowed( 'edit' ) ) {
+    
+		$content_navigation_skip=array();
+		$content_navigation_skip['namespaces']['main'] = true;
+		$content_navigation_skip['namespaces']['talk'] = true;
+		$content_navigation_skip['views']['view'] = true;
+
+		$content_navigation_icon=array();
+		$content_navigation_icon['views']['edit'] = 'edit';
+		$content_navigation_icon['views']['history'] = 'history';
+		$content_navigation_icon['actions']['delete'] = 'delete';
+		$content_navigation_icon['actions']['move'] = 'move';
+		$content_navigation_icon['actions']['protect'] = 'protect';
+		$content_navigation_icon['actions']['unwatch'] = 'unwatch';
+		$content_navigation_icon['actions']['watch'] = 'watch';
+
+		echo '
+		<div class="dropdown float-right" id="admin-dropdown">
+			<button  id="admin-btn" class="btn btn-light dropdown-toggle page-nav-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="ic ic-preferences"></span>
+			</button>
+			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
+		
+		if( ! $this->offlineMode ) {
+			
+			foreach($this->data['content_navigation'] as $content_navigation_category => $content_navigation_entries) {
+				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
+					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
+						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '">';
+						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
+							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
+						}
+						echo ' ' . $content_navigation_entry ['text'] . '</a>';
+					}
+				}
+			}
+		
+		}
+		echo '</div></div>';
+		
+		}
+	} // outputPageEditMenu
+	
 }
