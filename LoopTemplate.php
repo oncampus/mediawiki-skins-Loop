@@ -123,6 +123,7 @@ class LoopTemplate extends BaseTemplate {
 								<h5 class="panel-title mb-0 pl-3 pr-3 pt-2"> <?php echo $this->getSkin()->msg( 'loop-toc-headline' )->text(); ?></h5>
 								<?php $this->outputToc( $loopStructure ) ?>
 							</div>
+							<div id="panel-gradient"></div>
 						</div>	
 					</div>
 				</div> 
@@ -529,12 +530,12 @@ class LoopTemplate extends BaseTemplate {
 				
 					}
 				}
-				
+				/*
 				if( ( strlen( $tmpText ) + (  2 * strlen( $tmpChapter ) ) ) > 26 ) {
 					$tmpText = substr( $tmpText, 0, 21 ) . "&hellip;"; // &hellip; = ...
 				
 				}
-				
+				*/
  				if( ! $rootNode ) {
 					
  					// outputs the first node (mainpage)
@@ -619,7 +620,7 @@ class LoopTemplate extends BaseTemplate {
 			$wgOut->addModules("skins.loop-plyr.js");
 			
 			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper">
-					<span id="t2s-button" class="ic ic-audio pr-sm-3"></span>
+					<span id="t2s-button" class="ic ic-text2speech pr-sm-3"></span>
 					<audio id="t2s-audio"><source type="audio/mp3"></source></audio>
 				</div>';
 		}
