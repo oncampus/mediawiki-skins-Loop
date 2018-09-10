@@ -54,7 +54,7 @@ class LoopTemplate extends BaseTemplate {
 											echo '<div class="btn-group float-right">'; 
 											
 			 								if( ! $this->offlineMode ) { 
-												 echo '<button type="button" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+												 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 											}
 											
 											$this->outputPageEditMenu( );
@@ -77,8 +77,8 @@ class LoopTemplate extends BaseTemplate {
 										<div class="clear"></div>
 									</div>
 									<?php }?>
-							</div> <!--End of row-->
-						</div> <!--End of container-->
+								</div> <!--End of row-->
+							</div> <!--End of container-->
 						</div>
 					</div>
 				</div>
@@ -86,6 +86,17 @@ class LoopTemplate extends BaseTemplate {
 			
 			<!--BREADCRUMB SECTION -->
 				<section>
+					<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
+						<div class="container">
+							<div class="row">
+								<?php if( ! $this->offlineMode ) { ?>
+									<div class="d-block col-12 pl-0 pr-0 pt-3 pb-0">
+										<input id="mobile-searchbar-input" class="form-control form-control-sm " placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
+									</div>
+								<?php }?>
+							</div> <!--End of row-->
+						</div> <!--End of container-->
+					</div>
 					<div class="container" id="breadcrumb-container">
 						<div class="row">
 							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 p4-2 pl-sm-0 pr-sm-0" id="breadcrumb-wrapper">
@@ -106,9 +117,10 @@ class LoopTemplate extends BaseTemplate {
 						<div class="col-12 col-lg-9" id="content-wrapper">
 							<div class="row" id="content-inner-wrapper">
 								<div class="col-12">
-									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-0 mt-3 mb-3 float-right" id="page-content">
+									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-0 mt-3 float-right" id="page-content">
 										<?php $this->html( 'bodytext' ); ?>
 									</div>
+									<?php $this->outputPageSymbols(); ?>
 								</div>
 							</div>
 							<div class="row">
@@ -118,12 +130,11 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						
-						<div class="col-8 col-sm-5 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-0" id="toc-navigation-wrapper">
+						<div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-0" id="toc-navigation-wrapper">
 							<div class="panel-heading">
 								<h5 class="panel-title mb-0 pl-3 pr-3 pt-2"> <?php echo $this->getSkin()->msg( 'loop-toc-headline' )->text(); ?></h5>
 								<?php $this->outputToc( $loopStructure ) ?>
 							</div>
-							<div id="panel-gradient"></div>
 						</div>	
 					</div>
 				</div> 
@@ -402,7 +413,7 @@ class LoopTemplate extends BaseTemplate {
 				$previousPage = $lsi->previousArticle;
 			}
 			
-			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text().'" ';
+			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn mr-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text().'" ';
 			
 			if ( ! isset( $previousPage ) ) {
 				$previous_page_button .= 'disabled="disabled"';
@@ -593,7 +604,8 @@ class LoopTemplate extends BaseTemplate {
 
 			} // foreach toc item
 
-			$html .= '</ul></ul></div>';
+			$html .= '</ul></ul></div>
+				<div id="panel-gradient"></div>';
 
 			echo $html;
 			 
@@ -669,5 +681,18 @@ class LoopTemplate extends BaseTemplate {
 		
 		}
 	} // outputPageEditMenu
-	
+	private function outputPageSymbols () {
+		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+						<img alt="Creative Commons Lizenzvertrag" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+					</a>';
+		if( ! $this->offlineMode ) { 
+			$html .= '<span class="page-symbol ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' )->text() .'"></span>';
+		} 
+		$html .= '	<span class="page-symbol ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
+					<span class="page-symbol ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>
+					<span class="page-symbol ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' )->text() .'"></span>
+				</div>';
+		echo $html;
+	}
 }

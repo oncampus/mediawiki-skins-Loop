@@ -20,5 +20,7 @@
 	"loop-offlinemode-toogle-off": "Turn off offline mode",
 	"loop-editmode-toogle-on": "Turn on edit mode",
 	"loop-editmode-toogle-off": "Turn off edit mode",
-	"loop-purge-cache": "Empty cache"
+	"loop-purge-cache": "Empty cache",
+	"loop-page-icons-jumptotop": "Jump to top",
+	"loop-page-icons-reportbug": "Report bug"
 }

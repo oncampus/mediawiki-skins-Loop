@@ -19,6 +19,9 @@ h4 {
 a {
 	color: #d32121;
 }
+.cursor-pointer {
+	cursor: pointer;
+}
 
 /* FIRST SECTION WITH BANNER, LOGO AND PAGE NAVIGATION */
 #banner {
@@ -143,17 +146,19 @@ ol.breadcrumb {
 }
 
 /* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
-#content-wrapper {
-	
-}
 #page-content {
 	background-color: white;
 }
 #toc-nav {
 	overflow-x: hidden;
 }
+#toc-navigation-wrapper .panel-heading {
+	display: none;
+}
 #toc-navigation-wrapper {
 	background-color: transparent;
+	display: none;
+    min-width: 160px !important;
 }
 #content-inner-wrapper{
 	background-color: #f0f0f0; /* todo nav-bg color */
@@ -176,8 +181,12 @@ ol.breadcrumb {
 	position: absolute;
 	right: 0;
 	background-color: transparent;
-	padding: 10px;
 	z-index: 10;
+}
+.page-symbol {
+	vertical-align: middle;
+    font-size: 16px;
+    color: gray;
 }
 /** *** *** *** ** *** *** **/
 /** ***   J S T R E E  *** **/
@@ -192,6 +201,7 @@ ol.breadcrumb {
 .jstree-anchor.jstree-hovered {
 	background: transparent;
 	box-shadow: none !important;
+	font-weight: 600;
 }
 .jstree-default .jstree-clicked {
     background: rgba(100,100,100,0.1);
@@ -232,7 +242,7 @@ ol.breadcrumb {
 	}
 }
 @media all and (max-width: 767px) and (min-width: 576px){
-	 #banner-container, #page-container, #breadcrumb-container {
+	 #banner-container, #page-container, #breadcrumb-container, #mobile-searchbar .container {
 	 	max-width: 96% !important;
 	 	margin-left: 2%;
 	 	margin-right: 2%;
@@ -259,5 +269,13 @@ ol.breadcrumb {
 	#banner {
 		margin-left: -40px;
 		margin-right: -40px;
+	}
+}
+@media all and (min-width: 991px) {
+	/* reverting mobile sidebar TOC if screen width increases */
+	.mobile-sidebar#toc-navigation-wrapper { 
+		position: relative;
+		right: auto;
+		z-index: auto;
 	}
 }

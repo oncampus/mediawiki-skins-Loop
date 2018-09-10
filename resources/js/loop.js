@@ -36,7 +36,6 @@ $( document ).ready( function () {
 	mw.loader.using( ['skins.loop-jstree.js'] ).then( function ( ) {
 		var tocNav = $('#toc-nav');
 		var tocSpecialNav = $('#toc-specialpages');
-
 		tocNav.jstree().on("select_node.jstree", function (e, data) {
 			var href = data.node.a_attr.href;
 			document.location.href = href;
@@ -55,6 +54,7 @@ $( document ).ready( function () {
 				  "multiple" : false,
 			}
 		});
+		$("#toc-navigation-wrapper .panel-heading").fadeIn(200);
 	});
 	mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
 		$("#t2s-button").click(function(){
@@ -67,6 +67,9 @@ $( document ).ready( function () {
 			$("#audio-wrapper").addClass("col-12 col-sm-5 col-md-3").removeClass("col-1");
 			$("#breadcrumb-area").addClass("col-12 col-sm-7 col-md-9").removeClass("col-11");
 		});
+	});
+	mw.loader.using( ['skins.loop-bootstrap.js'] ).then( function ( ) {
+		$('.page-symbol').tooltip({ boundary: 'window' })
 	});
 });
 

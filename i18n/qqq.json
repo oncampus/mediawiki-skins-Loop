@@ -20,5 +20,7 @@
 	"loop-offlinemode-toogle-off": "Menu item for toggling offline mode off",
 	"loop-editmode-toogle-on": "Menu item for toggling edit mode on",
 	"loop-editmode-toogle-off": "Menu item for toggling edit mode off",
-	"loop-purge-cache": "Menu item for cache emptying"
+	"loop-purge-cache": "Menu item for cache emptying",
+	"loop-page-icons-jumptotop": "Tooltip for Jump-to-top icon",
+	"loop-page-icons-reportbug": "Tooltip for bug-reporting icon"
 }

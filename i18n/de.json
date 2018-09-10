@@ -20,5 +20,7 @@
 	"loop-offlinemode-toogle-off": "Offlinemodus ausschalten",
 	"loop-editmode-toogle-on": "Bearbeitungsmodus einschalten",
 	"loop-editmode-toogle-off": "Bearbeitungsmodus ausschalten",
-	"loop-purge-cache": "Cache leeren"
+	"loop-purge-cache": "Cache leeren",
+	"loop-page-icons-jumptotop": "Zum Seitenanfang",
+	"loop-page-icons-reportbug": "Fehler melden"
 }
