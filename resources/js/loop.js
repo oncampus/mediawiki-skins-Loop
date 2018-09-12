@@ -2,7 +2,7 @@ $( document ).ready( function () {
 	$html = $( 'html' );
 	$body = $( 'body' );
 	$mobileNavBtn = $( '#toggle-mobile-menu-btn' );
-	$navMenu = $( '#toc-navigation-wrapper' ); 
+	$navMenu = $( '#sidebar-wrapper' ); 
 	$mobileSearchBtn = $( '#toggle-mobile-search-btn' );
 	$mobileSearchBar = $( '#mobile-searchbar' );
 	
@@ -42,7 +42,7 @@ $( document ).ready( function () {
 		});
 		tocNav.jstree({
 			"core" : {
-			"multiple" : false,
+				"multiple" : false,
 			}
 		});
 		tocSpecialNav.jstree().on("select_node.jstree", function (e, data) {
@@ -54,7 +54,7 @@ $( document ).ready( function () {
 				  "multiple" : false,
 			}
 		});
-		$("#toc-navigation-wrapper .panel-heading").fadeIn(200);
+		$(".panel-wrapper").fadeIn(200);
 	});
 	mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
 		$("#t2s-button").click(function(){

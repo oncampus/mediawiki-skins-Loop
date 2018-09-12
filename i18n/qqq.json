@@ -16,6 +16,7 @@
 	"loop-navigation-label-next-chapter": "Navigation previous-chapter-button aria-label",
 	"full-text-search": "Placeholder text for search bars",
 	"loop-toc-headline": "Headline for TOC-Sidebar",
+	"loop-export-headline": "Headline for Export-Sidebar",
 	"loop-offlinemode-toogle-on": "Menu item for toggling offline mode on",
 	"loop-offlinemode-toogle-off": "Menu item for toggling offline mode off",
 	"loop-editmode-toogle-on": "Menu item for toggling edit mode on",

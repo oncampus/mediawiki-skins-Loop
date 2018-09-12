@@ -130,11 +130,14 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						
-						<div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-0" id="toc-navigation-wrapper">
-							<div class="panel-heading">
-								<h5 class="panel-title mb-0 pl-3 pr-3 pt-2"> <?php echo $this->getSkin()->msg( 'loop-toc-headline' )->text(); ?></h5>
-								<?php $this->outputToc( $loopStructure ) ?>
+						<div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-0" id="sidebar-wrapper">
+							<div class="panel-wrapper">
+								<?php 	$this->outputToc( $loopStructure ); 
+										$this->outputSpecialPages( ); ?>
 							</div>
+							
+							<?php $this->outputExportPanel( ); ?>
+
 						</div>	
 					</div>
 				</div> 
@@ -179,7 +182,7 @@ class LoopTemplate extends BaseTemplate {
 	<?php 
 	}
 	
-	function outputUserMenu() {
+	private function outputUserMenu() {
 		global $wgOut; 
 		
 		$personTools = $this->getPersonalTools ();
@@ -515,7 +518,10 @@ class LoopTemplate extends BaseTemplate {
 	
 				}
 			}
-			$html = '<div id="toc-nav" class="p-1 pb-3 pl-0 pl-xl-2"><ul>';
+			$html = '<div class="panel-heading">
+						<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' )->text() .'</h5>
+					</div>
+					<div id="toc-nav" class="panel-body p-1 pb-2 pl-0 pl-xl-2"><ul>';
 							
 			$rootNode = false;
 			
@@ -573,15 +579,16 @@ class LoopTemplate extends BaseTemplate {
 				
 				if( $tmpTocLevel > $lastTmpTocLevel ) {
 					$html .= '<ul>';
-				} else if( $tmpTocLevel < $lastTmpTocLevel ) {
+				} else if ( $tmpTocLevel < $lastTmpTocLevel ) {
 					for ($i = $tmpTocLevel; $i < $lastTmpTocLevel; $i++) {
-						$html .= '</ul>';
+						$html .= '</ul></li>';
 					}
+				} else {
+					$html .= '</li>';
 				}
 				
 				$jstreeData = '';
 				
-			
 				if( in_array( $tmpChapter, $openedNodes ) ) {
 					
 					$jstreeData = ' data-jstree=\'{"opened":true,"selected":false}\'';
@@ -604,8 +611,7 @@ class LoopTemplate extends BaseTemplate {
 
 			} // foreach toc item
 
-			$html .= '</ul></ul></div>
-				<div id="panel-gradient"></div>';
+			$html .= '</li></ul></ul></div>';
 
 			echo $html;
 			 
@@ -687,12 +693,41 @@ class LoopTemplate extends BaseTemplate {
 						<img alt="Creative Commons Lizenzvertrag" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
 					</a>';
 		if( ! $this->offlineMode ) { 
-			$html .= '<span class="page-symbol ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' )->text() .'"></span>';
+			$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' )->text() .'"></span>';
 		} 
-		$html .= '	<span class="page-symbol ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
-					<span class="page-symbol ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>
-					<span class="page-symbol ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' )->text() .'"></span>
+		$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
+					<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>
+					<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' )->text() .'"></span>
 				</div>';
 		echo $html;
+	}
+	private function outputSpecialPages () {
+		
+		$html = '<div class="panel-body p-1 pb-3 pl-0 pl-xl-2 pt-2" id="toc-specialpages">
+			<ul>
+				<li>Platzhalterverzeichnis</li>
+				<li>Platzhalterverzeichnis</li>
+			</ul>
+		</div>';
+		
+		echo $html;
+	}
+	private function outputExportPanel () {
+		
+		if ( $this->data["skin"]->getUser()->isAllowed( 'edit' ) ) { # TODO Rechte 'export'?
+			$html = '<div class="panel-wrapper">
+						<div class="panel-heading">
+							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' )->text() .'</h5>
+						</div>
+						<div id="export-panel" class="panel-body p-1 pb-2 pl-3 pl-xl-2">
+							<div class="pb-2">
+								<span><span class="ic ic-file-pdf"></span> Export Placeholder</span><br>
+								<span><span class="ic ic-file-xml"></span> Export Placeholder</span>
+							</div>
+						</div>
+					</div>';
+			
+			echo $html;
+		}
 	}
 }
