@@ -14,5 +14,14 @@
 	"loop-navigation-label-toc": "Table of Contents",
 	"loop-navigation-label-next-page": "Next page",
 	"loop-navigation-label-next-chapter": "Next chapter",
-	"full-text-search": "Search"
+	"full-text-search": "Search",
+	"loop-toc-headline": "Contents",
+	"loop-export-headline": "Export",
+	"loop-offlinemode-toogle-on": "Turn on offline mode",
+	"loop-offlinemode-toogle-off": "Turn off offline mode",
+	"loop-editmode-toogle-on": "Turn on edit mode",
+	"loop-editmode-toogle-off": "Turn off edit mode",
+	"loop-purge-cache": "Empty cache",
+	"loop-page-icons-jumptotop": "Jump to top",
+	"loop-page-icons-reportbug": "Report bug"
 }

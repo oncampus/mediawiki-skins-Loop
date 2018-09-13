@@ -1,19 +1,19 @@
 @import "variables";
 
 @font-face {
-  font-family: 'loopfont';
-  src:  url('@{icomoon-font-path}/loopfont.eot?d778yp');
-  src:  url('@{icomoon-font-path}/loopfont.eot?d778yp#iefix') format('embedded-opentype'),
-    url('@{icomoon-font-path}/loopfont.ttf?d778yp') format('truetype'),
-    url('@{icomoon-font-path}/loopfont.woff?d778yp') format('woff'),
-    url('@{icomoon-font-path}/loopfont.svg?d778yp#loopfont') format('svg');
+  font-family: '@{icomoon-font-family}';
+  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?1v75k2');
+  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?1v75k2#iefix') format('embedded-opentype'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.ttf?1v75k2') format('truetype'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.woff?1v75k2') format('woff'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.svg?1v75k2#@{icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="ic-"], [class*=" ic-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'loopfont' !important;
+  font-family: '@{icomoon-font-family}' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -26,6 +26,138 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-text2speech {
+  &:before {
+    content: @ic-text2speech; 
+  }
+}
+.ic-we-textcolor .path1 {
+  &:before {
+    content: @ic-we-textcolor-path1;  
+    color: rgb(29, 29, 27);
+  }
+}
+.ic-we-textcolor .path2 {
+  &:before {
+    content: @ic-we-textcolor-path2;  
+    margin-left: -1em;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-textbgcolor {
+  &:before {
+    content: @ic-we-textbgcolor; 
+  }
+}
+.ic-we-signatur {
+  &:before {
+    content: @ic-we-signatur; 
+  }
+}
+.ic-we-accordion {
+  &:before {
+    content: @ic-we-accordion; 
+  }
+}
+.ic-we-author .path1 {
+  &:before {
+    content: @ic-we-author-path1;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-author .path2 {
+  &:before {
+    content: @ic-we-author-path2;  
+    margin-left: -1em;  
+    color: rgb(255, 255, 255);
+  }
+}
+.ic-we-author .path3 {
+  &:before {
+    content: @ic-we-author-path3;  
+    margin-left: -1em;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-author .path4 {
+  &:before {
+    content: @ic-we-author-path4;  
+    margin-left: -1em;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-gallery {
+  &:before {
+    content: @ic-we-gallery; 
+  }
+}
+.ic-we-link .path1 {
+  &:before {
+    content: @ic-we-link-path1;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-link .path2 {
+  &:before {
+    content: @ic-we-link-path2;  
+    margin-left: -1em;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-link .path3 {
+  &:before {
+    content: @ic-we-link-path3;  
+    margin-left: -1em;  
+    color: rgb(255, 255, 255);
+  }
+}
+.ic-we-link .path4 {
+  &:before {
+    content: @ic-we-link-path4;  
+    margin-left: -1em;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-list {
+  &:before {
+    content: @ic-we-list; 
+  }
+}
+.ic-we-math .path1 {
+  &:before {
+    content: @ic-we-math-path1;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-math .path2 {
+  &:before {
+    content: @ic-we-math-path2;  
+    margin-left: -1em;  
+    color: rgb(255, 255, 255);
+  }
+}
+.ic-we-math .path3 {
+  &:before {
+    content: @ic-we-math-path3;  
+    margin-left: -1em;  
+    color: rgb(0, 0, 0);
+  }
+}
+.ic-we-numlist {
+  &:before {
+    content: @ic-we-numlist; 
+  }
+}
+.ic-we-searchreplace {
+  &:before {
+    content: @ic-we-searchreplace; 
+  }
+}
+.ic-we-shift {
+  &:before {
+    content: @ic-we-shift; 
+  }
+}
 .ic-home {
   &:before {
     content: @ic-home; 
@@ -361,6 +493,11 @@
     content: @ic-reflection; 
   }
 }
+.ic-we-itelic {
+  &:before {
+    content: @ic-we-itelic; 
+  }
+}
 .ic-sourcecode {
   &:before {
     content: @ic-sourcecode; 
@@ -423,8 +560,7 @@
 }
 .ic-media {
   &:before {
-    content: @ic-media;     
-    color: #000;
+    content: @ic-media; 
   }
 }
 .ic-vimeo {
@@ -485,6 +621,11 @@
 .ic-ngspice {
   &:before {
     content: @ic-ngspice; 
+  }
+}
+.ic-we-bold {
+  &:before {
+    content: @ic-we-bold; 
   }
 }
 

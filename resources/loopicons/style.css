@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'loopfont';
-  src:  url('fonts/loopfont.eot?d778yp');
-  src:  url('fonts/loopfont.eot?d778yp#iefix') format('embedded-opentype'),
-    url('fonts/loopfont.ttf?d778yp') format('truetype'),
-    url('fonts/loopfont.woff?d778yp') format('woff'),
-    url('fonts/loopfont.svg?d778yp#loopfont') format('svg');
+  src:  url('fonts/loopfont.eot?1v75k2');
+  src:  url('fonts/loopfont.eot?1v75k2#iefix') format('embedded-opentype'),
+    url('fonts/loopfont.ttf?1v75k2') format('truetype'),
+    url('fonts/loopfont.woff?1v75k2') format('woff'),
+    url('fonts/loopfont.svg?1v75k2#loopfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,20 +24,108 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.ic-home:before {
-  content: "\e91e";
-}
-.ic-chapter-previous:before {
+.ic-text2speech:before {
   content: "\e905";
 }
+.ic-we-textcolor .path1:before {
+  content: "\e91e";
+  color: rgb(29, 29, 27);
+}
+.ic-we-textcolor .path2:before {
+  content: "\e947";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.ic-we-textbgcolor:before {
+  content: "\e95c";
+}
+.ic-we-signatur:before {
+  content: "\e95d";
+}
+.ic-we-accordion:before {
+  content: "\e95e";
+}
+.ic-we-author .path1:before {
+  content: "\e960";
+  color: rgb(0, 0, 0);
+}
+.ic-we-author .path2:before {
+  content: "\e961";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.ic-we-author .path3:before {
+  content: "\e962";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.ic-we-author .path4:before {
+  content: "\e963";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.ic-we-gallery:before {
+  content: "\e965";
+}
+.ic-we-link .path1:before {
+  content: "\e966";
+  color: rgb(0, 0, 0);
+}
+.ic-we-link .path2:before {
+  content: "\e967";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.ic-we-link .path3:before {
+  content: "\e968";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.ic-we-link .path4:before {
+  content: "\e969";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.ic-we-list:before {
+  content: "\e96a";
+}
+.ic-we-math .path1:before {
+  content: "\e96b";
+  color: rgb(0, 0, 0);
+}
+.ic-we-math .path2:before {
+  content: "\e96c";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.ic-we-math .path3:before {
+  content: "\e96d";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.ic-we-numlist:before {
+  content: "\e96f";
+}
+.ic-we-searchreplace:before {
+  content: "\e970";
+}
+.ic-we-shift:before {
+  content: "\e971";
+}
+.ic-home:before {
+  content: "\1f3e0";
+}
+.ic-chapter-previous:before {
+  content: "\23ea";
+}
 .ic-page-previous:before {
-  content: "\e930";
+  content: "\25c4";
 }
 .ic-toc:before {
-  content: "\e94d";
+  content: "\1f4d1";
 }
 .ic-page-next:before {
-  content: "\e92f";
+  content: "\25ba";
 }
 .ic-chapter-next:before {
   content: "\e904";
@@ -225,8 +313,11 @@
 .ic-reflection:before {
   content: "\e939";
 }
+.ic-we-itelic:before {
+  content: "\e92f";
+}
 .ic-sourcecode:before {
-  content: "\e947";
+  content: "\e94d";
 }
 .ic-summary:before {
   content: "\e949";
@@ -263,7 +354,6 @@
 }
 .ic-media:before {
   content: "\e903";
-  color: #000;
 }
 .ic-vimeo:before {
   content: "\e952";
@@ -300,4 +390,7 @@
 }
 .ic-ngspice:before {
   content: "\e92b";
+}
+.ic-we-bold:before {
+  content: "\e930";
 }

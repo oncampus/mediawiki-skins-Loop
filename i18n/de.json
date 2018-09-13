@@ -14,5 +14,14 @@
 	"loop-navigation-label-toc": "Inhaltsverzeichnis",
 	"loop-navigation-label-next-page": "Nächste Seite",
 	"loop-navigation-label-next-chapter": "Nächstes Kapitel",
-	"full-text-search": "Suche"
+	"full-text-search": "Suche",
+	"loop-toc-headline": "Inhalt",
+	"loop-export-headline": "Export",
+	"loop-offlinemode-toogle-on": "Offlinemodus einschalten",
+	"loop-offlinemode-toogle-off": "Offlinemodus ausschalten",
+	"loop-editmode-toogle-on": "Bearbeitungsmodus einschalten",
+	"loop-editmode-toogle-off": "Bearbeitungsmodus ausschalten",
+	"loop-purge-cache": "Cache leeren",
+	"loop-page-icons-jumptotop": "Zum Seitenanfang",
+	"loop-page-icons-reportbug": "Fehler melden"
 }

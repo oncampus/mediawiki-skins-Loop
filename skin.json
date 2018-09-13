@@ -29,26 +29,41 @@
 		"skins.loop-bootstrap": {
 			"position": "top",
 			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
-		},
-		
+		},	
 		"skins.loop-icons": {
 			"position": "top",
 			"styles": "resources/loopicons/style.css"
 		},
+		"skins.loop-plyr": {
+			"position": "top",
+			"styles": "resources/js/plyr/dist/plyr.css"
+		},
 		"skins.loop-jstree": {
 			"position": "top",
-			"styles": "vendor/vakata/jstree/dist/themes/default/style.min.css"
+			"styles": "resources/js/jstree/dist/themes/default/style.min.css"
 		},
 		"skins.loop.js": {
 			"position": "bottom",
 			"scripts": [
 					"resources/js/loop.js"
 				]
+		},	
+		"skins.loop-bootstrap.js": {
+			"position": "bottom",
+			"scripts": [
+					"vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js"
+				]
 		},
 		"skins.loop-jstree.js": {
 			"position": "bottom",
 			"scripts": [
-					"vendor/vakata/jstree/dist/jstree.js"
+					"resources/js/jstree/dist/jstree.js"
+				]
+		},
+		"skins.loop-plyr.js": {
+			"position": "bottom",
+			"scripts": [
+					"resources/js/plyr/dist/plyr.js"
 				]
 		},
 		"skins.loop-oncampus": {

@@ -1,19 +1,38 @@
-@logo-height: 25px;
-@banner-min-height: 120px;
-
+/* GENERAL STYLES */
 body {
 	min-width: 290px;
+}
+h1 {
+	font-size: 2em;
+}
+h2 {
+	font-size: 1.8em;
+}
+h3 {
+	font-size: 1.6em;
+}
+h4 {
+	font-size: 1.5em;
+}
+a {
+	color: #d32121;
+}
+.cursor-pointer {
+	cursor: pointer;
 }
 
 /* FIRST SECTION WITH BANNER, LOGO AND PAGE NAVIGATION */
 #banner {
-	background: red;
+	background: @banner-background;
+	background-size: @banner-background-size;
+	background-position: @banner-background-position;
 }
-#loop-title {
-	color: white;
+#loop-title, #loop-title:hover {
+	color: @loop-title-color;
+	text-decoration: none;
 }
 #banner-logo-container {
-	background: white;	
+	background: @loop-title-color;	
 	min-height: 50px;
 }
 #logo {
@@ -24,9 +43,8 @@ body {
 	margin-top: 11px;
 }
 
-
 #page-navigation-wrapper {
-	background-color: rgba(240, 240, 240, 0.6);
+	background-color: @navigation-bar-background;
 	height: 50px;
 }
 #page-navigation-col .btn-group.float-right {
@@ -35,7 +53,7 @@ body {
 
 .btn {
 	border: 1px solid #ccc;
-	color: #4c4c4c;
+	color: @icon-color;
 }
 .btn:focus,
 .btn:active{
@@ -54,13 +72,13 @@ body {
 .btn.disabled span, 
 .btn[disabled] span, 
 fieldset[disabled] .btn  {
-	color: #a0a0a0;
+	color: lighten(@icon-color, 50%);
 }
 
 .btn-light.disabled, 
 .btn-light[disabled], 
 fieldset[disabled] .btn-light  {
-	background-color: #eff1f2 !important;
+	background-color: darken(@nav-button-background, 3%) !important;
 	opacity: 1;
 	border: 1px solid #ccc;
 }
@@ -75,36 +93,113 @@ fieldset[disabled] .btn-light  {
 
 /* SECOND SECTION WITH BREADCRUMB, AUDIO BUTTON AND MOBILE SEARCH BAR */
 
-/* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
-#content-wrapper {
-	background-color: #f0f0f0;
+ol.breadcrumb {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	background: transparent;
 }
+.breadcrumb li~li:before {
+	content: "/";
+	padding: 0.5em;
+}
+.breadcrumb a {
+	color: @breadcrumb-link;
+}
+#t2s-button {
+	cursor: pointer;
+	font-size: 1.3em;
+	color: @icon-color;
+}
+#t2s-audio {
+	display: block;
+}
+.plyr--audio .plyr__controls {
+	padding: 0 !important;
+	background: #eff1f2 !important;
+	border-radius: 5px !important;
+	margin-left: 0 !important;
+}
+#audio-wrapper .plyr {
+	float: right;
+}
+#audio-wrapper .plyr__volume input[type=range] {
+	display: none;
+}
+.plyr__control {
+	padding: 5px !important;
+}
+.plyr__control[data-playr=play] {
+	margin-right: -5px !important;
+}
+.plyr__control svg {
+	height: 14px !important;
+}
+.plyr__time {
+	font-size: 12px !important;
+	min-width: 36px !important;
+    text-align: right !important;
+    margin-right: -5px !important;
+}
+.plyr__volume {
+	margin-right: -12px !important;
+}
+
+/* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
 #page-content {
 	background-color: white;
 }
-
-#toc-navigation-wrapper {
-	background-color: transparent;
+#toc-nav {
+	-webkit-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
+	-moz-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
+	box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
+}
+.panel-wrapper {
+	display: none;
+    min-width: 160px !important;
 }
 #content-inner-wrapper{
-	background-color: #f0f0f0; /* todo nav-bg color */
+	background-color: @content-outter-background;
 }
-#toc-navigation-wrapper .panel-heading,
+#sidebar-wrapper .panel-heading,
 #export-panel .panel-heading {
-	border-top: 2px solid red; /* todo nav-bg color */
-	background-color: #f0f0f0;
+	border-top: 3px solid @accent-color;
 }
-.mobile-sidebar#toc-navigation-wrapper{
+.panel-wrapper {
+	background-color: @sidebar-background;
+}
+.panel-wrapper {
+	margin-bottom: 15px;
+}
+.mobile-sidebar#sidebar-wrapper{
 	position: absolute;
 	right: 0;
 	background-color: transparent;
-	padding: 10px;
 	z-index: 10;
+}
+.page-symbol {
+    font-size: 16px;
+    color: gray;
 }
 /** *** *** *** ** *** *** **/
 /** ***   J S T R E E  *** **/
 /** *** *** *** *** *** ** **/
-
+.jstree-node a:after {
+	content: "";
+	height: 28px;
+	width: 40px;
+	position: absolute;
+	right: 0;
+	background: transparent;
+    background: -webkit-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
+    background: -moz-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
+    background: -ms-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
+    background: -o-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
+	background: linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
+}
+.jstree-container-ul {
+	overflow: hidden;
+}
 .jstree-themeicon {
 	display: none !important;
 }
@@ -114,31 +209,48 @@ fieldset[disabled] .btn-light  {
 .jstree-anchor.jstree-hovered {
 	background: transparent;
 	box-shadow: none !important;
+	font-weight: 600;
 }
 .jstree-default .jstree-clicked {
-    background: rgba(100,100,100,0.1);
+    background: darken(@sidebar-background, 10%);
 }
 .jstree-default .jstree-node {
      margin-left: 8px;
 }
+.jstree-default .jstree-icon:empty {
+    width: 18px;
+}
 
 /* FOURTH SECTION WITH FOOTER */
 #first-footer{
-	background-color: rgb(233, 238, 242);;
+	background-color: rgb(233, 238, 242);
 }
 #first-footer-content {
 	
 }
 #second-footer{
-	background-color: #d32121;
-	color: white; /*TODO*/
+	background-color: @second-footer-background;
+	color: @second-footer-text;
 }
 #second-footer-right {
 	font-size: 20px;
 }
-
-@media all and (max-width: 767px) and (min-width: 576px){
-	 #banner-container, #page-container, #breadcrumb-container {
+@media all and (max-width: 550px){
+	h1 {
+		font-size: 2em;
+	}
+	h2 {
+		font-size: 1.8em;
+	}
+	h3 {
+		font-size: 1.6em;
+	}
+	h4 {
+		font-size: 1.5em;
+	}
+}
+@media all and (max-width: 767px) and (min-width: 576px), all and (max-width: 1210px) and (min-width: 1995px){
+	 #banner-container, #page-container, #breadcrumb-container, #mobile-searchbar .container {
 	 	max-width: 96% !important;
 	 	margin-left: 2%;
 	 	margin-right: 2%;
@@ -150,7 +262,28 @@ fieldset[disabled] .btn-light  {
 	 }
 }
 @media all and (max-width: 1200px) {
-	#toc-nav {
+	.panel-wrapper {
 		font-size: 14.5px;
+	}
+}
+
+@media all and (min-width: 1050px) {
+	#banner {
+		margin-left: -40px;
+		margin-right: -40px;
+	}
+}
+@media all and (min-width: 800px) and (max-width: 991px) {
+	#banner {
+		margin-left: -40px;
+		margin-right: -40px;
+	}
+}
+@media all and (min-width: 991px) {
+	/* reverting mobile sidebar TOC if screen width increases */
+	.mobile-sidebar#sidebar-wrapper { 
+		position: relative;
+		right: auto;
+		z-index: auto;
 	}
 }
