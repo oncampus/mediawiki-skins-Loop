@@ -22,10 +22,11 @@ a {
 }
 
 /* FIRST SECTION WITH BANNER, LOGO AND PAGE NAVIGATION */
-#banner {
+#banner-wrapper {
 	background: @banner-background;
 	background-size: @banner-background-size;
 	background-position: @banner-background-position;
+	max-width: 100%;
 }
 #loop-title, #loop-title:hover {
 	color: @loop-title-color;
@@ -108,7 +109,7 @@ ol.breadcrumb {
 }
 #t2s-button {
 	cursor: pointer;
-	font-size: 1.3em;
+	
 	color: @icon-color;
 }
 #t2s-audio {
@@ -174,7 +175,6 @@ ol.breadcrumb {
 .mobile-sidebar#sidebar-wrapper{
 	position: absolute;
 	right: 0;
-	background-color: transparent;
 	z-index: 10;
 }
 .page-symbol {
@@ -235,6 +235,9 @@ ol.breadcrumb {
 #second-footer-right {
 	font-size: 20px;
 }
+#second-footer-right .ic {
+	font-size: 1.25em
+}
 @media all and (max-width: 550px){
 	h1 {
 		font-size: 2em;
@@ -249,11 +252,18 @@ ol.breadcrumb {
 		font-size: 1.5em;
 	}
 }
+
+@media all and (max-width: 991px) {
+	#sidebar-wrapper {
+		background-color: fade(black, 30%);
+	}
+	.jstree-node a:after {
+		right: 1rem;
+	}
+}
 @media all and (max-width: 767px) and (min-width: 576px), all and (max-width: 1210px) and (min-width: 1995px){
-	 #banner-container, #page-container, #breadcrumb-container, #mobile-searchbar .container {
-	 	max-width: 96% !important;
-	 	margin-left: 2%;
-	 	margin-right: 2%;
+	 .container {
+	 	max-width: 100% !important;
 	 }
 	 #page-navigation-container {
 	 	max-width: 100% !important;
@@ -266,17 +276,14 @@ ol.breadcrumb {
 		font-size: 14.5px;
 	}
 }
-
-@media all and (min-width: 1050px) {
-	#banner {
-		margin-left: -40px;
-		margin-right: -40px;
+@media  all and (min-width: 768px) and (max-width: 991px) {
+	.container {
+		max-width: 800px;
 	}
 }
-@media all and (min-width: 800px) and (max-width: 991px) {
-	#banner {
-		margin-left: -40px;
-		margin-right: -40px;
+@media  all and (min-width: 992px) and (max-width: 1200px) {
+	.container {
+		max-width: 1050px;
 	}
 }
 @media all and (min-width: 991px) {

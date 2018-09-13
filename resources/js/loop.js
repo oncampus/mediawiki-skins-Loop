@@ -9,7 +9,8 @@ $( document ).ready( function () {
 	/**
 	 * Set position of footer for short pages to bottom of the window.
 	 */	
-	$('#page-wrapper').css( 'min-height', $( window ).height() );
+	
+	$('#page-wrapper').css( 'min-height', $( window ).height() - $("footer").height() );
 	
 	/**
 	 * Toggle visibility of mobile toc menu.
