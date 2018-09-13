@@ -22,65 +22,56 @@ class LoopTemplate extends BaseTemplate {
 		?>
 		<div id="page-wrapper">
 			<section>
-				<div class="container" id="banner-container">
-					<div class="row" id="banner">
-						<div class="col-1 d-none d-sm-block"></div>
-						<div class="container col-12 col-sm-10" id="banner-logo-container">
+				<div class="p-0" id="banner-wrapper">
+					<div class="w-100" id="banner-logo-container">
+						<div class="container">
 							<div class="row">
-								<div class="col-7" id="logo-wrapper">
+								<div class="col-9" id="logo-wrapper">
 									<a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-										<p id="logo" class="mb-0"></p>
+										<p id="logo" class="mb-0 ml-2"></p>
 									</a>
 								</div>
-								<div class="col-5 text-right pr-md-0 pr-sm-0 pr-lg-3">
+								<div class="col-3 text-right pr-md-0 pr-sm-0 pr-lg-0">
 									<?php if( ! $this->offlineMode ) { 
 										$this->outputUserMenu(); 
 									}?>
 								</div>
 							</div>
 						</div>
-						<div class="col-1 d-none d-sm-block"></div>
-						<div class="row col-12">
-							<a id="loop-title" href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-								<h1  class="p-1 ml-2 pl-3"><?php $this->outputTitle( ) ?></h1>
-							</a>
-						</div>
-						<div class="col-12 p-0 align-bottom" id="page-navigation-wrapper">
-							<div class="container p-0" id="page-navigation-container">
-								<div class="row m-0 p-0" id="page-navigation-row">
-									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
-										<?php $this->outputNavigation( $loopStructure ); 
-											
-											echo '<div class="btn-group float-right">'; 
-											
-			 								if( ! $this->offlineMode ) { 
-												 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
-											}
-											
-											$this->outputPageEditMenu( );
-										?>
-											<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
-										</div>
-										
-										<?php if( ! $this->offlineMode ) { ?>
-										
-											<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 float-right">
-												<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
-											</div>
-											
-										<?php } ?>
-									</div>
-									
-									<?php if( ! $this->offlineMode ) { ?>
-									<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 pr-3 float-left">
-										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
-										<div class="clear"></div>
-									</div>
-									<?php }?>
-								</div> <!--End of row-->
-							</div> <!--End of container-->
-						</div>
 					</div>
+					<div class="container" id="title-container">
+						<a id="loop-title" href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
+							<h1  class="p-1"><?php $this->outputTitle( ) ?></h1>
+						</a>
+					</div>	
+					<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
+						<div class="container p-0" id="page-navigation-container">
+							<div class="row m-0 p-0" id="page-navigation-row">
+								<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
+									<?php $this->outputNavigation( $loopStructure ); 
+										echo '<div class="btn-group float-right">'; 
+											
+			 							if( ! $this->offlineMode ) { 
+											 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+										}
+										$this->outputPageEditMenu( );
+									?>
+									<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
+								</div>
+								<?php if( ! $this->offlineMode ) { ?>
+									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 float-right">
+										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
+									</div>
+								<?php } ?>
+							</div>
+							<?php if( ! $this->offlineMode ) { ?>
+								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 pr-0 float-left">
+									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
+									<div class="clear"></div>
+								</div>
+							<?php }?>
+						</div> <!--End of row-->
+					</div> <!--End of nativation container-->
 				</div>
 			</section>
 			
@@ -100,7 +91,7 @@ class LoopTemplate extends BaseTemplate {
 					<div class="container" id="breadcrumb-container">
 						<div class="row">
 							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 p4-2 pl-sm-0 pr-sm-0" id="breadcrumb-wrapper">
-								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-0 float-left" id="breadcrumb-area">
+								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pl-lg-0 float-left" id="breadcrumb-area">
 									<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 								</div>
 								<?php if( ! $this->offlineMode ) { 
@@ -130,7 +121,7 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						
-						<div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-0" id="sidebar-wrapper">
+						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
 							<div class="panel-wrapper">
 								<?php 	$this->outputToc( $loopStructure ); 
 										$this->outputSpecialPages( ); ?>
@@ -144,7 +135,7 @@ class LoopTemplate extends BaseTemplate {
 			</section>
 		</div> 
 		<!--FOOTER SECTION-->
-		<footer class="mt-3">
+		<footer>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12 text-center" id="first-footer">
@@ -195,10 +186,10 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$loggedin = true;
 			
-			echo '<div id="usermenu">
+			echo '<div id="usermenu" class="mr-md-2">
 				<div class="dropdown float-right mt-2">
-					<button class="btn btn-light btn-sm dropdown-toggle mr-0 mr-sm-3" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
-						<span class="ic ic-personal-urls float-left pr-1 pt-1"></span><span class="d-none d-sm-none d-md-block float-left">' . $userName . '</span>
+					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
+						<span class="ic ic-personal-urls float-left pr-1 pt-1"></span><span class="d-none d-sm-block float-left">' . $userName . '</span>
 					</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 			
@@ -638,7 +629,7 @@ class LoopTemplate extends BaseTemplate {
 			$wgOut->addModules("skins.loop-plyr.js");
 			
 			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper">
-					<span id="t2s-button" class="ic ic-text2speech pr-sm-3"></span>
+					<span id="t2s-button" class="ic ic-audio pr-sm-3"></span>
 					<audio id="t2s-audio"><source type="audio/mp3"></source></audio>
 				</div>';
 		}
@@ -719,7 +710,7 @@ class LoopTemplate extends BaseTemplate {
 						<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' )->text() .'</h5>
 						</div>
-						<div id="export-panel" class="panel-body p-1 pb-2 pl-3 pl-xl-2">
+						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">
 								<span><span class="ic ic-file-pdf"></span> Export Placeholder</span><br>
 								<span><span class="ic ic-file-xml"></span> Export Placeholder</span>
