@@ -1,0 +1,3 @@
+[submodule "jstree"]
+	path = /resources/js/jstree
+	url = https://github.com/oncampus/jstree.git
