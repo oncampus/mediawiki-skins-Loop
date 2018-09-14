@@ -25,7 +25,10 @@
 		"remoteSkinPath": "Loop"
 	},
 	"config": {
-        "Text2Speech": "false"
+        "Text2Speech": {
+        	"value" : "false",
+        	"description" : "Possibility to disable text to speech feature if it is chargeable"
+        }
 	}, 
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
