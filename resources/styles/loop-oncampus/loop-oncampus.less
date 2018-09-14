@@ -1,10 +1,37 @@
 @import "../variables.less";
 
-@logo-url: "/skins/Loop/resources/styles/loop-oncampus/img/logo-oncampus.png";
+@logo-url: "/skins/Loop/resources/styles/loop-oncampus/img/logo.png";
 @banner-front-url: "/skins/Loop/resources/styles/loop-oncampus/img/header-front.png";
-@banner-bg-url: "/skins/Loop/resources/styles/loop-oncampus/img/header-bg.png";
+@banner-bg-url: "/skins/Loop/resources/styles/loop-oncampus/img/bg-sternenstaub.png";
 
-@banner-background: url(@banner-bg-url);
+@banner-background: #213c72;
 @banner-background-position: 0 0;
+@accent-color: #91185b;
+
+@content-outter-background: fade(white, 60%);
 
 @import "../loop.less";
+
+body, #banner-logo-container {
+	background-image: url("https://www.oncampus.de/theme/image.php/ild_oncampus/theme/1536846561/bg/bodybg3");
+}
+#banner-container {
+	background: url(@banner-bg-url);
+	background-position: left;
+	background-size: cover;
+}
+#loop-title h1 {
+	padding-top: 50px !important;
+}
+
+/* The following rules change the top banner's width to screen size. */
+/*
+#banner-container {
+	max-width: 100% !important;
+	padding-right: none !important;
+}
+#page-searchbar-lg-xl {
+	padding-right: 0px !important;
+}
+*/
+/* The rules above change the top banner's width to screen size. */
