@@ -23,6 +23,8 @@ class LoopTemplate extends BaseTemplate {
 		<div id="page-wrapper">
 			<section>
 				<div class="p-0" id="banner-wrapper">
+				<div class="container p-0" id="banner-container">
+				
 					<div class="w-100" id="banner-logo-container">
 						<div class="container">
 							<div class="row">
@@ -65,14 +67,14 @@ class LoopTemplate extends BaseTemplate {
 								<?php } ?>
 							</div>
 							<?php if( ! $this->offlineMode ) { ?>
-								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 pr-0 float-left">
+								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 float-left">
 									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									<div class="clear"></div>
 								</div>
 							<?php }?>
 						</div> <!--End of row-->
 					</div> <!--End of nativation container-->
-				</div>
+				</div></div>
 			</section>
 			
 			<!--BREADCRUMB SECTION -->
@@ -106,7 +108,7 @@ class LoopTemplate extends BaseTemplate {
 				<div class="container" id="page-container">
 					<div class="row">
 						<div class="col-12 col-lg-9" id="content-wrapper">
-							<div class="row" id="content-inner-wrapper">
+							<div class="row mb-3" id="content-inner-wrapper">
 								<div class="col-12">
 									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-0 mt-3 float-right" id="page-content">
 										<?php $this->html( 'bodytext' ); ?>
@@ -115,7 +117,7 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-12 text-center mt-3">
+								<div class="col-12 text-center mb-3">
 									<?php $this->outputBottomNavigation( $loopStructure ); ?>
 								</div>
 							</div> <!--End of row-->
@@ -325,16 +327,14 @@ class LoopTemplate extends BaseTemplate {
 		
 		
 		// TOC  button
-		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ';
+		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ';
 		
 		if ( ! $mainPage ) {
 			$toc_button .= 'disabled="disabled"';
 		}
 		$toc_button .= '><span class="ic ic-toc"></span></button>';
 		if( $mainPage ) {
-			$tmpLink = Linker::specialLink("LoopStructure" );
-			$tmpMsgLength = strlen( $this->getSkin()->msg( 'loopstructure-specialpage-title' ) );
-			$link = substr( $tmpLink, 0, -4 -$tmpMsgLength ) . $toc_button . '</a>';
+			$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
 			echo $link;
 		} else {
 			echo '<a href="#">'.$toc_button.'</a>';
@@ -623,9 +623,9 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputAudioButton( ) {
-		global $text2Speech, $wgOut;
+		global $wgText2Speech, $wgOut;
 		
-		if ( $text2Speech ) {
+		if ( $wgText2Speech ) {
 			$wgOut->addModules("skins.loop-plyr.js");
 			
 			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper">
