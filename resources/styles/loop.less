@@ -15,7 +15,7 @@ h4 {
 	font-size: 1.5em;
 }
 a {
-	color: #d32121;
+	color: @accent-color;
 }
 .cursor-pointer {
 	cursor: pointer;
@@ -42,6 +42,7 @@ a {
 	height: @logo-height;
 	width: auto;	
 	margin-top: 11px;
+    background-size: auto @logo-height;
 }
 
 #page-navigation-wrapper {
@@ -186,7 +187,7 @@ ol.breadcrumb {
 /** *** *** *** *** *** ** **/
 .jstree-node a:after {
 	content: "";
-	height: 28px;
+	height: 24px;
 	width: 40px;
 	position: absolute;
 	right: 0;
@@ -223,10 +224,10 @@ ol.breadcrumb {
 
 /* FOURTH SECTION WITH FOOTER */
 #first-footer{
-	background-color: rgb(233, 238, 242);
+	background-color: @first-footer-background;
 }
 #first-footer-content {
-	
+	color: @accent-color;
 }
 #second-footer{
 	background-color: @second-footer-background;

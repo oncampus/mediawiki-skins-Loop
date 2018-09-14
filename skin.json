@@ -23,8 +23,10 @@
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
 		"remoteSkinPath": "Loop"
-		
 	},
+	"config": {
+        "Text2Speech": "false"
+	}, 
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
 			"position": "top",
