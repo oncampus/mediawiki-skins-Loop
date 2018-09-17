@@ -329,16 +329,8 @@ class LoopTemplate extends BaseTemplate {
 		// TOC  button
 		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ';
 		
-		if ( ! $mainPage ) {
-			$toc_button .= 'disabled="disabled"';
-		}
-		$toc_button .= '><span class="ic ic-toc"></span></button>';
-		if( $mainPage ) {
-			$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
-			echo $link;
-		} else {
-			echo '<a href="#">'.$toc_button.'</a>';
-		}
+		$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
+		echo $link;
 		
 		// next button
 		
