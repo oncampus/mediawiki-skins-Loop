@@ -29,7 +29,10 @@
         	"value" : "false",
         	"description" : "Possibility to disable text to speech feature if it is chargeable"
         }
-	}, 
+	},
+    "DefaultUserOptions": {
+		"LoopRenderMode": "default"
+    },
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
 			"position": "top",
