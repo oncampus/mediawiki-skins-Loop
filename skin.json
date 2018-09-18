@@ -28,10 +28,14 @@
         "Text2Speech": {
         	"value" : "false",
         	"description" : "Possibility to disable text to speech feature if it is chargeable"
+        },
+        "LoopRenderMode": {
+        	"value" : "default",
+        	"description" : "Defines type of render mode. [ default | offline ]"
         }
 	},
     "DefaultUserOptions": {
-		"LoopRenderMode": "default"
+		"LoopEditMode": "false"
     },
 	"ResourceModules": {
 		"skins.loop-bootstrap": {

@@ -11,10 +11,14 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
+		global $wgLoopRenderMode;
+		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode' );
+		
+		$this->renderMode = $wgLoopRenderMode;
+		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode' );
 
 		$this->html( 'headelement' );
 		
