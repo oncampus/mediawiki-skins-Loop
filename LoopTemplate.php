@@ -33,7 +33,7 @@ class LoopTemplate extends BaseTemplate {
 										<p id="logo" class="mb-0 ml-2"></p>
 									</a>
 								</div>
-								<div class="col-3 text-right pr-md-0 pr-sm-0 pr-lg-0">
+								<div class="col-3 text-right">
 									<?php if( ! $this->offlineMode ) { 
 										$this->outputUserMenu(); 
 									}?>
@@ -57,8 +57,9 @@ class LoopTemplate extends BaseTemplate {
 											 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 										}
 										$this->outputPageEditMenu( );
-									?>
-									<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
+									if ( isset ( $loopStructure->mainPage ) ) { ?>
+										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
+									<?php } ?>
 								</div>
 								<?php if( ! $this->offlineMode ) { ?>
 									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 float-right">
@@ -122,16 +123,15 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						
-						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<div class="panel-wrapper">
-								<?php 	$this->outputToc( $loopStructure ); 
-										$this->outputSpecialPages( ); ?>
-							</div>
-							
-							<?php $this->outputExportPanel( ); ?>
-
-						</div>	
+						<?php if ( isset ( $loopStructure->mainPage ) ) { ?>
+							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
+								<div class="panel-wrapper">
+									<?php 	$this->outputToc( $loopStructure ); 
+											$this->outputSpecialPages( ); ?>
+								</div>
+								<?php $this->outputExportPanel( ); ?>
+							</div>	
+						<?php } ?>
 					</div>
 				</div> 
 			</section>
@@ -327,18 +327,10 @@ class LoopTemplate extends BaseTemplate {
 		
 		
 		// TOC  button
-		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ';
+		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ><span class="ic ic-toc"></span></button>';
 		
-		if ( ! $mainPage ) {
-			$toc_button .= 'disabled="disabled"';
-		}
-		$toc_button .= '><span class="ic ic-toc"></span></button>';
-		if( $mainPage ) {
-			$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
-			echo $link;
-		} else {
-			echo '<a href="#">'.$toc_button.'</a>';
-		}
+		$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
+		echo $link;
 		
 		// next button
 		
