@@ -11,11 +11,14 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
+		global $wgLoopRenderMode;
+		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
-		$this->offlineMode = $this->getSkin()->getUser()->getOption( 'loopofflinemode' , false, true );
-		$this->editMode = $this->getSkin()->getUser()->getOption( 'loopeditmode' , false, true );
+		
+		$this->renderMode = $wgLoopRenderMode;
+		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode' );
 
 		$this->html( 'headelement' );
 		
@@ -33,8 +36,8 @@ class LoopTemplate extends BaseTemplate {
 										<p id="logo" class="mb-0 ml-2"></p>
 									</a>
 								</div>
-								<div class="col-3 text-right">
-									<?php if( ! $this->offlineMode ) { 
+								<div class="col-3 text-right pr-md-0 pr-sm-0 pr-lg-0">
+									<?php if( $this->renderMode != "offline" ) { 
 										$this->outputUserMenu(); 
 									}?>
 								</div>
@@ -53,21 +56,21 @@ class LoopTemplate extends BaseTemplate {
 									<?php $this->outputNavigation( $loopStructure ); 
 										echo '<div class="btn-group float-right">'; 
 											
-			 							if( ! $this->offlineMode ) { 
+			 							if( $this->renderMode != "offline" ) { 
 											 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
-										}
-										$this->outputPageEditMenu( );
-									if ( isset ( $loopStructure->mainPage ) ) { ?>
+											$this->outputPageEditMenu( );
+			 							}
+									if ( $loopStructure ) {?>
 										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
-									<?php } ?>
+									<?php }?>
 								</div>
-								<?php if( ! $this->offlineMode ) { ?>
+								<?php if( $this->renderMode != "offline" ) { ?>
 									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 float-right">
 										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									</div>
 								<?php } ?>
 							</div>
-							<?php if( ! $this->offlineMode ) { ?>
+							<?php if( $this->renderMode != "offline" ) { ?>
 								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 float-left">
 									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									<div class="clear"></div>
@@ -83,7 +86,7 @@ class LoopTemplate extends BaseTemplate {
 					<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
 						<div class="container">
 							<div class="row">
-								<?php if( ! $this->offlineMode ) { ?>
+								<?php if( $this->renderMode != "offline" ) { ?>
 									<div class="d-block col-12 pl-0 pr-0 pt-3 pb-0">
 										<input id="mobile-searchbar-input" class="form-control form-control-sm " placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									</div>
@@ -97,7 +100,7 @@ class LoopTemplate extends BaseTemplate {
 								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pl-lg-0 float-left" id="breadcrumb-area">
 									<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 								</div>
-								<?php if( ! $this->offlineMode ) { 
+								<?php if( $this->renderMode != "offline" ) { 
 									$this->outputAudioButton();
 								}?>
 							</div>
@@ -123,14 +126,14 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<?php if ( isset ( $loopStructure->mainPage ) ) { ?>
-							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-								<div class="panel-wrapper">
-									<?php 	$this->outputToc( $loopStructure ); 
-											$this->outputSpecialPages( ); ?>
-								</div>
-								<?php $this->outputExportPanel( ); ?>
-							</div>	
+						<?php if ( $loopStructure ) { ?>
+						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
+							<div class="panel-wrapper">
+								<?php 	$this->outputToc( $loopStructure ); 
+										$this->outputSpecialPages( ); ?>
+							</div>
+							<?php $this->outputExportPanel( ); ?>
+						</div>	
 						<?php } ?>
 					</div>
 				</div> 
@@ -460,8 +463,6 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputToc( $loopStructure ) {
-										
-		if ( $loopStructure ) {
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
@@ -598,7 +599,7 @@ class LoopTemplate extends BaseTemplate {
 
 			echo $html;
 			 
-		}
+		
 	} // end of output toc
 	
 	private function outputBreadcrumb($loopStructure) {
@@ -651,7 +652,7 @@ class LoopTemplate extends BaseTemplate {
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
 		
-		if( ! $this->offlineMode ) {
+		if( $this->renderMode != "offline" ) {
 			
 			foreach($this->data['content_navigation'] as $content_navigation_category => $content_navigation_entries) {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
@@ -675,7 +676,7 @@ class LoopTemplate extends BaseTemplate {
 					<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
 						<img alt="Creative Commons Lizenzvertrag" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
 					</a>';
-		if( ! $this->offlineMode ) { 
+		if( $this->renderMode != "offline" ) { 
 			$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' )->text() .'"></span>';
 		} 
 		$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
