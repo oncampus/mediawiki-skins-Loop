@@ -126,7 +126,6 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-								
 						<?php if ( $loopStructure ) { ?>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
 							<div class="panel-wrapper">
@@ -331,18 +330,10 @@ class LoopTemplate extends BaseTemplate {
 		
 		
 		// TOC  button
-		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ';
+		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ><span class="ic ic-toc"></span></button>';
 		
-		if ( ! $mainPage ) {
-			$toc_button .= 'disabled="disabled"';
-		}
-		$toc_button .= '><span class="ic ic-toc"></span></button>';
-		if( $mainPage ) {
-			$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
-			echo $link;
-		} else {
-			echo '<a href="#">'.$toc_button.'</a>';
-		}
+		$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
+		echo $link;
 		
 		// next button
 		
