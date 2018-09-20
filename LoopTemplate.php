@@ -697,17 +697,28 @@ class LoopTemplate extends BaseTemplate {
 		echo $html;
 	}
 	private function outputExportPanel () {
+		$user = $this->getSkin()->getUser();
 		
-		if ( $this->data["skin"]->getUser()->isAllowed( 'edit' ) ) { # TODO Rechte 'export'?
+		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' )) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
 						<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' )->text() .'</h5>
 						</div>
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
-							<div class="pb-2">
-								<span><span class="ic ic-file-pdf"></span> Export Placeholder</span><br>
-								<span><span class="ic ic-file-xml"></span> Export Placeholder</span>
-							</div>
+							<div class="pb-2">';
+
+			if ( $user->isAllowed( 'loop-export-pdf' )) {
+				$pdfExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), wfMessage ( 'export-linktext-pdf' )->inContentLanguage ()->text () );
+				$html .= '<span><span class="ic ic-file-pdf"></span> '.$pdfExportLink.'</span><br/>';
+			}			
+			if ( $user->isAllowed( 'loop-export-xml' )) {
+				$xmlExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), wfMessage ( 'export-linktext-xml' )->inContentLanguage ()->text () );
+				$html .= '<span><span class="ic ic-file-xml"></span> '.$xmlExportLink.'</span><br/>';
+			}
+			
+								
+								
+			$html.= '		</div>
 						</div>
 					</div>';
 			
