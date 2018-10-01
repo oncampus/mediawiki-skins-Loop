@@ -14,13 +14,13 @@ class SkinLoop extends SkinTemplate {
 	 * @param OutputPage $out Object to initialize
 	 */
 	public function initPage( OutputPage $out ) {
+		global $wgDefaultUserOptions;
 
 		$out->addHeadItem('meta_ie_edge', '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">');
 		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1.0' );
 		
 		$out->addModuleStyles( array(
 			'skins.loop-icons',
-			'skins.loop-oncampus',
 			'skins.loop-bootstrap',
 			'skins.loop-jstree',
 		 	'skins.loop-plyr'
@@ -29,6 +29,12 @@ class SkinLoop extends SkinTemplate {
 			'skins.loop.js',
 			'skins.loop-jstree.js',
 			'skins.loop-bootstrap.js'
+		));
+		
+		$skinStyle = $out->getUser()->getOption( 'LoopSkinStyle', $wgDefaultUserOptions['LoopSkinStyle'], true );
+
+		$out->addModuleStyles( array(
+			'skins.'.$skinStyle,
 		));
 	}
 

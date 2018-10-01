@@ -36,7 +36,7 @@ class LoopTemplate extends BaseTemplate {
 										<p id="logo" class="mb-0 ml-2"></p>
 									</a>
 								</div>
-								<div class="col-3 text-right pr-md-0 pr-sm-0 pr-lg-0">
+								<div class="col-3 text-right">
 									<?php if( $this->renderMode != "offline" ) { 
 										$this->outputUserMenu(); 
 									}?>
@@ -60,7 +60,7 @@ class LoopTemplate extends BaseTemplate {
 											 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 											$this->outputPageEditMenu( );
 			 							}
-									if ( $loopStructure ) {?>
+									if ( $loopStructure->mainPage ) {?>
 										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
 									<?php }?>
 								</div>
@@ -96,8 +96,8 @@ class LoopTemplate extends BaseTemplate {
 					</div>
 					<div class="container" id="breadcrumb-container">
 						<div class="row">
-							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 p4-2 pl-sm-0 pr-sm-0" id="breadcrumb-wrapper">
-								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pl-lg-0 float-left" id="breadcrumb-area">
+							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 pr-2 pr-sm-0" id="breadcrumb-wrapper">
+								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 float-left" id="breadcrumb-area">
 									<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 								</div>
 								<?php if( $this->renderMode != "offline" ) { 
@@ -113,8 +113,23 @@ class LoopTemplate extends BaseTemplate {
 					<div class="row">
 						<div class="col-12 col-lg-9" id="content-wrapper">
 							<div class="row mb-3" id="content-inner-wrapper">
-								<div class="col-12">
-									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-0 mt-3 float-right" id="page-content">
+								<div class="col-12 pr-1 pr-sm-2 pr-md-3">
+									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
+									
+	           							<?php 
+		            					if ( $loopStructure->mainPage ) {
+		            	
+			            					$article_id = $this->getSkin()->getTitle()->getArticleID();
+			            					$lsi = LoopStructureItem::newFromIds($article_id); 
+			            					
+								            if ( $lsi ) {
+								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText.'</h1>';
+								            }
+							            } else {
+							            	echo '<h1 id="title">'.$this->getSkin()->getTitle().'</h1>';
+										}
+										?>
+				
 										<?php $this->html( 'bodytext' ); ?>
 									</div>
 									<?php $this->outputPageSymbols(); ?>
@@ -126,7 +141,7 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<?php if ( $loopStructure ) { ?>
+						<?php if ( $loopStructure->mainPage ) { ?>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
 							<div class="panel-wrapper">
 								<?php 	$this->outputToc( $loopStructure ); 
@@ -191,7 +206,7 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$loggedin = true;
 			
-			echo '<div id="usermenu" class="mr-md-2">
+			echo '<div id="usermenu" class="">
 				<div class="dropdown float-right mt-2">
 					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
 						<span class="ic ic-personal-urls float-left pr-1 pt-1"></span><span class="d-none d-sm-block float-left">' . $userName . '</span>
@@ -227,7 +242,7 @@ class LoopTemplate extends BaseTemplate {
 			$loggedin = false;
 			
 			echo '<div id="usermenu"><div class="dropdown float-right mt-2">
-			<button class="btn btn-light btn-sm dropdown-toggle mr-0 mr-sm-3" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 			<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
 			
 			if ( isset ( $personTools ['login'] ) ) {
@@ -604,7 +619,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputBreadcrumb($loopStructure) {
 		
-		if ( $loopStructure ) {
+		if ( $loopStructure->mainPage ) {
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
