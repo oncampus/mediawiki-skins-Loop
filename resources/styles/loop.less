@@ -1,9 +1,6 @@
 /* GENERAL STYLES */
-:root {
-
-}
 body {
-	min-width: 290px;
+	min-width: 320px;
 }
 h1 {
 	font-size: 2em;
@@ -18,10 +15,10 @@ h4 {
 	font-size: 1.5em;
 }
 a {
-	color: @accent-color;
+	color: @link-color;
 }
 a:hover {
-	color: darken(@accent-color, 10%);
+	color: darken(@link-color, 10%);
 }
 .cursor-pointer {
 	cursor: pointer;
@@ -32,11 +29,14 @@ a:hover {
 	background: @banner-background;
 	background-size: @banner-background-size;
 	background-position: @banner-background-position;
-	max-width: 100%;
 }
 #loop-title, #loop-title:hover {
 	color: @loop-title-color;
 	text-decoration: none;
+	padding-top: 20px;
+}
+#loop-title h1 {
+	padding-top: @title-padding !important;
 }
 #banner-logo-container {
 	background: @loop-title-color;	
@@ -90,7 +90,6 @@ fieldset[disabled] .btn-light {
 	opacity: 1;
 	border: 1px solid #ccc;
 }
-
 .page-nav-btn {
 	min-height: 50px;
 	max-width: 60px;
@@ -98,7 +97,14 @@ fieldset[disabled] .btn-light {
 	width: 10.7vw;
 	margin-right: -1px;
 }
-
+#admin-btn:after {
+	margin-left: -2px;
+}
+#page-searchbar-md input,
+#page-searchbar-lg-xl input {
+    margin-top: 5px;
+    height: 40px;
+}
 /* SECOND SECTION WITH BREADCRUMB, AUDIO BUTTON AND MOBILE SEARCH BAR */
 
 ol.breadcrumb {
@@ -154,11 +160,11 @@ ol.breadcrumb {
 }
 
 /* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
-.toc#toc {
-	display: none;
-}
+
 #page-content {
 	background-color: white;
+	word-wrap: break-word;
+	hyphens: auto;
 }
 #toc-nav {
 	-webkit-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
@@ -186,7 +192,7 @@ ol.breadcrumb {
 	position: absolute;
 	right: 0;
 	z-index: 10;
-	max-width: 275px !important;
+	max-width: 265px !important;
 }
 .page-symbol {
 	font-size: 16px;
@@ -194,22 +200,6 @@ ol.breadcrumb {
 }
 .page-symbol:hover {
 	scroll-y: none;
-}
-.mw-editsection-bracket {
-	display: none;
-}
-.mw-editsection {
-	font-size: 17px;
-	vertical-align: middle;
-}
-.mw-editsection-bracket ~ a {
-	text-decoration: none;
-}
-#mw-content-text :last-child {
-	margin-bottom: 0 !important;
-}
-#mw-content-text div:last-of-type {
-	padding-bottom: 0 !important;
 }
 .viewport {
 	max-width: none;
@@ -219,12 +209,8 @@ ol.breadcrumb {
 	-ms-transform-origin: 0 0;
 	margin-bottom: 15px;
 }
-.wikitable {
-	display: none;
-}
-.image img {
-	max-width: 100%;
-	height: auto;
+#loopstructure-textarea {
+	max-width: 100% !important;
 }
 /** *** *** *** *** *** **/
 /** *** J S T R E E *** **/
@@ -252,7 +238,7 @@ ol.breadcrumb {
 	font-weight: bold;
 }
 .jstree-anchor.jstree-hovered {
-	background: transparent;
+	background: lighten(@sidebar-background, 3%) !important;
 	box-shadow: none !important;
 	font-weight: 600;
 }
@@ -272,8 +258,51 @@ ol.breadcrumb {
 	padding-bottom: 15px;
 }
 
+/** *** *** ** *** *** **/
+/** MEDIAWIKI GENERAL  **/
+/** *** *** ** *** *** **/
+.gallerytextwrapper {
+	width: 100% !important;
+	margin: 0 !important;
+}
+.wikitable {
+	display: none;
+}
+.image img, .fullImageLink a img, .thumb, .thumbinner {
+	max-width: 100% !important;
+	height: auto !important;
+}
+.toc#toc {
+	display: none;
+}
+.thumbcaption {
+	display: none;
+}
+pre {
+    background-color: #f8f9fa;
+    border: 1px solid #eaecf0;
+    border-radius: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+code {
+    background-color: fade(#e83e8c, 5%);
+}
+.mw-editsection-bracket {
+	display: none;
+}
+.mw-editsection, #editpagelink {
+	font-size: 17px;
+	vertical-align: middle;
+}
+.mw-editsection-bracket ~ a, #editpagelink {
+	text-decoration: none;
+}
+#mw-content-text :last-child > * {
+	margin-bottom: 0 !important;
+}
 /** *** *** *** *** *** *** *** *** *** *** **/
-/** MEDIAWIKI-UI and OO-JS-UI INPUT CHANGES **/
+/** MEDIAWIKI-UI and OO-UI INPUT CHANGES **/
 /** *** *** *** *** *** *** *** *** *** *** **/
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button, 
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:checked + span,
@@ -336,6 +365,9 @@ ol.breadcrumb {
 }
 
 /* FOURTH SECTION WITH FOOTER */
+footer {
+	display: none;
+}
 #first-footer{
 	background-color: @first-footer-background;
 }

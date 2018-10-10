@@ -25,7 +25,7 @@ class LoopTemplate extends BaseTemplate {
 		?>
 		<div id="page-wrapper">
 			<section>
-				<div class="p-0" id="banner-wrapper">
+				<div class="container p-0" id="banner-wrapper">
 				<div class="container p-0" id="banner-container">
 				
 					<div class="w-100" id="banner-logo-container">
@@ -65,13 +65,13 @@ class LoopTemplate extends BaseTemplate {
 									<?php }?>
 								</div>
 								<?php if( $this->renderMode != "offline" ) { ?>
-									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none pt-1 float-right">
+									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
 										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									</div>
 								<?php } ?>
 							</div>
 							<?php if( $this->renderMode != "offline" ) { ?>
-								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 pt-1 float-left">
+								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
 									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									<div class="clear"></div>
 								</div>
@@ -87,7 +87,7 @@ class LoopTemplate extends BaseTemplate {
 						<div class="container">
 							<div class="row">
 								<?php if( $this->renderMode != "offline" ) { ?>
-									<div class="d-block col-12 pl-0 pr-0 pt-3 pb-0">
+									<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
 										<input id="mobile-searchbar-input" class="form-control form-control-sm " placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
 									</div>
 								<?php }?>
@@ -123,7 +123,11 @@ class LoopTemplate extends BaseTemplate {
 			            					$lsi = LoopStructureItem::newFromIds($article_id); 
 			            					
 								            if ( $lsi ) {
-								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText.'</h1>';
+								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
+								            	if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) { #TODO: if editmode
+								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->getSkin()->getTitle() . '&action=edit"><i class="ic ic-edit"></i></a>';
+								            	}
+								            	echo '</h1>';
 								            }
 							            } else {
 							            	echo '<h1 id="title">'.$this->getSkin()->getTitle().'</h1>';
@@ -232,7 +236,6 @@ class LoopTemplate extends BaseTemplate {
 				echo '<div class="dropdown-divider"></div>';
 				echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
 			}
-			
 			echo '	</div>
 				</div>
 			</div>';
@@ -682,6 +685,11 @@ class LoopTemplate extends BaseTemplate {
 			}
 		
 		}
+		echo '<div class="dropdown-divider"></div>';
+		
+		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . wfMessage ( 'specialpages' )->text (),
+				array('class' => 'dropdown-item') );
+				
 		echo '</div></div>';
 		
 		}
@@ -723,12 +731,12 @@ class LoopTemplate extends BaseTemplate {
 							<div class="pb-2">';
 
 			if ( $user->isAllowed( 'loop-export-pdf' )) {
-				$pdfExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), wfMessage ( 'export-linktext-pdf' )->inContentLanguage ()->text () );
-				$html .= '<span><span class="ic ic-file-pdf"></span> '.$pdfExportLink.'</span><br/>';
+				$pdfExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), '<span class="ic ic-file-pdf"></span> ' . wfMessage ( 'export-linktext-pdf' )->inContentLanguage ()->text () );
+				$html .= '<span>'.$pdfExportLink.'</span><br/>';
 			}			
 			if ( $user->isAllowed( 'loop-export-xml' )) {
-				$xmlExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), wfMessage ( 'export-linktext-xml' )->inContentLanguage ()->text () );
-				$html .= '<span><span class="ic ic-file-xml"></span> '.$xmlExportLink.'</span><br/>';
+				$xmlExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), '<span class="ic ic-file-xml"></span> ' . wfMessage ( 'export-linktext-xml' )->inContentLanguage ()->text () );
+				$html .= '<span>'.$xmlExportLink.'</span><br/>';
 			}
 			
 								

@@ -11,6 +11,7 @@ $( document ).ready( function () {
 	 */	
 	
 	$('#page-wrapper').css( 'min-height', $( window ).height() - $("footer").height() );
+	$('footer').fadeIn(200);
 	
 	/**
 	 * Toggle visibility of mobile toc menu.
