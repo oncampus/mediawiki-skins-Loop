@@ -60,7 +60,7 @@ class LoopTemplate extends BaseTemplate {
 											 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 											$this->outputPageEditMenu( );
 			 							}
-									if ( $loopStructure->mainPage ) {?>
+									if ( isset( $loopStructure->mainPage ) ) {?>
 										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
 									<?php }?>
 								</div>
@@ -117,7 +117,7 @@ class LoopTemplate extends BaseTemplate {
 									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
 									
 	           							<?php 
-		            					if ( $loopStructure->mainPage ) {
+		            					if ( isset( $loopStructure->mainPage ) ) {
 		            	
 			            					$article_id = $this->getSkin()->getTitle()->getArticleID();
 			            					$lsi = LoopStructureItem::newFromIds($article_id); 
@@ -145,7 +145,7 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<?php if ( $loopStructure->mainPage ) { ?>
+						<?php if ( isset( $loopStructure->mainPage ) ) { ?>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
 							<div class="panel-wrapper">
 								<?php 	$this->outputToc( $loopStructure ); 
@@ -622,7 +622,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputBreadcrumb($loopStructure) {
 		
-		if ( $loopStructure->mainPage ) {
+		if ( isset( $loopStructure->mainPage ) ) {
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
