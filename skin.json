@@ -32,11 +32,21 @@
         "LoopRenderMode": {
         	"value" : "default",
         	"description" : "Defines type of render mode. [ default | offline ]"
+        },
+        "LoopSkinStyles": {
+        	"value": [ "loop-common", "loop-oncampus" ],
+        	"description": "Sets skin style"
         }
 	},
     "DefaultUserOptions": {
-		"LoopEditMode": "false"
+		"LoopEditMode": "false",
+		"LoopSkinStyle": "loop-common"
     },
+    "Hooks": {
+		"SkinEditSectionLinks": [
+			"LoopSkinHooks::onSkinEditSectionLinks"
+		]
+	},
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
 			"position": "top",
@@ -78,16 +88,25 @@
 					"resources/js/plyr/dist/plyr.js"
 				]
 		},
+		"skins.loop-common": {
+			"class": "ResourceLoaderSkinModule",
+			"position": "top",
+			"styles": {
+				"resources/styles/loop-common/loop-common.less": {
+					"media": "all"
+				}
+			}
+		},
 		"skins.loop-oncampus": {
 			"class": "ResourceLoaderSkinModule",
 			"position": "top",
 			"styles": {
 				"resources/styles/loop-oncampus/loop-oncampus.less": {
-					"media": "screen"
+					"media": "all"
 				}
 			}
 		}
-	},
+	},	
 	"MessagesDirs": {
 		"Loop": [
 			"i18n"
@@ -95,7 +114,8 @@
 	},
 	"AutoloadClasses": {
 		"SkinLoop": "Loop.skin.php",
-		"LoopTemplate": "LoopTemplate.php"
+		"LoopTemplate": "LoopTemplate.php",
+		"LoopSkinHooks": "Loop.skin.hooks.php"
 	},
 	"manifest_version": 2
 }

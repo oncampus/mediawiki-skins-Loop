@@ -11,6 +11,7 @@ $( document ).ready( function () {
 	 */	
 	
 	$('#page-wrapper').css( 'min-height', $( window ).height() - $("footer").height() );
+	$('footer').fadeIn(200);
 	
 	/**
 	 * Toggle visibility of mobile toc menu.
@@ -72,6 +73,47 @@ $( document ).ready( function () {
 	mw.loader.using( ['skins.loop-bootstrap.js'] ).then( function ( ) {
 		$('.page-symbol').tooltip({ boundary: 'window' })
 	});
+	
+	$(window).on("resize", resizeTables)
+	$(document).ready(resizeTables)
+
+	var window_width
+	var available_width
+	var table_width = new Array;
+	var table_height = new Array;
+	var table_ratio = new Array
+
+	function resizeTables() {
+		$(".wikitable").each(
+			function() {
+				window_width = $(window).width()
+				available_width = $(this).parent().width()
+				table_width = $(this).width()
+				table_height = $(this).height()
+				table_ratio = available_width / table_width;
+
+				if (available_width < table_width) {
+					if ( ! $(this).parent().hasClass("viewport")) {
+						$(this).wrap("<div class='viewport'></div>");
+					}
+					$(this).parent().css(
+						{ 	"transform" : "scale(" + table_ratio + ")",
+							"-ms-transform" : "scale(" + table_ratio + ")",
+							"-webkit-transform" : "scale(" + table_ratio + ")",
+							"height" : table_height * table_ratio
+					})
+				} else {
+					$(this).parent(".viewport").css( {
+						"transform": "none",
+						"-ms-transform": "none",
+						"-webkit-transform": "none",
+						"height" : "auto"
+					})
+				}
+				$(this).show();
+			}
+		)
+	}
 });
 
 
