@@ -16,13 +16,12 @@ class LoopTemplate extends BaseTemplate {
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
-		
-		$this->renderMode = $wgLoopRenderMode;
-		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode' );
-
+		$this->renderMode =  $this->getSkin()->getUser()->getOption( 'looprendermode' );;
+		$this->editMode = $this->getSkin()->getUser()->getOption( 'loopeditmode', false, true );
 		$this->html( 'headelement' );
 		
-		?>
+		
+		if( $this->renderMode != "epub" ) { ?>
 		<div id="page-wrapper">
 			<section>
 				<div class="container p-0" id="banner-wrapper">
@@ -117,6 +116,7 @@ class LoopTemplate extends BaseTemplate {
 									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
 									
 	           							<?php 
+										} // end of excluding rendermode-epub 
 		            					if ( isset( $loopStructure->mainPage ) ) {
 		            	
 			            					$article_id = $this->getSkin()->getTitle()->getArticleID();
@@ -124,7 +124,7 @@ class LoopTemplate extends BaseTemplate {
 			            					
 								            if ( $lsi ) {
 								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
-								            	if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) { #TODO: if editmode
+								            	if ( $this->editMode && $this->renderMode == "default" ) { 
 								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->getSkin()->getTitle() . '&action=edit"><i class="ic ic-edit"></i></a>';
 								            	}
 								            	echo '</h1>';
@@ -134,7 +134,8 @@ class LoopTemplate extends BaseTemplate {
 										}
 										?>
 				
-										<?php $this->html( 'bodytext' ); ?>
+										<?php $this->html( 'bodytext' ); 
+										if( $this->renderMode != "epub" ) {?>
 									</div>
 									<?php $this->outputPageSymbols(); ?>
 								</div>
@@ -151,7 +152,9 @@ class LoopTemplate extends BaseTemplate {
 								<?php 	$this->outputToc( $loopStructure ); 
 										$this->outputSpecialPages( ); ?>
 							</div>
-							<?php $this->outputExportPanel( ); ?>
+							<?php if( $this->renderMode != "offline" ) { 
+								$this->outputExportPanel( ); 
+							}?>
 						</div>	
 						<?php } ?>
 					</div>
@@ -184,7 +187,6 @@ class LoopTemplate extends BaseTemplate {
 								<span class="ic ic-social-facebook"></span>
 								<span class="ic ic-social-youtube"></span>
 								<span class="ic ic-social-twitter"></span>
-								<span class="ic ic-social-googleplus"></span>
 								<span class="ic ic-social-github"></span>
 								<span class="ic ic-social-instagram"></span>
 							</div>
@@ -195,6 +197,7 @@ class LoopTemplate extends BaseTemplate {
 			</div> <!--End of container-->
 		</footer>
 	<?php 
+		}
 	}
 	
 	private function outputUserMenu() {
@@ -647,7 +650,7 @@ class LoopTemplate extends BaseTemplate {
 	}
 	private function outputPageEditMenu( ) {
 		
-		if ( $this->data["skin"]->getUser()->isAllowed( 'edit' ) ) {
+		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) {
     
 		$content_navigation_skip=array();
 		$content_navigation_skip['namespaces']['main'] = true;
@@ -685,6 +688,99 @@ class LoopTemplate extends BaseTemplate {
 			}
 		
 		}
+		// Link for editing TOC
+		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
+			if ( $this->editMode == true && $user->isAllowed( 'loop-toc-edit' ) ) {
+				echo Linker::link( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopStructureEdit' 
+					), 
+					'<span class="ic ic-edit"></span> ' . wfMessage ( 'edit' )->inContentLanguage ()->text (), 
+					array('class' => 'dropdown-item')  
+				);
+			}	
+		}
+		// Loop Edit Mode
+			
+		$loopEditMode = $this->getSkin()->getUser()->getOption( 'loopeditmode', false, true );
+		$nameSpace = $this->getSkin()->getTitle()->getNameSpace();
+		
+		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) && $nameSpace == 0 ) {
+			
+			echo '<div class="dropdown-divider"></div>';
+				
+			if ($loopEditMode) {
+				$loopEditmodeButtonValue = 0;
+				$loopEditmodeClass = "nav-loop-editmode-on";
+				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' )->text();
+			} else {
+				$loopEditmodeButtonValue = 1;
+				$loopEditmodeClass = "nav-loop-editmode-off";
+				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' )->text();
+			}					
+				
+			echo Linker::link(
+				$this->getSkin()->getRelevantTitle(),
+				'<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg,
+				array(
+					"class" => $loopEditmodeClass . " dropdown-item",
+					"aria-label" => $loopEditmodeMsg,
+					"title" => $loopEditmodeMsg
+				),
+				array( "loopeditmode" => $loopEditmodeButtonValue )
+			);
+				
+		}
+		
+		// Loop Render Modes
+		
+		$loopRenderMode = $this->getSkin()->getUser()->getOption( 'looprendermode' );
+				
+		if ( $this->getSkin()->getUser()->isAllowed( 'loop-rendermode' ) && $nameSpace == 0 ) {
+			
+			echo '<div class="dropdown-divider"></div>';
+			
+			// Offline Mode
+			if ( $loopRenderMode != "offline") {
+				$loopOfflinemodeButtonValue = "offline";
+				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' )->text();
+			 			
+				echo Linker::link(
+					$this->getSkin()->getRelevantTitle(),
+					'<span class="ic ic-file-xml"></span> ' . $loopOfflinemodeMsg,
+					array(
+						"class" => "dropdown-item",
+						"aria-label" => $loopOfflinemodeMsg,
+						"title" => $loopOfflinemodeMsg,
+						"target" => "_blank",
+						"onclick" => "setTimeout(function(){location.reload()}, 100)" # TODO 
+					),
+					array( "looprendermode" => $loopOfflinemodeButtonValue )
+				);
+			}
+			// EPub Mode
+			if ( $loopRenderMode != "epub") {
+				$loopEpubModeButtonValue = "epub";
+				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' )->text();
+						
+				echo Linker::link(
+					$this->getSkin()->getRelevantTitle(),
+					'<span class="ic ic-file-epub"></span> ' . $loopEpubModeMsg,
+					array(
+						"class" => "dropdown-item",
+						"aria-label" => $loopEpubModeMsg,
+						"title" => $loopEpubModeMsg,
+						"target" => "_blank",
+						"onclick" => "setTimeout(function(){location.reload()}, 100)" #TODO
+					),
+					array( "looprendermode" => $loopEpubModeButtonValue )
+				);
+			} 	
+		}
+
+		// Link to Special Pages
+		
 		echo '<div class="dropdown-divider"></div>';
 		
 		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . wfMessage ( 'specialpages' )->text (),
