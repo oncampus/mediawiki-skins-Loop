@@ -44,9 +44,6 @@
     "Hooks": {
 		"SkinEditSectionLinks": [
 			"LoopSkinHooks::onSkinEditSectionLinks"
-		],
-		"ParserMakeImageParams": [
-			"LoopSkinHooks::onParserMakeImageParams"
 		]
 	},
 	"ResourceModules": {
