@@ -690,7 +690,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		// Link for editing TOC
 		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
-			if ( $this->editMode == true && $user->isAllowed( 'loop-toc-edit' ) ) {
+			if ( $this->editMode == true && $this->getSkin()->getUser()->isAllowed( 'loop-toc-edit' ) ) {
 				echo Linker::link( 
 					new TitleValue( 
 						NS_SPECIAL, 
