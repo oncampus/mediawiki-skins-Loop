@@ -39,12 +39,14 @@
         }
 	},
     "DefaultUserOptions": {
-		"LoopEditMode": "false",
 		"LoopSkinStyle": "loop-common"
     },
     "Hooks": {
 		"SkinEditSectionLinks": [
 			"LoopSkinHooks::onSkinEditSectionLinks"
+		],
+		"ParserMakeImageParams": [
+			"LoopSkinHooks::onParserMakeImageParams"
 		]
 	},
 	"ResourceModules": {
