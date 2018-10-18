@@ -690,7 +690,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		// Link for editing TOC
 		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
-			if ( $this->editMode == true && $this->getSkin()->getUser()->isAllowed( 'loop-toc-edit' ) ) {
+			if ( $this->editMode && $this->getSkin()->getUser()->isAllowed( 'loop-toc-edit' ) ) {
 				echo Linker::link( 
 					new TitleValue( 
 						NS_SPECIAL, 
@@ -703,14 +703,13 @@ class LoopTemplate extends BaseTemplate {
 		}
 		// Loop Edit Mode
 			
-		$loopEditMode = $this->getSkin()->getUser()->getOption( 'loopeditmode', false, true );
 		$nameSpace = $this->getSkin()->getTitle()->getNameSpace();
 		
-		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) && $nameSpace == 0 ) {
+		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) {
 			
 			echo '<div class="dropdown-divider"></div>';
 				
-			if ($loopEditMode) {
+			if ( $this->editMode ) {
 				$loopEditmodeButtonValue = 0;
 				$loopEditmodeClass = "nav-loop-editmode-on";
 				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' )->text();
@@ -735,14 +734,14 @@ class LoopTemplate extends BaseTemplate {
 		
 		// Loop Render Modes
 		
-		$loopRenderMode = $this->getSkin()->getUser()->getOption( 'looprendermode' );
+		$this->renderMode = $this->getSkin()->getUser()->getOption( 'looprendermode' );
 				
 		if ( $this->getSkin()->getUser()->isAllowed( 'loop-rendermode' ) && $nameSpace == 0 ) {
 			
 			echo '<div class="dropdown-divider"></div>';
 			
 			// Offline Mode
-			if ( $loopRenderMode != "offline") {
+			if ( $this->renderMode != "offline") {
 				$loopOfflinemodeButtonValue = "offline";
 				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' )->text();
 			 			
@@ -760,7 +759,7 @@ class LoopTemplate extends BaseTemplate {
 				);
 			}
 			// EPub Mode
-			if ( $loopRenderMode != "epub") {
+			if ( $this->renderMode != "epub") {
 				$loopEpubModeButtonValue = "epub";
 				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' )->text();
 						
@@ -772,7 +771,7 @@ class LoopTemplate extends BaseTemplate {
 						"aria-label" => $loopEpubModeMsg,
 						"title" => $loopEpubModeMsg,
 						"target" => "_blank",
-						"onclick" => "setTimeout(function(){location.reload()}, 100)" #TODO
+						"onclick" => "setTimeout(function(){location.reload()}, 100)" # TODO
 					),
 					array( "looprendermode" => $loopEpubModeButtonValue )
 				);
