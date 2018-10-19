@@ -43,6 +43,7 @@ class LoopSkinHooks {
 	public static function onParserMakeImageParams( $title, $file, &$params, $parser ) {
 		
 		$loopeditmode = $parser->getUser()->getOption( 'loopeditmode', false, true );
+		$parser->getOptions()->optionUsed( 'loopeditmode' );
 		
 		$params['frame']['class'] = 'responsive-image';
 		
