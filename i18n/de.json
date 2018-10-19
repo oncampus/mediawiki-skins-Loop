@@ -23,5 +23,8 @@
 	"loop-editmode-toogle-off": "Bearbeitungsmodus ausschalten",
 	"loop-purge-cache": "Cache leeren",
 	"loop-page-icons-jumptotop": "Zum Seitenanfang",
-	"loop-page-icons-reportbug": "Fehler melden"
+	"loop-page-icons-reportbug": "Fehler melden",
+	"loop-page-edit-menu": "Seitenmenü einblenden",
+	"loop-toggle-sidebar": "Sidebar einblenden",
+	"loop-audiobutton": "Seite vorlesen lassen"
 }

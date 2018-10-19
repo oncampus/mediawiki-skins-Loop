@@ -11,8 +11,6 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgLoopRenderMode;
-		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
@@ -60,18 +58,18 @@ class LoopTemplate extends BaseTemplate {
 											$this->outputPageEditMenu( );
 			 							}
 									if ( isset( $loopStructure->mainPage ) ) {?>
-										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label=""><span class="ic ic-sidebar-menu"></span></button>
+										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
 									<?php }?>
 								</div>
 								<?php if( $this->renderMode != "offline" ) { ?>
 									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
-										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
+										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo $this->getSkin()->msg("full-text-search"); ?>" type="text" />
 									</div>
 								<?php } ?>
 							</div>
 							<?php if( $this->renderMode != "offline" ) { ?>
 								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
-									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
+									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo $this->getSkin()->msg("full-text-search"); ?>" type="text" />
 									<div class="clear"></div>
 								</div>
 							<?php }?>
@@ -81,32 +79,33 @@ class LoopTemplate extends BaseTemplate {
 			</section>
 			
 			<!--BREADCRUMB SECTION -->
-				<section>
-					<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
-						<div class="container">
-							<div class="row">
-								<?php if( $this->renderMode != "offline" ) { ?>
-									<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
-										<input id="mobile-searchbar-input" class="form-control form-control-sm " placeholder="<?php echo wfMessage("full-text-search"); ?>" type="text" />
-									</div>
-								<?php }?>
-							</div> <!--End of row-->
-						</div> <!--End of container-->
-					</div>
-					<div class="container" id="breadcrumb-container">
+			<section>
+				<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
+					<div class="container">
 						<div class="row">
-							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 pr-2 pr-sm-0" id="breadcrumb-wrapper">
-								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 float-left" id="breadcrumb-area">
-									<?php $this->outputBreadcrumb ( $loopStructure ) ?>
+							<?php if( $this->renderMode != "offline" ) { ?>
+								<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
+									<input id="mobile-searchbar-input" class="form-control form-control-sm " placeholder="<?php echo $this->getSkin()->msg("full-text-search"); ?>" type="text" />
 								</div>
-								<?php if( $this->renderMode != "offline" ) { 
-									$this->outputAudioButton();
-								}?>
-							</div>
+							<?php }?>
 						</div> <!--End of row-->
-					</div> 
+					</div> <!--End of container-->
+				</div>
+				<div class="container" id="breadcrumb-container">
+					<div class="row">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 pr-2 pr-sm-0" id="breadcrumb-wrapper">
+							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 float-left" id="breadcrumb-area">
+								<?php $this->outputBreadcrumb ( $loopStructure ) ?>
+							</div>
+							<?php if( $this->renderMode != "offline" ) { 
+								$this->outputAudioButton();
+							}?>
+						</div>
+					</div> <!--End of row-->
+				</div> 
 			</section> <!--End of Breadcrumb section-->
 			
+			<!-- CONTENT SECTION -->
 			<section>
 				<div class="container" id="page-container">
 					<div class="row">
@@ -168,7 +167,6 @@ class LoopTemplate extends BaseTemplate {
 					<div class="col-12 text-center" id="first-footer">
 						<div id="first-footer-content" class="p-3">
 							<div id="page-footer-links" class="text-center">
-								<a href="/loop/Spezial:Spezialseiten">Spezialseiten</a> |
 								<a href="?action=purge">purge</a> |
 								<a href="?debug=true">debug</a> |
 								<a href="?debug=false"><span style="text-decoration:line-through;">debug</span></a> |
@@ -294,7 +292,8 @@ class LoopTemplate extends BaseTemplate {
 			echo Linker::link(
 				Title::newFromID($mainPage), 
 				$home_button,
-				array('class' => 'nav-btn'),
+				array('class' => 'nav-btn',
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' )->text() ),
 					array()
 				);
 		} else {
@@ -318,7 +317,8 @@ class LoopTemplate extends BaseTemplate {
 			echo Linker::link(
 				Title::newFromID($previousChapterItem->article),
 				$previous_chapter_button,
-				array('class' => 'nav-btn'),
+				array('class' => 'nav-btn',
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-chapter' )->text() ),
 				array()
 			);
 		} else {
@@ -342,7 +342,8 @@ class LoopTemplate extends BaseTemplate {
 			echo Linker::link(
 				Title::newFromID($previousPage),
 				$previous_page_button,
-				array('class' => 'nav-btn'),
+				array('class' => 'nav-btn',
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text() ),
 				array()
 			);
 		} else {
@@ -372,7 +373,8 @@ class LoopTemplate extends BaseTemplate {
 			echo Linker::link(
 				Title::newFromID($nextPage),
 				$next_page_button,
-				array('class' => 'nav-btn'),
+				array('class' => 'nav-btn',
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )->text() ),
 				array()
 			);
 			
@@ -385,7 +387,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 		 $nextChapterItem = $lsi->getNextChapterItem();
 		}
-		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' )->text().'" ';
+		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-chapter' )->text().'" ';
 			
 		if ( ! isset( $nextChapterItem->article ) ) {
 			$next_chapter_button .= 'disabled="disabled"';
@@ -397,7 +399,8 @@ class LoopTemplate extends BaseTemplate {
 			echo Linker::link(
 				Title::newFromID($nextChapterItem->article),
 				$next_chapter_button,
-				array('class' => 'nav-btn'),
+				array('class' => 'nav-btn',
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-chapter' )->text() ),
 				array()
 			);
 		} else {
@@ -435,7 +438,8 @@ class LoopTemplate extends BaseTemplate {
 				$bottomNav .= Linker::link(
 					Title::newFromID( $previousPage ),
 					$previous_page_button,
-					array('class' => 'nav-btn'),
+					array('class' => 'nav-btn',
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text() ),
 					array()
 				);
 			} else {
@@ -457,7 +461,8 @@ class LoopTemplate extends BaseTemplate {
 				$bottomNav .= Linker::link(
 					Title::newFromID( $nextPage ),
 					$next_page_button,
-					array( 'class' => 'nav-btn' ),
+					array( 'class' => 'nav-btn',
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )->text()  ),
 					array()
 				);
 			
@@ -642,7 +647,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $wgText2Speech ) {
 			$wgOut->addModules("skins.loop-plyr.js");
 			
-			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper">
+			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
 					<span id="t2s-button" class="ic ic-audio pr-sm-3"></span>
 					<audio id="t2s-audio"><source type="audio/mp3"></source></audio>
 				</div>';
@@ -668,7 +673,7 @@ class LoopTemplate extends BaseTemplate {
 
 		echo '
 		<div class="dropdown float-right" id="admin-dropdown">
-			<button  id="admin-btn" class="btn btn-light dropdown-toggle page-nav-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button  id="admin-btn" class="btn btn-light dropdown-toggle page-nav-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="'.$this->getSkin()->msg("loop-page-edit-menu").'" title="'.$this->getSkin()->msg("loop-page-edit-menu").'">
 				<span class="ic ic-preferences"></span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
@@ -690,13 +695,13 @@ class LoopTemplate extends BaseTemplate {
 		}
 		// Link for editing TOC
 		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
-			if ( $this->editMode && $this->getSkin()->getUser()->isAllowed( 'loop-toc-edit' ) ) {
+			if ( $this->getSkin()->getUser()->isAllowed( 'loop-toc-edit' ) ) {
 				echo Linker::link( 
 					new TitleValue( 
 						NS_SPECIAL, 
 						'LoopStructureEdit' 
 					), 
-					'<span class="ic ic-edit"></span> ' . wfMessage ( 'edit' )->inContentLanguage ()->text (), 
+					'<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' )->inContentLanguage ()->text (), 
 					array('class' => 'dropdown-item')  
 				);
 			}	
@@ -736,7 +741,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'looprendermode' );
 				
-		if ( $this->getSkin()->getUser()->isAllowed( 'loop-rendermode' ) && $nameSpace == 0 ) {
+		if ( $this->getSkin()->getUser()->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
 			
 			echo '<div class="dropdown-divider"></div>';
 			
@@ -782,7 +787,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		echo '<div class="dropdown-divider"></div>';
 		
-		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . wfMessage ( 'specialpages' )->text (),
+		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' )->text (),
 				array('class' => 'dropdown-item') );
 				
 		echo '</div></div>';
@@ -820,17 +825,30 @@ class LoopTemplate extends BaseTemplate {
 		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' )) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
 						<div class="panel-heading">
-							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' )->text() .'</h5>
+							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</h5>
 						</div>
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
 
 			if ( $user->isAllowed( 'loop-export-pdf' )) {
-				$pdfExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), '<span class="ic ic-file-pdf"></span> ' . wfMessage ( 'export-linktext-pdf' )->inContentLanguage ()->text () );
+				$pdfExportLink = Linker::link( 
+					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
+					'<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ), 
+					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' )
+					) 
+				);
 				$html .= '<span>'.$pdfExportLink.'</span><br/>';
 			}			
 			if ( $user->isAllowed( 'loop-export-xml' )) {
-				$xmlExportLink = Linker::link( new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), '<span class="ic ic-file-xml"></span> ' . wfMessage ( 'export-linktext-xml' )->inContentLanguage ()->text () );
+				$xmlExportLink = Linker::link( 
+					new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
+					'<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) , 
+					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-xml' )
+					) 
+				
+				);
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
 			}
 			

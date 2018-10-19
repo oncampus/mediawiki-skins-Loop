@@ -23,5 +23,8 @@
 	"loop-editmode-toogle-off": "Turn off edit mode",
 	"loop-purge-cache": "Empty cache",
 	"loop-page-icons-jumptotop": "Jump to top",
-	"loop-page-icons-reportbug": "Report bug"
+	"loop-page-icons-reportbug": "Report bug",
+	"loop-page-edit-menu": "Show page dropdown",
+	"loop-toggle-sidebar": "Show sidebar",
+	"loop-audiobutton": "Listen to this page"
 }
