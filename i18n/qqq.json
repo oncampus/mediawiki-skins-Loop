@@ -23,5 +23,8 @@
 	"loop-editmode-toogle-off": "Menu item for toggling edit mode off",
 	"loop-purge-cache": "Menu item for cache emptying",
 	"loop-page-icons-jumptotop": "Tooltip for Jump-to-top icon",
-	"loop-page-icons-reportbug": "Tooltip for bug-reporting icon"
+	"loop-page-icons-reportbug": "Tooltip for bug-reporting icon",
+	"loop-page-edit-menu": "Title for edit menu button",
+	"loop-toggle-sidebar": "Title for sidebar button",
+	"loop-audiobutton": "Title for Text2Speech button"
 }
