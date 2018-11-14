@@ -74,8 +74,8 @@ $( document ).ready( function () {
 		$('.page-symbol').tooltip({ boundary: 'window' })
 	});
 	
-	$(window).on("resize", resizeTables)
-	$(document).ready(resizeTables)
+	$(window).on( "resize", function() { resizeTables( false ) } )
+	$(document).ready( resizeTables( true ) )
 
 	var window_width
 	var available_width
@@ -83,17 +83,17 @@ $( document ).ready( function () {
 	var table_height = new Array;
 	var table_ratio = new Array
 
-	function resizeTables() {
+	function resizeTables( repeat ) {
+		available_width = $("#mw-content-text").width()
 		$(".wikitable").each(
 			function() {
 				window_width = $(window).width()
-				available_width = $(this).parent().width()
 				table_width = $(this).width()
 				table_height = $(this).height()
 				table_ratio = available_width / table_width;
 
 				if (available_width < table_width) {
-					if ( ! $(this).parent().hasClass("viewport")) {
+					if ( ! $(this).parent().hasClass("viewport") ) {
 						$(this).wrap("<div class='viewport'></div>");
 					}
 					$(this).parent().css(
@@ -113,6 +113,9 @@ $( document ).ready( function () {
 				$(this).show();
 			}
 		)
+		if ( repeat == true ) {
+			resizeTables( false )
+		}
 	}
 });
 

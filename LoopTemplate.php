@@ -29,9 +29,21 @@ class LoopTemplate extends BaseTemplate {
 						<div class="container">
 							<div class="row">
 								<div class="col-9" id="logo-wrapper">
-									<a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-										<p id="logo" class="mb-0 ml-2"></p>
-									</a>
+									<?php 
+										if( isset( $loopStructure->mainPage ) ) {
+											$loopTitle = '<h1 class="p-1">' . Title::newFromID( $loopStructure->mainPage ) . '</h1>';
+											$loopTitleLink = Title::newFromID( $loopStructure->mainPage );
+										} else {
+											$loopTitle = '<h1 class="p-1">' . $this->outputTitle( ) . '</h1>';
+											$loopTitleLink = htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] );
+										}
+										echo Linker::link(
+											$loopTitleLink, 
+											'<p id="logo" class="mb-0 ml-2"></p>',
+											array('id' => 'loop-title'),
+											array()
+										);
+									?>
 								</div>
 								<div class="col-3 text-right">
 									<?php if( $this->renderMode != "offline" ) { 
@@ -42,9 +54,14 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 					</div>
 					<div class="container" id="title-container">
-						<a id="loop-title" href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-							<h1  class="p-1"><?php $this->outputTitle( ) ?></h1>
-						</a>
+						<?php 
+							echo Linker::link(
+								$loopTitleLink, 
+								$loopTitle,
+								array('id' => 'loop-title' ),
+								array()
+							);
+						?>
 					</div>	
 					<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
 						<div class="container p-0" id="page-navigation-container">
@@ -54,22 +71,44 @@ class LoopTemplate extends BaseTemplate {
 										echo '<div class="btn-group float-right">'; 
 											
 			 							if( $this->renderMode != "offline" ) { 
-											 echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+											echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 											$this->outputPageEditMenu( );
 			 							}
-									if ( isset( $loopStructure->mainPage ) ) {?>
-										<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
+										if ( isset( $loopStructure->mainPage ) ) {?>
+											<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
 									<?php }?>
 								</div>
 								<?php if( $this->renderMode != "offline" ) { ?>
 									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
-										<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo $this->getSkin()->msg("full-text-search"); ?>" type="text" />
+										<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
+											<?php
+												echo $this->makeSearchInput(
+													array( 
+														'id' => 'page-search-input-md',
+														'class' => 'form-control form-control-sm pt-2 pb-2',
+														'placeholder' => $this->getSkin()->msg("full-text-search")
+													)
+												);
+											?>
+											<button type="submit" class="d-none"></button>
+										</form>
 									</div>
 								<?php } ?>
 							</div>
 							<?php if( $this->renderMode != "offline" ) { ?>
 								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
-									<input class="form-control form-control-sm pt-2 pb-2" placeholder="<?php echo $this->getSkin()->msg("full-text-search"); ?>" type="text" />
+									<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
+									<?php
+											echo $this->makeSearchInput(
+												array( 
+													'id' => 'page-search-input-lg-xl',
+													'class' => 'form-control form-control-sm pt-2 pb-2',
+													'placeholder' => $this->getSkin()->msg("full-text-search")
+												)
+											);
+										?>
+										<button type="submit" class="d-none"></button>
+									</form>
 									<div class="clear"></div>
 								</div>
 							<?php }?>
@@ -85,7 +124,18 @@ class LoopTemplate extends BaseTemplate {
 						<div class="row">
 							<?php if( $this->renderMode != "offline" ) { ?>
 								<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
-									<input id="mobile-searchbar-input" class="form-control form-control-sm " placeholder="<?php echo $this->getSkin()->msg("full-text-search"); ?>" type="text" />
+									<form id="search-mobile" action="<?php $this->text( 'wgScript' ); ?>">
+										<?php
+											echo $this->makeSearchInput(
+												array( 
+													'id' => 'page-search-input-sm',
+													'class' => 'form-control form-control-sm pt-2 pb-2',
+													'placeholder' => $this->getSkin()->msg("full-text-search")
+												)
+											);
+										?>
+										<button type="submit" class="d-none"></button>
+									</form>
 								</div>
 							<?php }?>
 						</div> <!--End of row-->
@@ -171,8 +221,8 @@ class LoopTemplate extends BaseTemplate {
 								<a href="?debug=true">debug</a> |
 								<a href="?debug=false"><span style="text-decoration:line-through;">debug</span></a> |
 								<a href="https://www.oncampus.de/impressum">Impressum</a> |
-								<!--<a href="#">Datenschutz</a> |
-								<a href="#">Über LOOP</a> |
+								<a href="https://www.oncampus.de/datenschutz">Datenschutz</a> |
+								<!--<a href="#">Über LOOP</a> |
 								<br />-->
 								<a href="#">Hilfe</a> |
 								<a href="#">oncampus</a>
