@@ -29,9 +29,21 @@ class LoopTemplate extends BaseTemplate {
 						<div class="container">
 							<div class="row">
 								<div class="col-9" id="logo-wrapper">
-									<a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-										<p id="logo" class="mb-0 ml-2"></p>
-									</a>
+									<?php 
+										if( isset( $loopStructure->mainPage ) ) {
+											$loopTitle = '<h1 class="p-1">' . Title::newFromID( $loopStructure->mainPage ) . '</h1>';
+											$loopTitleLink = Title::newFromID( $loopStructure->mainPage );
+										} else {
+											$loopTitle = '<h1 class="p-1">' . $this->outputTitle( ) . '</h1>';
+											$loopTitleLink = htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] );
+										}
+										echo Linker::link(
+											$loopTitleLink, 
+											'<p id="logo" class="mb-0 ml-2"></p>',
+											array('id' => 'loop-title'),
+											array()
+										);
+									?>
 								</div>
 								<div class="col-3 text-right">
 									<?php if( $this->renderMode != "offline" ) { 
@@ -42,9 +54,14 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 					</div>
 					<div class="container" id="title-container">
-						<a id="loop-title" href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ); ?>">
-							<h1  class="p-1"><?php $this->outputTitle( ) ?></h1>
-						</a>
+						<?php 
+							echo Linker::link(
+								$loopTitleLink, 
+								$loopTitle,
+								array('id' => 'loop-title' ),
+								array()
+							);
+						?>
 					</div>	
 					<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
 						<div class="container p-0" id="page-navigation-container">
