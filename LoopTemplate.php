@@ -11,13 +11,14 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
+		global $wgRightsText, $wgCustomLogo, $wgHiddenPrefs;
+		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
-		$this->renderMode =  $this->getSkin()->getUser()->getOption( 'looprendermode' );;
-		$this->editMode = $this->getSkin()->getUser()->getOption( 'loopeditmode', false, true );
+		$this->renderMode = $wgHiddenPrefs[ 'LoopRenderMode' ];
+		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
 		$this->html( 'headelement' );
-		
 		
 		if( $this->renderMode != "epub" ) { ?>
 		<div id="page-wrapper">
@@ -37,9 +38,13 @@ class LoopTemplate extends BaseTemplate {
 											$loopTitle = '<h1 class="p-1">' . $this->outputTitle( ) . '</h1>';
 											$loopTitleLink = htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] );
 										}
+										$customLogo = '';
+										if( $wgCustomLogo['useCustomLogo'] == 'useCustomLogo' && ! empty( $wgCustomLogo['customFilePath'] ) ) {
+											$customLogo = ' style="background-image:url('.$wgCustomLogo['customFilePath'].');"';
+										}
 										echo Linker::link(
 											$loopTitleLink, 
-											'<p id="logo" class="mb-0 ml-2"></p>',
+											'<div id="logo" class="mb-0 ml-1"'.$customLogo.'></div>',
 											array('id' => 'loop-title'),
 											array()
 										);
@@ -69,7 +74,6 @@ class LoopTemplate extends BaseTemplate {
 								<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
 									<?php $this->outputNavigation( $loopStructure ); 
 										echo '<div class="btn-group float-right">'; 
-											
 			 							if( $this->renderMode != "offline" ) { 
 											echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 											$this->outputPageEditMenu( );
@@ -148,6 +152,7 @@ class LoopTemplate extends BaseTemplate {
 								<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 							</div>
 							<?php if( $this->renderMode != "offline" ) { 
+								            	
 								$this->outputAudioButton();
 							}?>
 						</div>
@@ -173,7 +178,8 @@ class LoopTemplate extends BaseTemplate {
 			            					
 								            if ( $lsi ) {
 								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
-								            	if ( $this->editMode && $this->renderMode == "default" ) { 
+
+								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
 								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->getSkin()->getTitle() . '&action=edit"><i class="ic ic-edit"></i></a>';
 								            	}
 								            	echo '</h1>';
@@ -212,37 +218,7 @@ class LoopTemplate extends BaseTemplate {
 		</div> 
 		<!--FOOTER SECTION-->
 		<footer>
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-12 text-center" id="first-footer">
-						<div id="first-footer-content" class="p-3">
-							<div id="page-footer-links" class="text-center">
-								<a href="?action=purge">purge</a> |
-								<a href="?debug=true">debug</a> |
-								<a href="?debug=false"><span style="text-decoration:line-through;">debug</span></a> |
-								<a href="https://www.oncampus.de/impressum">Impressum</a> |
-								<a href="https://www.oncampus.de/datenschutz">Datenschutz</a> |
-								<!--<a href="#">Über LOOP</a> |
-								<br />-->
-								<a href="#">Hilfe</a> |
-								<a href="#">oncampus</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-12" id="second-footer">
-						<div class="container">
-							<div id="second-footer-right" class="text-center text-sm-right float-right pt-3 pb-3 pr-sm-1 pl-0 mt-1 col-12 col-sm-6">
-								<span class="ic ic-social-facebook"></span>
-								<span class="ic ic-social-youtube"></span>
-								<span class="ic ic-social-twitter"></span>
-								<span class="ic ic-social-github"></span>
-								<span class="ic ic-social-instagram"></span>
-							</div>
-							<div id="second-footer-left" class="text-center text-sm-left float-left pt-0 pt-sm-4 pb-4 pl-sm-1 pl-0 col-12 col-sm-6">© 2018 oncampus GmbH</div>
-						</div>
-					</div>
-				</div> <!--End of row-->
-			</div> <!--End of container-->
+			<?php $this->outputFooter(); ?>
 		</footer>
 	<?php 
 		}
@@ -333,7 +309,7 @@ class LoopTemplate extends BaseTemplate {
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
 		
-		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' )->text().'" ';
+		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'" ';
 		if ( ! $mainPage ) {
 			$home_button .= 'disabled="disabled"';
 		}
@@ -343,7 +319,7 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID($mainPage), 
 				$home_button,
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' )->text() ),
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) ),
 					array()
 				);
 		} else {
@@ -355,7 +331,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$previousChapterItem = $lsi->getPreviousChapterItem();
 		}
-		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' )->text().'" ';
+		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ).'" ';
 			
 		if ( ! isset( $previousChapterItem->article ) ) {
 			$previous_chapter_button .= 'disabled="disabled"';
@@ -368,7 +344,7 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID($previousChapterItem->article),
 				$previous_chapter_button,
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-chapter' )->text() ),
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ) ),
 				array()
 			);
 		} else {
@@ -380,7 +356,7 @@ class LoopTemplate extends BaseTemplate {
 			$previousPage = $lsi->previousArticle;
 		}
 		
-		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text().'" ';
+		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 		
 		if ( ! isset( $previousPage ) ) {
 			$previous_page_button .= 'disabled="disabled"';
@@ -393,7 +369,7 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID($previousPage),
 				$previous_page_button,
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text() ),
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) ),
 				array()
 			);
 		} else {
@@ -402,7 +378,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		
 		// TOC  button
-		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' )->text().'" ><span class="ic ic-toc"></span></button>';
+		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'" ><span class="ic ic-toc"></span></button>';
 		
 		$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
 		echo $link;
@@ -412,7 +388,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$nextPage = $lsi->nextArticle;
 		}
-		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' )->text().'" ';
+		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
 		if ( ! isset( $nextPage ) ) {
 			$next_page_button .= 'disabled="disabled"';
@@ -424,7 +400,7 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID($nextPage),
 				$next_page_button,
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )->text() ),
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) ),
 				array()
 			);
 			
@@ -437,7 +413,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 		 $nextChapterItem = $lsi->getNextChapterItem();
 		}
-		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-chapter' )->text().'" ';
+		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-chapter' ).'" ';
 			
 		if ( ! isset( $nextChapterItem->article ) ) {
 			$next_chapter_button .= 'disabled="disabled"';
@@ -450,7 +426,7 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID($nextChapterItem->article),
 				$next_chapter_button,
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-chapter' )->text() ),
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-chapter' ) ),
 				array()
 			);
 		} else {
@@ -476,7 +452,7 @@ class LoopTemplate extends BaseTemplate {
 				$previousPage = $lsi->previousArticle;
 			}
 			
-			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn mr-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text().'" ';
+			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn mr-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 			
 			if ( ! isset( $previousPage ) ) {
 				$previous_page_button .= 'disabled="disabled"';
@@ -489,7 +465,7 @@ class LoopTemplate extends BaseTemplate {
 					Title::newFromID( $previousPage ),
 					$previous_page_button,
 					array('class' => 'nav-btn',
-					'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' )->text() ),
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) ),
 					array()
 				);
 			} else {
@@ -500,7 +476,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $lsi ) {
 				$nextPage = $lsi->nextArticle;
 			}
-			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' )->text().'" ';
+			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 			
 			if ( ! isset( $nextPage ) ) {
 				$next_page_button .= 'disabled="disabled"';
@@ -512,7 +488,7 @@ class LoopTemplate extends BaseTemplate {
 					Title::newFromID( $nextPage ),
 					$next_page_button,
 					array( 'class' => 'nav-btn',
-					'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )->text()  ),
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )  ),
 					array()
 				);
 			
@@ -550,6 +526,8 @@ class LoopTemplate extends BaseTemplate {
 				// get the current active tocNum
 				$activeTocNum = $lsi->tocNumber;
 				$activeTocText = $lsi->tocText;
+				
+	
 			
 			
 				if( ! empty( $activeTocNum )) {
@@ -578,8 +556,18 @@ class LoopTemplate extends BaseTemplate {
 	
 				}
 			}
+			
+			$user = $this->getSkin()->getUser();
+			$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
+			$loopRenderMode = $user->getOption( 'LoopRenderMode' );
+			$editButton = "";
+			
+			if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' && $loopEditMode ) {
+				$editButton = "<a href='" . Title::newFromText( 'Special:LoopStructureEdit' )->getFullURL() . "' id='editTocLink' class='ml-2'><i class='ic ic-edit'></i></a>";
+			}
+			
 			$html = '<div class="panel-heading">
-						<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' )->text() .'</h5>
+						<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
 					</div>
 					<div id="toc-nav" class="panel-body p-1 pb-2 pl-0 pl-xl-2"><ul>';
 							
@@ -704,6 +692,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 	private function outputPageEditMenu( ) {
+		global $wgHiddenPrefs;
 		
 		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) {
     
@@ -751,7 +740,7 @@ class LoopTemplate extends BaseTemplate {
 						NS_SPECIAL, 
 						'LoopStructureEdit' 
 					), 
-					'<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' )->inContentLanguage ()->text (), 
+					'<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ), 
 					array('class' => 'dropdown-item')  
 				);
 			}	
@@ -767,13 +756,12 @@ class LoopTemplate extends BaseTemplate {
 			if ( $this->editMode ) {
 				$loopEditmodeButtonValue = 0;
 				$loopEditmodeClass = "nav-loop-editmode-on";
-				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' )->text();
+				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' );
 			} else {
 				$loopEditmodeButtonValue = 1;
 				$loopEditmodeClass = "nav-loop-editmode-off";
-				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' )->text();
+				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
 			}					
-				
 			echo Linker::link(
 				$this->getSkin()->getRelevantTitle(),
 				'<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg,
@@ -788,9 +776,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		
 		// Loop Render Modes
-		
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'looprendermode' );
-				
+		$this->renderMode = $wgHiddenPrefs[ 'LoopRenderMode' ];
 		if ( $this->getSkin()->getUser()->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
 			
 			echo '<div class="dropdown-divider"></div>';
@@ -798,7 +784,7 @@ class LoopTemplate extends BaseTemplate {
 			// Offline Mode
 			if ( $this->renderMode != "offline") {
 				$loopOfflinemodeButtonValue = "offline";
-				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' )->text();
+				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' );
 			 			
 				echo Linker::link(
 					$this->getSkin()->getRelevantTitle(),
@@ -808,7 +794,7 @@ class LoopTemplate extends BaseTemplate {
 						"aria-label" => $loopOfflinemodeMsg,
 						"title" => $loopOfflinemodeMsg,
 						"target" => "_blank",
-						"onclick" => "setTimeout(function(){location.reload()}, 100)" # TODO 
+						"onclick" => "setTimeout(function(){location.reload()}, 200)" # TODO 
 					),
 					array( "looprendermode" => $loopOfflinemodeButtonValue )
 				);
@@ -816,7 +802,7 @@ class LoopTemplate extends BaseTemplate {
 			// EPub Mode
 			if ( $this->renderMode != "epub") {
 				$loopEpubModeButtonValue = "epub";
-				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' )->text();
+				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' );
 						
 				echo Linker::link(
 					$this->getSkin()->getRelevantTitle(),
@@ -826,7 +812,7 @@ class LoopTemplate extends BaseTemplate {
 						"aria-label" => $loopEpubModeMsg,
 						"title" => $loopEpubModeMsg,
 						"target" => "_blank",
-						"onclick" => "setTimeout(function(){location.reload()}, 100)" # TODO
+						"onclick" => "setTimeout(function(){location.reload()}, 200)" # TODO
 					),
 					array( "looprendermode" => $loopEpubModeButtonValue )
 				);
@@ -837,24 +823,25 @@ class LoopTemplate extends BaseTemplate {
 		
 		echo '<div class="dropdown-divider"></div>';
 		
+		if ( $this->getSkin()->getUser()->isAllowed( "loop-settings-edit" ) ) {
+			echo Linker::link( new TitleValue( NS_SPECIAL, 'LoopSettings' ), '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' )->text (),
+					array('class' => 'dropdown-item') );
+		}
 		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' )->text (),
 				array('class' => 'dropdown-item') );
-				
+		
 		echo '</div></div>';
 		
 		}
 	} // outputPageEditMenu
 	private function outputPageSymbols () {
-		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">
-					<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-						<img alt="Creative Commons Lizenzvertrag" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
-					</a>';
+		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
 		if( $this->renderMode != "offline" ) { 
-			$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' )->text() .'"></span>';
+			$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
 		} 
 		$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
 					<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>
-					<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' )->text() .'"></span>
+					<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
 				</div>';
 		echo $html;
 	}
@@ -902,13 +889,47 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
 			}
 			
-								
-								
-			$html.= '		</div>
-						</div>
-					</div>';
+			$html.= '</div></div></div>';
 			
 			echo $html;
 		}
+	}
+
+	private function outputFooter () {
+		
+		global $wgExtraFooter, $wgImprintLink, $wgPrivacyLink, $wgOncampusLink, $wgRightsText, $wgRightsType, $wgSocialIcons, $wgRightsIcon, $wgRightsUrl;
+		
+		$html = ""; 
+		
+		if ( $wgExtraFooter['useExtraFooter'] == "useExtraFooter" && ! empty( $wgExtraFooter['parsedText'] ) ) {
+			$html .= '<div class="col-12 text-center" id="extra-footer">
+					<div id="extra-footer-content" class="p-3">' . 
+						$wgExtraFooter['parsedText'] . '</div></div>';
+		}
+		$html .= '<div class="container-fluid">
+		<div class="row">
+			<div class="col-12" id="main-footer">
+				<div class="container p-0">
+					<div id="footer-right" class="pl-0 pr-0 text-center text-sm-right float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-0">';
+				foreach( $wgSocialIcons as $socialIcons => $socialIcon ) {
+					if ( ! empty( $socialIcon[ "icon" ] ) && ! empty( $socialIcon[ "link" ] ) ) {
+						$html .= '<a class="ml-1" href="'. $socialIcon[ "link" ] .'" target="_blank"><span class="ic ic-social-'. strtolower($socialIcons) .'"></span></a>';
+					}
+				}
+				$html .= '</div>
+				<div id="footer-center" class="text-center float-right col-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
+					<a href="'. htmlspecialchars_decode($wgImprintLink) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a> | 
+					<a href="'. htmlspecialchars_decode($wgPrivacyLink) .'">' . $this->getSkin()->msg( 'privacy-policy' ) . '</a>';
+					if ( ! empty( $wgOncampusLink ) ) {
+						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
+					}
+				$html .= '</div>
+				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
+				if ( ! empty ( $wgRightsType ) ) {
+					$html .=  '<a _target="_blank" href="'.htmlspecialchars_decode($wgRightsUrl).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"</img></a>';
+				}
+				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode($wgRightsText) . '</p></div></div></div></div></div>';
+		
+		echo $html;
 	}
 }

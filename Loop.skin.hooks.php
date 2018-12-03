@@ -16,8 +16,10 @@ class LoopSkinHooks {
 	 */	
 	public static function onSkinEditSectionLinks( Skin $skin, Title $title, $section, $tooltip, &$result, $lang ) {
 		
-		$loopeditmode = $skin->getUser()->getOption( 'loopeditmode', false, true );
-		$looprendermode = $skin->getUser()->getOption( 'looprendermode' );
+		global $wgHiddenPrefs;
+		
+		$loopeditmode = $skin->getUser()->getOption( 'LoopEditMode', false, true );
+		$looprendermode = $wgHiddenPrefs['LoopRenderMode'];
 		
 		if ( $loopeditmode && $looprendermode == "default" ) {
 			$result[ 'editsection' ][ 'text' ] = '<span class="ic ic-edit"></span>';
@@ -42,8 +44,8 @@ class LoopSkinHooks {
 	 */
 	public static function onParserMakeImageParams( $title, $file, &$params, $parser ) {
 		
-		$loopeditmode = $parser->getUser()->getOption( 'loopeditmode', false, true );
-		$parser->getOptions()->optionUsed( 'loopeditmode' );
+		$loopeditmode = $parser->getUser()->getOption( 'LoopEditMode', false, true );
+		$parser->getOptions()->optionUsed( 'LoopEditMode' );
 		
 		$params['frame']['class'] = 'responsive-image';
 		

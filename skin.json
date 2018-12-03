@@ -38,7 +38,7 @@
         	"description": "Sets skin style"
         }
 	},
-    "DefaultUserOptions": {
+    "HiddenPrefs": {
 		"LoopSkinStyle": "loop-common"
     },
     "Hooks": {
