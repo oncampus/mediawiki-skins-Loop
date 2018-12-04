@@ -44,7 +44,7 @@ class LoopTemplate extends BaseTemplate {
 										}
 										echo Linker::link(
 											$loopTitleLink, 
-											'<div id="logo" class="mb-0 ml-1"'.$customLogo.'></div>',
+											'<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>',
 											array('id' => 'loop-title'),
 											array()
 										);
@@ -692,9 +692,10 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 	private function outputPageEditMenu( ) {
-		global $wgHiddenPrefs;
+		global $wgHiddenPrefs, $wgSpecialPages;
+		$user = $this->getSkin()->getUser();
 		
-		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) {
+		if ( $user->isAllowed( 'edit' ) ) {
     
 		$content_navigation_skip=array();
 		$content_navigation_skip['namespaces']['main'] = true;
@@ -734,7 +735,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		// Link for editing TOC
 		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
-			if ( $this->getSkin()->getUser()->isAllowed( 'loop-toc-edit' ) ) {
+			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
 				echo Linker::link( 
 					new TitleValue( 
 						NS_SPECIAL, 
@@ -749,7 +750,7 @@ class LoopTemplate extends BaseTemplate {
 			
 		$nameSpace = $this->getSkin()->getTitle()->getNameSpace();
 		
-		if ( $this->getSkin()->getUser()->isAllowed( 'edit' ) ) {
+		if ( $user->isAllowed( 'edit' ) ) {
 			
 			echo '<div class="dropdown-divider"></div>';
 				
@@ -777,7 +778,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		// Loop Render Modes
 		$this->renderMode = $wgHiddenPrefs[ 'LoopRenderMode' ];
-		if ( $this->getSkin()->getUser()->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
+		if ( $user->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
 			
 			echo '<div class="dropdown-divider"></div>';
 			
@@ -823,11 +824,17 @@ class LoopTemplate extends BaseTemplate {
 		
 		echo '<div class="dropdown-divider"></div>';
 		
-		if ( $this->getSkin()->getUser()->isAllowed( "loop-settings-edit" ) ) {
-			echo Linker::link( new TitleValue( NS_SPECIAL, 'LoopSettings' ), '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' )->text (),
+		if ( $user->isAllowed( "loop-settings-edit" ) ) {
+			echo Linker::link( new TitleValue( NS_SPECIAL, 'LoopSettings' ), '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ),
 					array('class' => 'dropdown-item') );
 		}
-		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' )->text (),
+		
+		if ( isset ( $wgSpecialPages['PurgeCache'] ) && $user->isAllowed( "purgecache" ) ) {
+			echo Linker::link( new TitleValue( NS_SPECIAL, 'PurgeCache' ), '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ),
+					array('class' => 'dropdown-item') );
+		}
+		
+		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' ),
 				array('class' => 'dropdown-item') );
 		
 		echo '</div></div>';
