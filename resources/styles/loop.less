@@ -307,29 +307,10 @@ code {
 	text-decoration: none;
 }
 #mw-content-text :last-child > * {
-	margin-bottom: 0 !important;
+	/* margin-bottom: 0 !important; */
 }
-input.setting-input {
-	font-size: smaller;
-	min-width: 150px;
-	max-width: 250px;
-	width:100%;
-}
-#rights-type {
-	font-size: 13px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-textarea.setting-input {
-	font-size: smaller;
-	width: 70%;
-	font-family: monospace, monospace;
-}
-#loopsettings-form input[type=checkbox]:checked + label span {
-	opacity: 1;
-}
-#loopsettings-form input[type=checkbox] + label span {
-	opacity: 0.5;
+#loopsettings-form label {
+	display: inline;
 }
 
 /** *** *** *** *** *** *** *** *** *** *** **/
@@ -398,6 +379,7 @@ textarea.setting-input {
 /* FOURTH SECTION WITH FOOTER */
 footer {
 	display: none;
+	height: 80px;
 }
 #main-footer {
 	background-color: @second-footer-background;
