@@ -919,8 +919,8 @@ class LoopTemplate extends BaseTemplate {
 				<div class="container p-0">
 					<div id="footer-right" class="pl-0 pr-0 text-center text-sm-right float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-0">';
 				foreach( $wgSocialIcons as $socialIcons => $socialIcon ) {
-					if ( ! empty( $socialIcon[ "icon" ] ) && ! empty( $socialIcon[ "link" ] ) ) {
-						$html .= '<a class="ml-1" href="'. $socialIcon[ "link" ] .'" target="_blank"><span class="ic ic-social-'. strtolower($socialIcons) .'"></span></a>';
+					if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'url' ] ) ) {
+						$html .= '<a class="ml-1" href="'. $socialIcon[ 'url' ] .'" target="_blank"><span class="ic ic-social-'. strtolower($socialIcons) .'"></span></a>';
 					}
 				}
 				$html .= '</div>
