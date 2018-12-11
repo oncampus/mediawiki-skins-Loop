@@ -692,7 +692,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 	private function outputPageEditMenu( ) {
-		global $wgHiddenPrefs, $wgSpecialPages;
+		global $wgHiddenPrefs;
 		$user = $this->getSkin()->getUser();
 		
 		if ( $user->isAllowed( 'edit' ) ) {
@@ -829,7 +829,7 @@ class LoopTemplate extends BaseTemplate {
 					array('class' => 'dropdown-item') );
 		}
 		
-		if ( isset ( $wgSpecialPages['PurgeCache'] ) && $user->isAllowed( "purgecache" ) ) {
+		if ( $user->isAllowed( "purgecache" ) ) {
 			echo Linker::link( new TitleValue( NS_SPECIAL, 'PurgeCache' ), '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ),
 					array('class' => 'dropdown-item') );
 		}
