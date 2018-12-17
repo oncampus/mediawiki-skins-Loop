@@ -1,20 +1,24 @@
 @import "../variables.less";
 
-@logo-url: "/skins/Loop/resources/styles/loop-oncampus/img/logo.png";
-@banner-front-url: "/skins/Loop/resources/styles/loop-oncampus/img/header-front.png";
+@logo-url: "/skins/Loop/resources/styles/loop-oncampus/img/oc_logo_2017.svg";
+@banner-front-url: "";
 @banner-bg-url: "/skins/Loop/resources/styles/loop-oncampus/img/bg-sternenstaub.png";
 
 @banner-background: #213c72;
 @banner-background-position: 0 0;
 @accent-color: #91185b;
 @title-padding: 50px;
+@navigation-bar-background: rgba(240, 240, 240, 0.4);
 
 @content-outter-background: fade(white, 60%);
 
 @import "../loop.less";
 
-body, #banner-logo-container {
-	background-image: url("https://www.oncampus.de/theme/image.php/ild_oncampus/theme/1536846561/bg/bodybg3");
+body {
+	background-image: url("/skins/Loop/resources/styles/loop-oncampus/img/bodybg3.jpg");
+}
+#banner-logo-container {
+	background-color: fade(@loop-title-color, 95%);
 }
 #banner-container {
 	background: url(@banner-bg-url);

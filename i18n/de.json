@@ -26,5 +26,9 @@
 	"loop-page-icons-reportbug": "Fehler melden",
 	"loop-page-edit-menu": "Seitenmenü einblenden",
 	"loop-toggle-sidebar": "Sidebar einblenden",
-	"loop-audiobutton": "Seite vorlesen lassen"
+	"loop-audiobutton": "Seite vorlesen lassen",
+	"imprint": "Impressum",
+	"privacy-policy": "Datenschutz",
+	"loop-skinstyle-loop-common": "Standard",
+	"loop-skinstyle-loop-oncampus": "oncampus Theme"
 }

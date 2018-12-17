@@ -26,5 +26,9 @@
 	"loop-page-icons-reportbug": "Report bug",
 	"loop-page-edit-menu": "Show page dropdown",
 	"loop-toggle-sidebar": "Show sidebar",
-	"loop-audiobutton": "Listen to this page"
+	"loop-audiobutton": "Listen to this page",
+	"imprint": "Imprint",
+	"privacy-policy": "Privacy policy",
+	"loop-skinstyle-loop-common": "Standard",
+	"loop-skinstyle-loop-oncampus": "oncampus theme"
 }

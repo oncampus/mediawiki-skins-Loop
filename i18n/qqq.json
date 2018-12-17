@@ -26,5 +26,9 @@
 	"loop-page-icons-reportbug": "Tooltip for bug-reporting icon",
 	"loop-page-edit-menu": "Title for edit menu button",
 	"loop-toggle-sidebar": "Title for sidebar button",
-	"loop-audiobutton": "Title for Text2Speech button"
+	"loop-audiobutton": "Title for Text2Speech button",
+	"imprint": "Link title for imprint page",
+	"privacy-policy": "Link title for privacy policy page",
+	"loop-skinstyle-loop-common": "Title for LOOP skinstyle loop-common",
+	"loop-skinstyle-loop-oncampus": "Title for LOOP skinstyle loop-oncampus"
 }

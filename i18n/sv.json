@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dennis Krohn"
+		]
+	},
+	"loop-skinname": "LOOP Skin",
+	"loopskin-desc": "Skin för Learning Object Online Platform",
+	"loop-navigation-label-home": "Huvudsida",
+	"loop-navigation-label-previous-chapter": "Föregående kapitel",
+	"loop-navigation-label-previous-page": "Föregående sida",
+	"loop-navigation-label-toc": "Innehåll",
+	"loop-navigation-label-next-page": "Nästa sida",
+	"loop-navigation-label-next-chapter": "Nästa kapitel",
+	"full-text-search": "Sök",
+	"loop-toc-headline": "Innehåll",
+	"loop-export-headline": "Export",
+	"loop-offlinemode-preview": "Preview offlineläget",
+	"loop-epubmode-preview": "Preview ePub",
+	"loop-editmode-toogle-on": "Slå på regideringsläget",
+	"loop-editmode-toogle-off": "Slå av regideringsläget",
+	"loop-purge-cache": "Rensa cachen",
+	"loop-page-icons-jumptotop": "Till toppen",
+	"loop-page-icons-reportbug": "Rapportera ett fel",
+	"loop-page-edit-menu": "Visa sidomenyn",
+	"loop-toggle-sidebar": "Visa sidebar",
+	"loop-audiobutton": "Lyssna på den här sidan",
+	"imprint": "Imprint",
+	"privacy-policy": "Dataskydd",
+	"loop-skinstyle-loop-common": "Standard",
+	"loop-skinstyle-loop-oncampus": "oncampus Theme"
+}
