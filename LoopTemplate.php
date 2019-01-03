@@ -11,12 +11,12 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgRightsText, $wgCustomLogo, $wgHiddenPrefs;
+		global $wgRightsText, $wgCustomLogo;
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
-		$this->renderMode = $wgHiddenPrefs[ 'LoopRenderMode' ];
+		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', false, true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
 		$this->html( 'headelement' );
 		
@@ -246,9 +246,6 @@ class LoopTemplate extends BaseTemplate {
 			
 			if ( isset ( $personTools ['userpage'] ) ) {
 				echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
-			}
-			if ( isset ( $personTools ['mytalk'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['mytalk'] ['links'] [0] ['href'] . '"><span class="ic ic-discussion pr-1"></span> ' . $personTools ['mytalk'] ['links'] [0] ['text'] . '</a>';
 			}
 
 			if ( isset ( $personTools ['watchlist'] ) ) {
@@ -559,7 +556,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			$user = $this->getSkin()->getUser();
 			$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
-			$loopRenderMode = $user->getOption( 'LoopRenderMode' );
+			$loopRenderMode = $user->getOption( 'LoopRenderMode', false, true );
 			$editButton = "";
 			
 			if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' && $loopEditMode ) {
@@ -692,7 +689,6 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 	private function outputPageEditMenu( ) {
-		global $wgHiddenPrefs;
 		$user = $this->getSkin()->getUser();
 		
 		if ( $user->isAllowed( 'edit' ) ) {
@@ -777,7 +773,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		
 		// Loop Render Modes
-		$this->renderMode = $wgHiddenPrefs[ 'LoopRenderMode' ];
+		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', false, true );
 		if ( $user->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
 			
 			echo '<div class="dropdown-divider"></div>';
@@ -933,7 +929,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
 				if ( ! empty ( $wgRightsType ) ) {
-					$html .=  '<a _target="_blank" href="'.htmlspecialchars_decode($wgRightsUrl).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"</img></a>';
+					$html .=  '<a _target="_blank" href="'.htmlspecialchars_decode($wgRightsUrl).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
 				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode($wgRightsText) . '</p></div></div></div></div></div>';
 		

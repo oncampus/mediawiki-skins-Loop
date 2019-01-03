@@ -16,10 +16,8 @@ class LoopSkinHooks {
 	 */	
 	public static function onSkinEditSectionLinks( Skin $skin, Title $title, $section, $tooltip, &$result, $lang ) {
 		
-		global $wgHiddenPrefs;
-		
 		$loopeditmode = $skin->getUser()->getOption( 'LoopEditMode', false, true );
-		$looprendermode = $wgHiddenPrefs['LoopRenderMode'];
+		$looprendermode = $skin->getUser()->getOption( 'LoopRenderMode', false, true );
 		
 		if ( $loopeditmode && $looprendermode == "default" ) {
 			$result[ 'editsection' ][ 'text' ] = '<span class="ic ic-edit"></span>';
