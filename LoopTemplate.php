@@ -11,12 +11,12 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgRightsText, $wgCustomLogo;
+		global $wgRightsText, $wgCustomLogo, $wgDefaultUserOptions;
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', false, true );
+		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
 		$this->html( 'headelement' );
 		
@@ -513,20 +513,19 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputToc( $loopStructure ) {
 			
-			$article_id = $this->getSkin()->getTitle()->getArticleID();
-			$lsi = LoopStructureItem::newFromIds( $article_id );
+		global $wgDefaultUserOptions; 
+		
+		$article_id = $this->getSkin()->getTitle()->getArticleID();
+		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
-			// storage for opened navigation tocs in the jstree
-			$openedNodes = array();
+		// storage for opened navigation tocs in the jstree
+		$openedNodes = array();
 			
-			if ( $lsi ) {
-				// get the current active tocNum
-				$activeTocNum = $lsi->tocNumber;
-				$activeTocText = $lsi->tocText;
+		if ( $lsi ) {
+			// get the current active tocNum
+			$activeTocNum = $lsi->tocNumber;
+			$activeTocText = $lsi->tocText;
 				
-	
-			
-			
 				if( ! empty( $activeTocNum )) {
 	
 					$openedNodes = array( $activeTocNum );
@@ -556,7 +555,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			$user = $this->getSkin()->getUser();
 			$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
-			$loopRenderMode = $user->getOption( 'LoopRenderMode', false, true );
+			$loopRenderMode = $user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 			$editButton = "";
 			
 			if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' && $loopEditMode ) {
@@ -689,6 +688,9 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 	private function outputPageEditMenu( ) {
+		
+		global $wgDefaultUserOptions;
+		
 		$user = $this->getSkin()->getUser();
 		
 		if ( $user->isAllowed( 'edit' ) ) {
@@ -773,7 +775,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		
 		// Loop Render Modes
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', false, true );
+		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		if ( $user->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
 			
 			echo '<div class="dropdown-divider"></div>';
