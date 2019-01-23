@@ -316,12 +316,11 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$home_button .= '><span class="ic ic-home"></span></button>';
 		if( $mainPage ) {
-			echo Linker::link(
+			echo $linkRenderer->makelink(
 				Title::newFromID($mainPage), 
-				$home_button,
+				new HtmlArmor( $home_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) ),
-					array()
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
 				);
 		} else {
 			echo '<a href="#">'.$home_button.'</a>';
@@ -341,12 +340,11 @@ class LoopTemplate extends BaseTemplate {
 		$previous_chapter_button .= '><span class="ic ic-chapter-previous"></span></button>';
 		
 		if( isset( $previousChapterItem->article ) ) {
-			echo Linker::link(
-				Title::newFromID($previousChapterItem->article),
-				$previous_chapter_button,
+			echo $linkRenderer->makelink(
+				Title::newFromID( $previousChapterItem->article ),
+				new HtmlArmor( $previous_chapter_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ) ),
-				array()
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ) )
 			);
 		} else {
 			echo '<a href="#">'.$previous_chapter_button.'</a>';
@@ -366,9 +364,9 @@ class LoopTemplate extends BaseTemplate {
 		$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 		
 		if( isset( $previousPage ) && $previousPage > 0 ) {
-			echo Linker::link(
-				Title::newFromID($previousPage),
-				$previous_page_button,
+			echo $linkRenderer->makelink(
+				Title::newFromID( $previousPage ),
+				new HtmlArmor( $previous_page_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) ),
 				array()
@@ -381,7 +379,10 @@ class LoopTemplate extends BaseTemplate {
 		// TOC  button
 		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'" ><span class="ic ic-toc"></span></button>';
 		
-		$link = Linker::link( new TitleValue( NS_SPECIAL, 'LoopStructure' ), $toc_button ); 
+		$link = $linkRenderer->makelink( 
+			new TitleValue( NS_SPECIAL, 'LoopStructure' ),
+			new HtmlArmor( $toc_button ) 
+		); 
 		echo $link;
 		
 		// next button
@@ -397,9 +398,9 @@ class LoopTemplate extends BaseTemplate {
 		$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 	
 		if( isset( $nextPage ) ) {
-			echo Linker::link(
-				Title::newFromID($nextPage),
-				$next_page_button,
+			echo $linkRenderer->makelink(
+				Title::newFromID( $nextPage ),
+				new HtmlArmor( $next_page_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) ),
 				array()
@@ -423,9 +424,9 @@ class LoopTemplate extends BaseTemplate {
 		$next_chapter_button .= '><span class="ic ic-chapter-next"></span></button>';
 		
 		if( isset( $nextChapterItem->article ) ) {
-			echo Linker::link(
-				Title::newFromID($nextChapterItem->article),
-				$next_chapter_button,
+			echo $linkRenderer->makelink(
+				Title::newFromID( $nextChapterItem->article ),
+				new HtmlArmor( $next_chapter_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-chapter' ) ),
 				array()
@@ -730,12 +731,12 @@ class LoopTemplate extends BaseTemplate {
 		// Link for editing TOC
 		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
 			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
-				echo Linker::link( 
+				echo $linkRenderer->makelink( 
 					new TitleValue( 
 						NS_SPECIAL, 
 						'LoopStructureEdit' 
 					), 
-					'<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ), 
+					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ) ), 
 					array('class' => 'dropdown-item')  
 				);
 			}	
@@ -757,9 +758,9 @@ class LoopTemplate extends BaseTemplate {
 				$loopEditmodeClass = "nav-loop-editmode-off";
 				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
 			}					
-			echo Linker::link(
+			echo $linkRenderer->makelink(
 				$this->getSkin()->getRelevantTitle(),
-				'<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg,
+				new HtmlArmor( '<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg ),
 				array(
 					"class" => $loopEditmodeClass . " dropdown-item",
 					"aria-label" => $loopEditmodeMsg,
@@ -781,9 +782,9 @@ class LoopTemplate extends BaseTemplate {
 				$loopOfflinemodeButtonValue = "offline";
 				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' );
 			 			
-				echo Linker::link(
+				echo $linkRenderer->makelink(
 					$this->getSkin()->getRelevantTitle(),
-					'<span class="ic ic-file-xml"></span> ' . $loopOfflinemodeMsg,
+					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $loopOfflinemodeMsg ),
 					array(
 						"class" => "dropdown-item",
 						"aria-label" => $loopOfflinemodeMsg,
@@ -799,9 +800,9 @@ class LoopTemplate extends BaseTemplate {
 				$loopEpubModeButtonValue = "epub";
 				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' );
 						
-				echo Linker::link(
+				echo $linkRenderer->makelink(
 					$this->getSkin()->getRelevantTitle(),
-					'<span class="ic ic-file-epub"></span> ' . $loopEpubModeMsg,
+					new HtmlArmor( '<span class="ic ic-file-epub"></span> ' . $loopEpubModeMsg ),
 					array(
 						"class" => "dropdown-item",
 						"aria-label" => $loopEpubModeMsg,
@@ -819,16 +820,16 @@ class LoopTemplate extends BaseTemplate {
 		echo '<div class="dropdown-divider"></div>';
 		
 		if ( $user->isAllowed( "loop-settings-edit" ) ) {
-			echo Linker::link( new TitleValue( NS_SPECIAL, 'LoopSettings' ), '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ),
+			echo $linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'LoopSettings' ), new HtmlArmor( '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ) ),
 					array('class' => 'dropdown-item') );
 		}
 		
 		if ( $user->isAllowed( "purgecache" ) ) {
-			echo Linker::link( new TitleValue( NS_SPECIAL, 'PurgeCache' ), '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ),
+			echo $linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'PurgeCache' ), new HtmlArmor( '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ) ),
 					array('class' => 'dropdown-item') );
 		}
 		
-		echo Linker::link( new TitleValue( NS_SPECIAL, 'Specialpages' ), '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' ),
+		echo $linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'Specialpages' ), new HtmlArmor( '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' ) ),
 				array('class' => 'dropdown-item') );
 		
 		echo '</div></div>';
@@ -870,9 +871,9 @@ class LoopTemplate extends BaseTemplate {
 							<div class="pb-2">';
 
 			if ( $user->isAllowed( 'loop-export-pdf' )) {
-				$pdfExportLink = Linker::link( 
+				$pdfExportLink = $linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
-					'<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ), 
+					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' )
 					) 
@@ -880,9 +881,9 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<span>'.$pdfExportLink.'</span><br/>';
 			}			
 			if ( $user->isAllowed( 'loop-export-xml' )) {
-				$xmlExportLink = Linker::link( 
+				$xmlExportLink = $linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
-					'<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) , 
+					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-xml' )
 					) 
