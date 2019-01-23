@@ -359,7 +359,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 		
-		if ( ! isset( $previousPage ) ) {
+		if ( ! isset( $previousPage ) || $previousPage == 0 ) {
 			$previous_page_button .= 'disabled="disabled"';
 		}
 		
