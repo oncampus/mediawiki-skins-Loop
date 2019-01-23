@@ -35,7 +35,8 @@ class LoopTemplate extends BaseTemplate {
 											$loopTitle = '<h1 class="p-1">' . Title::newFromID( $loopStructure->mainPage ) . '</h1>';
 											$loopTitleLink = Title::newFromID( $loopStructure->mainPage );
 										} else {
-											$loopTitle = '<h1 class="p-1">' . $this->outputTitle( ) . '</h1>';
+											global $wgSitename;
+											$loopTitle = '<h1 class="p-1">' . $wgSitename . '</h1>';
 											$loopTitleLink = htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] );
 										}
 										$customLogo = '';
@@ -503,13 +504,6 @@ class LoopTemplate extends BaseTemplate {
 		}
 	
 	} // end output bottomnav
-	
-	private function outputTitle() {
-		
-		global $wgSitename;
-		echo $wgSitename;
-		
-	}
 	
 	private function outputToc( $loopStructure ) {
 			
