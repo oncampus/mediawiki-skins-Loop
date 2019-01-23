@@ -46,7 +46,7 @@ class LoopTemplate extends BaseTemplate {
 										echo Linker::link(
 											$loopTitleLink, 
 											'<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>',
-											array('id' => 'loop-title'),
+											array('id' => 'loop-logo'),
 											array()
 										);
 									?>
