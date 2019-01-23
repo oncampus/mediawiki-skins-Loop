@@ -365,7 +365,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 		
-		if( isset( $previousPage ) ) {
+		if( isset( $previousPage ) && $previousPage > 0 ) {
 			echo Linker::link(
 				Title::newFromID($previousPage),
 				$previous_page_button,
@@ -461,14 +461,12 @@ class LoopTemplate extends BaseTemplate {
 			}
 			
 			$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
-			
-			if( isset( $previousPage ) ) {
-				$bottomNav .= Linker::link(
+			if( isset( $previousPage ) && $previousPage > 0) {
+				$bottomNav .= $linkRenderer->makelink(
 					Title::newFromID( $previousPage ),
-					$previous_page_button,
+					new HtmlArmor( $previous_page_button ),
 					array('class' => 'nav-btn',
-					'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) ),
-					array()
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) )
 				);
 			} else {
 				$bottomNav .= '<a href="#">'.$previous_page_button.'</a>';
@@ -486,12 +484,11 @@ class LoopTemplate extends BaseTemplate {
 			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 		
 			if( isset( $nextPage ) ) {
-				$bottomNav .= Linker::link(
+				$bottomNav .= $linkRenderer->makelink(
 					Title::newFromID( $nextPage ),
-					$next_page_button,
+					new HtmlArmor( $next_page_button ),
 					array( 'class' => 'nav-btn',
-					'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )  ),
-					array()
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )  )
 				);
 			
 			} else {
