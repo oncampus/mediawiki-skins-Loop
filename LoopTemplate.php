@@ -4,6 +4,8 @@
  *
  * @ingroup Skins
  */
+use MediaWiki\MediaWikiServices;
+
 class LoopTemplate extends BaseTemplate {
 	/**
 	 * Outputs the entire contents of the page
@@ -15,6 +17,7 @@ class LoopTemplate extends BaseTemplate {
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
@@ -31,24 +34,19 @@ class LoopTemplate extends BaseTemplate {
 							<div class="row">
 								<div class="col-9" id="logo-wrapper">
 									<?php 
-										if( isset( $loopStructure->mainPage ) ) {
-											$loopTitle = '<h1 class="p-1">' . Title::newFromID( $loopStructure->mainPage ) . '</h1>';
-											$loopTitleLink = Title::newFromID( $loopStructure->mainPage );
-										} else {
-											global $wgSitename;
-											$loopTitle = '<h1 class="p-1">' . $wgSitename . '</h1>';
-											$loopTitleLink = htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] );
-										}
 										$customLogo = '';
 										if( $wgCustomLogo['useCustomLogo'] == 'useCustomLogo' && ! empty( $wgCustomLogo['customFilePath'] ) ) {
 											$customLogo = ' style="background-image:url('.$wgCustomLogo['customFilePath'].');"';
 										}
-										echo Linker::link(
-											$loopTitleLink, 
-											'<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>',
-											array('id' => 'loop-logo'),
-											array()
-										);
+										if( isset( $loopStructure->mainPage ) ) {
+											echo $linkRenderer->makelink(
+												Title::newFromID( $loopStructure->mainPage ), 
+												new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
+												array('id' => 'loop-logo')
+											);
+										} else {
+											echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>' . '</a>';
+										}
 									?>
 								</div>
 								<div class="col-3 text-right">
@@ -61,12 +59,16 @@ class LoopTemplate extends BaseTemplate {
 					</div>
 					<div class="container" id="title-container">
 						<?php 
-							echo Linker::link(
-								$loopTitleLink, 
-								$loopTitle,
-								array('id' => 'loop-title' ),
-								array()
-							);
+							if( isset( $loopStructure->mainPage ) ) {
+								$title = Title::newFromID( $loopStructure->mainPage );
+								echo $linkRenderer->makelink(
+									$title,
+									new HtmlArmor( '<h1 id="loop-title" class="p-1">'. $title . '</h1>' )
+								);
+							} else {
+								global $wgSitename;
+								echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<h1 id="loop-title" class="p-1">'. $wgSitename . '</h1>' . '</a>';
+							}
 						?>
 					</div>	
 					<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
