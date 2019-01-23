@@ -302,6 +302,7 @@ class LoopTemplate extends BaseTemplate {
 	private function outputNavigation( $loopStructure ) {
 		echo '<div class="btn-group float-left">';
 		global $wgTitle;
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		$mainPage = $loopStructure->mainPage;
 		
@@ -446,6 +447,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
+			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 			// Previous Page
 			if ( $lsi ) {
@@ -688,6 +690,7 @@ class LoopTemplate extends BaseTemplate {
 		global $wgDefaultUserOptions;
 		
 		$user = $this->getSkin()->getUser();
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		if ( $user->isAllowed( 'edit' ) ) {
     
@@ -859,6 +862,7 @@ class LoopTemplate extends BaseTemplate {
 	}
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' )) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
