@@ -63,7 +63,8 @@ class LoopTemplate extends BaseTemplate {
 								$title = Title::newFromID( $loopStructure->mainPage );
 								echo $linkRenderer->makelink(
 									$title,
-									new HtmlArmor( '<h1 id="loop-title" class="p-1">'. $title . '</h1>' )
+									new HtmlArmor( '<h1 class="p-1">'. $title . '</h1>' ),
+									array( "id" => "loop-title" )
 								);
 							} else {
 								global $wgSitename;
