@@ -676,15 +676,22 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputAudioButton( ) {
-		global $wgText2Speech, $wgOut;
+		global $wgText2Speech;
 		
-		if ( $wgText2Speech ) {
-			$wgOut->addModules("skins.loop-plyr.js");
+		$article_id = $this->getSkin()->getTitle()->getArticleID();
+		
+		if ( $wgText2Speech && $article_id > 0 ) {
 			
-			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
-					<span id="t2s-button" class="ic ic-audio pr-sm-3"></span>
-					<audio id="t2s-audio"><source type="audio/mp3"></source></audio>
+			global $wgOut, $wgLanguageCode;
+			$wgOut->addModules("skins.loop-plyr.js");
+			$article_id = $this->getSkin()->getTitle()->getArticleID();
+			
+			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1" data-server="'. $_SERVER['SERVER_NAME'] .'" data-article="'. $article_id .'" data-revid="'. Article::newFromId($article_id)->getRevIdFetched() .'"></span>
+					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
+			
+			echo $html;
 		}
 	}
 	private function outputPageEditMenu( ) {

@@ -57,5 +57,20 @@ class LoopSkinHooks {
 		
 		return true;
 	}	
+
+	/**
+	 * Remove auto generation of page-TOC on articles
+	 *
+	 * This is attached to the MediaWiki 'ParserClearState' hook.
+	 *
+	 * @param Parser $parser
+	 * @return bool true
+	 */
+	public static function onParserClearState ( $parser ) {
+		
+		$parser->mShowToc = false;
+		return true;
+		
+	}
 	
 }

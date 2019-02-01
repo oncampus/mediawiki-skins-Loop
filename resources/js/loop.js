@@ -58,16 +58,42 @@ $( document ).ready( function () {
 		});
 		$(".panel-wrapper").fadeIn(200);
 	});
+	
 	mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
-		$("#t2s-button").click(function(){
-			$(this).hide()
-			const player = new Plyr("#t2s-audio", {
-				"volume": 1,
-				"autoplay": true,
-				"muted": false
+		$("#t2s-button").click( function onPageAudioButtonClick() {
+			
+			var server = $(this).data("server");
+			var article = $(this).data("article");
+			var revId = $(this).data("revid");
+			//console.log("http://" + server + "/mediawiki/extensions/Loop/includes/LoopAudio.php")
+			$.ajax({
+				url: "http://" + server + "/mediawiki/extensions/Loop/includes/LoopAudio.php",
+				data: {
+					"server": server,
+					"articleid": article,
+					"revid": revId
+					},
+				cache: false,
+				dataType: "html"
+			}).done( function( data ) {
+				$("#t2s-audio source").prop("src", data)
+				const player = new Plyr( "#t2s-audio", {
+					"volume": 1,
+					"autoplay": true,
+					"muted": false
+				});
+				$("#t2s-button").hide()
+				$("#audio-wrapper").addClass("col-12 col-sm-4 col-md-3").removeClass("col-1");
+				$("#breadcrumb-area").addClass("col-12 col-sm-8 col-md-9").removeClass("col-11");
+				
+			}).fail( function( xhr, textStatus, errorThrown ) { 
+				$("#t2s-button").hide()
+				$("#audio-wrapper").addClass("col-12 col-sm-4 col-md-3").removeClass("col-1").html( mw.message( 'loop-audio-unavailable' ).text() );
+				$("#breadcrumb-area").addClass("col-12 col-sm-8 col-md-9").removeClass("col-11");
+			    
 			});
-			$("#audio-wrapper").addClass("col-12 col-sm-5 col-md-3").removeClass("col-1");
-			$("#breadcrumb-area").addClass("col-12 col-sm-7 col-md-9").removeClass("col-11");
+			
+			
 		});
 	});
 	mw.loader.using( ['skins.loop-bootstrap.js'] ).then( function ( ) {
@@ -118,7 +144,3 @@ $( document ).ready( function () {
 		}
 	}
 });
-
-
-
-	
