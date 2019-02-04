@@ -926,10 +926,10 @@ class LoopTemplate extends BaseTemplate {
 						'Github' => array( 'icon' => $loopSettings->githubIcon, 'link' => $loopSettings->githubLink ), 
 						'Instagram' => array( 'icon' => $loopSettings->instagramIcon, 'link' => $loopSettings->instagramLink )
 					);
-
 				foreach( $socialIcons as $socialIcon ) {
-					if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'url' ] ) ) {
-						$html .= '<a class="ml-1" href="'. $socialIcon[ 'url' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcons ) .'"></span></a>';
+
+					if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'link' ] ) ) {
+						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 					}
 				}
 				$html .= '</div>
@@ -942,9 +942,9 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
 				if ( ! empty ( $loopSettings->rightsType ) ) {
-					$html .=  '<a _target="_blank" rel="license" href="'.htmlspecialchars_decode( $wgRightsUrl ).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
+					$html .=  '<a _target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
-				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText)  . '</p></div></div></div></div></div>';
+				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p></div></div></div></div></div>';
 		
 		echo $html;
 	}
