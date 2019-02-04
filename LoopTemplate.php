@@ -942,7 +942,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
 				if ( ! empty ( $loopSettings->rightsType ) ) {
-					$html .=  '<a _target="_blank" href="'.htmlspecialchars_decode( $wgRightsUrl ).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
+					$html .=  '<a _target="_blank" rel="license" href="'.htmlspecialchars_decode( $wgRightsUrl ).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
 				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText)  . '</p></div></div></div></div></div>';
 		
