@@ -394,21 +394,20 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$nextPage = $lsi->nextArticle;
 		}
-		dd($lsi);
+		//dd( $nextPage );
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
-		if ( ! isset( $nextPage ) ) {
+		if ( ! isset( $nextPage ) || $nextPage == 0 ) {
 			$next_page_button .= 'disabled="disabled"';
 		}
 		$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 	
-		if( isset( $nextPage ) ) {
+		if( isset( $nextPage ) && $nextPage > 0 ) {
 			echo $linkRenderer->makelink(
 				Title::newFromID( $nextPage ),
 				new HtmlArmor( $next_page_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) ),
-				array()
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) )
 			);
 			
 		} else {
@@ -484,12 +483,12 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 			
-			if ( ! isset( $nextPage ) ) {
+			if ( ! isset( $nextPage ) || $nextPage == 0  ) {
 				$next_page_button .= 'disabled="disabled"';
 			}
 			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 		
-			if( isset( $nextPage ) ) {
+			if( isset( $nextPage ) && $nextPage > 0 ) {
 				$bottomNav .= $linkRenderer->makelink(
 					Title::newFromID( $nextPage ),
 					new HtmlArmor( $next_page_button ),
