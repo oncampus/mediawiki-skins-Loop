@@ -394,6 +394,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$nextPage = $lsi->nextArticle;
 		}
+		dd($lsi);
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
 		if ( ! isset( $nextPage ) ) {
