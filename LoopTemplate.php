@@ -13,7 +13,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgRightsText, $wgDefaultUserOptions;
+		global $wgDefaultUserOptions;
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
@@ -125,7 +125,8 @@ class LoopTemplate extends BaseTemplate {
 							<?php }?>
 						</div> <!--End of row-->
 					</div> <!--End of nativation container-->
-				</div></div>
+				</div>
+				</div>
 			</section>
 			
 			<!--BREADCRUMB SECTION -->
@@ -944,7 +945,8 @@ class LoopTemplate extends BaseTemplate {
 				if ( ! empty ( $loopSettings->rightsType ) ) {
 					$html .=  '<a _target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
-				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p></div></div></div></div></div>';
+				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>
+				</div></div></div></div></div>';
 		
 		echo $html;
 	}
