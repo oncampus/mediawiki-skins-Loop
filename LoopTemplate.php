@@ -867,7 +867,8 @@ class LoopTemplate extends BaseTemplate {
 		$user = $this->getSkin()->getUser();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
-		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' )) { # TODO other export formats
+		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' ) || 
+			 $user->isAllowed( 'loop-export-html' ) || $user->isAllowed( 'loop-export-mp3' ) ) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
 						<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</h5>
@@ -895,6 +896,28 @@ class LoopTemplate extends BaseTemplate {
 				
 				);
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
+			}	
+			if ( $user->isAllowed( 'loop-export-html' )) {
+				$htmlExportLink = $linkRenderer->makelink( 
+					new TitleValue( NS_SPECIAL, 'LoopExport/html' ), 
+					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-html' ) ), 
+					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-html' ),
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-html' )
+					) 
+				
+				);
+				$html .= '<span>'.$htmlExportLink.'</span><br/>';
+			}
+			if ( $user->isAllowed( 'loop-export-mp3' )) {
+				$mp3ExportLink = $linkRenderer->makelink( 
+					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
+					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
+					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' )
+					) 
+				
+				);
+				$html .= '<span>'.$mp3ExportLink.'</span><br/>';
 			}
 			
 			$html.= '</div></div></div>';
