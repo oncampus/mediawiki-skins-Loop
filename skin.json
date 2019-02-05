@@ -15,7 +15,7 @@
 	"descriptionmsg": "loopskin-desc",
 	"licence-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.32.0",
+		"MediaWiki": ">= 1.31.0",
 		"extensions": {
 			"Loop": ">= 2.0"
 		}
@@ -38,7 +38,7 @@
         	"description": "Sets skin style"
         }
 	},
-    "DefaultUserOptions": {
+    "HiddenPrefs": {
 		"LoopSkinStyle": "loop-common"
     },
     "Hooks": {
