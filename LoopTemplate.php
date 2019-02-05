@@ -13,11 +13,14 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgRightsText, $wgCustomLogo, $wgDefaultUserOptions;
+		global $wgDefaultUserOptions;
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		
+		$loopSettings = new LoopSettings();
+		$loopSettings->loadSettings();
 		
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
@@ -35,8 +38,8 @@ class LoopTemplate extends BaseTemplate {
 								<div class="col-9" id="logo-wrapper">
 									<?php 
 										$customLogo = '';
-										if( $wgCustomLogo['useCustomLogo'] == 'useCustomLogo' && ! empty( $wgCustomLogo['customFilePath'] ) ) {
-											$customLogo = ' style="background-image:url('.$wgCustomLogo['customFilePath'].');"';
+										if( $loopSettings->customLogo == 'useCustomLogo' && ! empty( $loopSettings->customLogoFilePath ) ) {
+											$customLogo = ' style="background-image:url('.$loopSettings->customLogoFilePath.');"';
 										}
 										if( isset( $loopStructure->mainPage ) ) {
 											echo $linkRenderer->makelink(
@@ -122,7 +125,8 @@ class LoopTemplate extends BaseTemplate {
 							<?php }?>
 						</div> <!--End of row-->
 					</div> <!--End of nativation container-->
-				</div></div>
+				</div>
+				</div>
 			</section>
 			
 			<!--BREADCRUMB SECTION -->
@@ -222,7 +226,7 @@ class LoopTemplate extends BaseTemplate {
 		</div> 
 		<!--FOOTER SECTION-->
 		<footer>
-			<?php $this->outputFooter(); ?>
+			<?php $this->outputFooter( $loopSettings ); ?>
 		</footer>
 	<?php 
 		}
@@ -391,20 +395,20 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$nextPage = $lsi->nextArticle;
 		}
+		//dd( $nextPage );
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
-		if ( ! isset( $nextPage ) ) {
+		if ( ! isset( $nextPage ) || $nextPage == 0 ) {
 			$next_page_button .= 'disabled="disabled"';
 		}
 		$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 	
-		if( isset( $nextPage ) ) {
+		if( isset( $nextPage ) && $nextPage > 0 ) {
 			echo $linkRenderer->makelink(
 				Title::newFromID( $nextPage ),
 				new HtmlArmor( $next_page_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) ),
-				array()
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) )
 			);
 			
 		} else {
@@ -480,12 +484,12 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 			
-			if ( ! isset( $nextPage ) ) {
+			if ( ! isset( $nextPage ) || $nextPage == 0  ) {
 				$next_page_button .= 'disabled="disabled"';
 			}
 			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 		
-			if( isset( $nextPage ) ) {
+			if( isset( $nextPage ) && $nextPage > 0 ) {
 				$bottomNav .= $linkRenderer->makelink(
 					Title::newFromID( $nextPage ),
 					new HtmlArmor( $next_page_button ),
@@ -899,40 +903,50 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 
-	private function outputFooter () {
+	private function outputFooter ( LoopSettings $loopSettings ) {
 		
-		global $wgExtraFooter, $wgImprintLink, $wgPrivacyLink, $wgOncampusLink, $wgRightsText, $wgRightsType, $wgSocialIcons, $wgRightsIcon, $wgRightsUrl;
+		global $wgRightsText, $wgRightsIcon, $wgRightsUrl;
 		
 		$html = ""; 
 		
-		if ( $wgExtraFooter['useExtraFooter'] == "useExtraFooter" && ! empty( $wgExtraFooter['parsedText'] ) ) {
+		if ( $loopSettings->extraFooter == "useExtraFooter" && ! empty( $loopSettings->extraFooterParsed ) ) {
 			$html .= '<div class="col-12 text-center" id="extra-footer">
 					<div id="extra-footer-content" class="p-3">' . 
-						$wgExtraFooter['parsedText'] . '</div></div>';
+						$loopSettings->extraFooterParsed . '</div></div>';
 		}
 		$html .= '<div class="container-fluid">
 		<div class="row">
 			<div class="col-12" id="main-footer">
 				<div class="container p-0">
 					<div id="footer-right" class="pl-0 pr-0 text-center text-sm-right float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-0">';
-				foreach( $wgSocialIcons as $socialIcons => $socialIcon ) {
-					if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'url' ] ) ) {
-						$html .= '<a class="ml-1" href="'. $socialIcon[ 'url' ] .'" target="_blank"><span class="ic ic-social-'. strtolower($socialIcons) .'"></span></a>';
+					
+					$socialIcons = array( 
+						'Facebook' => array( 'icon' => $loopSettings->facebookIcon, 'link' => $loopSettings->facebookLink ),
+						'Twitter' => array( 'icon' => $loopSettings->twitterIcon, 'link' => $loopSettings->twitterLink ),
+						'Youtube' => array( 'icon' => $loopSettings->youtubeIcon, 'link' => $loopSettings->youtubeLink ),
+						'Github' => array( 'icon' => $loopSettings->githubIcon, 'link' => $loopSettings->githubLink ), 
+						'Instagram' => array( 'icon' => $loopSettings->instagramIcon, 'link' => $loopSettings->instagramLink )
+					);
+				foreach( $socialIcons as $socialIcon ) {
+
+					if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'link' ] ) ) {
+						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 					}
 				}
 				$html .= '</div>
 				<div id="footer-center" class="text-center float-right col-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
-					<a href="'. htmlspecialchars_decode($wgImprintLink) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a> | 
-					<a href="'. htmlspecialchars_decode($wgPrivacyLink) .'">' . $this->getSkin()->msg( 'privacy-policy' ) . '</a>';
-					if ( ! empty( $wgOncampusLink ) ) {
+					<a href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a> | 
+					<a href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy-policy' ) . '</a>';
+					if ( ! empty( $loopSettings->oncampusLink ) ) {
 						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
 					}
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
-				if ( ! empty ( $wgRightsType ) ) {
-					$html .=  '<a _target="_blank" href="'.htmlspecialchars_decode($wgRightsUrl).'" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
+				if ( ! empty ( $loopSettings->rightsType ) ) {
+					$html .=  '<a _target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
-				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode($wgRightsText) . '</p></div></div></div></div></div>';
+				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>
+				</div></div></div></div></div>';
 		
 		echo $html;
 	}

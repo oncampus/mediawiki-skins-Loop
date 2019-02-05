@@ -14,7 +14,6 @@ class SkinLoop extends SkinTemplate {
 	 * @param OutputPage $out Object to initialize
 	 */
 	public function initPage( OutputPage $out ) {
-		global $wgHiddenPrefs;
 
 		$out->addHeadItem('meta_ie_edge', '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">');
 		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1.0' );
@@ -31,7 +30,7 @@ class SkinLoop extends SkinTemplate {
 			'skins.loop-bootstrap.js'
 		));
 		
-		$skinStyle = $out->getUser()->getOption( 'LoopSkinStyle', $wgHiddenPrefs['LoopSkinStyle'], true );
+		$skinStyle = $out->getUser()->getOption( 'LoopSkinStyle' );
 
 		$out->addModuleStyles( array(
 			'skins.'.$skinStyle,
