@@ -30,72 +30,88 @@ class LoopTemplate extends BaseTemplate {
 		<div id="page-wrapper">
 			<section>
 				<div class="container p-0" id="banner-wrapper">
-				<div class="container p-0" id="banner-container">
-				
-					<div class="w-100" id="banner-logo-container">
-						<div class="container">
-							<div class="row">
-								<div class="col-9" id="logo-wrapper">
-									<?php 
-										$customLogo = '';
-										if( $loopSettings->customLogo == 'useCustomLogo' && ! empty( $loopSettings->customLogoFilePath ) ) {
-											$customLogo = ' style="background-image:url('.$loopSettings->customLogoFilePath.');"';
-										}
-										if( isset( $loopStructure->mainPage ) ) {
-											echo $linkRenderer->makelink(
-												Title::newFromID( $loopStructure->mainPage ), 
-												new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
-												array('id' => 'loop-logo')
-											);
-										} else {
-											echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>' . '</a>';
-										}
-									?>
-								</div>
-								<div class="col-3 text-right">
-									<?php if( $this->renderMode != "offline" ) { 
-										$this->outputUserMenu(); 
-									}?>
+					<div class="container p-0" id="banner-container">
+						<div class="w-100" id="banner-logo-container">
+							<div class="container">
+								<div class="row">
+									<div class="col-9" id="logo-wrapper">
+										<?php 
+											$customLogo = '';
+											if( $loopSettings->customLogo == 'useCustomLogo' && ! empty( $loopSettings->customLogoFilePath ) ) {
+												$customLogo = ' style="background-image:url('.$loopSettings->customLogoFilePath.');"';
+											}
+											if( isset( $loopStructure->mainPage ) ) {
+												echo $linkRenderer->makelink(
+													Title::newFromID( $loopStructure->mainPage ), 
+													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
+													array('id' => 'loop-logo')
+												);
+											} else {
+												echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>' . '</a>';
+											}
+										?>
+									</div>
+									<div class="col-3 text-right">
+										<?php if( $this->renderMode != "offline" ) { 
+											$this->outputUserMenu(); 
+										}?>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="container" id="title-container">
-						<?php 
-							if( isset( $loopStructure->mainPage ) ) {
-								$title = Title::newFromID( $loopStructure->mainPage );
-								echo $linkRenderer->makelink(
-									$title,
-									new HtmlArmor( '<h1 class="p-1">'. $title . '</h1>' ),
-									array( "id" => "loop-title" )
-								);
-							} else {
-								global $wgSitename;
-								echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<h1 id="loop-title" class="p-1">'. $wgSitename . '</h1>' . '</a>';
-							}
-						?>
-					</div>	
-					<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
-						<div class="container p-0" id="page-navigation-container">
-							<div class="row m-0 p-0" id="page-navigation-row">
-								<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
-									<?php $this->outputNavigation( $loopStructure ); 
-										echo '<div class="btn-group float-right">'; 
-			 							if( $this->renderMode != "offline" ) { 
-											echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
-											$this->outputPageEditMenu( );
-			 							}
-										if ( isset( $loopStructure->mainPage ) ) {?>
-											<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
-									<?php }?>
+						<div class="container" id="title-container">
+							<?php 
+								if( isset( $loopStructure->mainPage ) ) {
+									$title = Title::newFromID( $loopStructure->mainPage );
+									echo $linkRenderer->makelink(
+										$title,
+										new HtmlArmor( '<h1 class="p-1">'. $title . '</h1>' ),
+										array( "id" => "loop-title" )
+									);
+								} else {
+									global $wgSitename;
+									echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<h1 id="loop-title" class="p-1">'. $wgSitename . '</h1>' . '</a>';
+								}
+							?>
+						</div>	
+						<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
+							<div class="container p-0" id="page-navigation-container">
+								<div class="row m-0 p-0" id="page-navigation-row">
+									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
+										<?php $this->outputNavigation( $loopStructure ); 
+											echo '<div class="btn-group float-right">'; 
+											if( $this->renderMode != "offline" ) { 
+												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+												$this->outputPageEditMenu( );
+											}
+											if ( isset( $loopStructure->mainPage ) ) {?>
+												<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
+										<?php }?>
+									</div>
+									<?php if( $this->renderMode != "offline" ) { ?>
+										<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
+											<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
+												<?php
+													echo $this->makeSearchInput(
+														array( 
+															'id' => 'page-search-input-md',
+															'class' => 'form-control form-control-sm pt-2 pb-2',
+															'placeholder' => $this->getSkin()->msg("full-text-search")
+														)
+													);
+												?>
+												<button type="submit" class="d-none"></button>
+											</form>
+										</div>
+									<?php } ?>
 								</div>
 								<?php if( $this->renderMode != "offline" ) { ?>
-									<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
-										<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
-											<?php
+									<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
+										<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
+										<?php
 												echo $this->makeSearchInput(
 													array( 
-														'id' => 'page-search-input-md',
+														'id' => 'page-search-input-lg-xl',
 														'class' => 'form-control form-control-sm pt-2 pb-2',
 														'placeholder' => $this->getSkin()->msg("full-text-search")
 													)
@@ -103,28 +119,12 @@ class LoopTemplate extends BaseTemplate {
 											?>
 											<button type="submit" class="d-none"></button>
 										</form>
+										<div class="clear"></div>
 									</div>
-								<?php } ?>
-							</div>
-							<?php if( $this->renderMode != "offline" ) { ?>
-								<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
-									<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
-									<?php
-											echo $this->makeSearchInput(
-												array( 
-													'id' => 'page-search-input-lg-xl',
-													'class' => 'form-control form-control-sm pt-2 pb-2',
-													'placeholder' => $this->getSkin()->msg("full-text-search")
-												)
-											);
-										?>
-										<button type="submit" class="d-none"></button>
-									</form>
-									<div class="clear"></div>
-								</div>
-							<?php }?>
-						</div> <!--End of row-->
-					</div> <!--End of nativation container-->
+								<?php }?>
+							</div> <!--End of row-->
+						</div> <!--End of nativation container-->
+					</div>
 				</div>
 				</div>
 			</section>
