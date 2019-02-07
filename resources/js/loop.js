@@ -66,7 +66,7 @@ $( document ).ready( function () {
 		}
 		$(".panel-wrapper").fadeIn(200);
 	}, 5);
-	mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
+	//mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
 		$("#t2s-button").click(function(){
 			$(this).hide()
 			const player = new Plyr("#t2s-audio", {
@@ -77,7 +77,7 @@ $( document ).ready( function () {
 			$("#audio-wrapper").addClass("col-12 col-sm-5 col-md-3").removeClass("col-1");
 			$("#breadcrumb-area").addClass("col-12 col-sm-7 col-md-9").removeClass("col-11");
 		});
-	});
+	//});
 	
 	$('.page-symbol').tooltip({ boundary: 'window' })
 	
