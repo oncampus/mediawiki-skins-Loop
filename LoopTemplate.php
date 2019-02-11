@@ -305,7 +305,7 @@ class LoopTemplate extends BaseTemplate {
 
 	}
 	private function outputNavigation( $loopStructure ) {
-		echo '<div class="btn-group float-left">';
+		echo '<div class="btn-group float-left" id="top-nav">';
 		global $wgTitle;
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
@@ -373,11 +373,10 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID( $previousPage ),
 				new HtmlArmor( $previous_page_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) ),
-				array()
+				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) )
 			);
 		} else {
-			echo '<a href="">'.$previous_page_button.'</a>';
+			echo '<a href="#">'.$previous_page_button.'</a>';
 		}
 		
 		
@@ -449,7 +448,7 @@ class LoopTemplate extends BaseTemplate {
 
 		if( $loopStructure ) {
 
-			$bottomNav = '<div class="btn-group">';
+			$bottomNav = '<div class="btn-group" id="bottom-nav">';
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
