@@ -65,12 +65,15 @@ class LoopTemplate extends BaseTemplate {
 									$title = Title::newFromID( $loopStructure->mainPage );
 									echo $linkRenderer->makelink(
 										$title,
-										new HtmlArmor( '<h1 class="p-1">'. $title . '</h1>' ),
-										array( "id" => "loop-title" )
+										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
 									);
 								} else {
 									global $wgSitename;
-									echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<h1 id="loop-title" class="p-1">'. $wgSitename . '</h1>' . '</a>';
+									$title = Title::newFromID( $wgSitename );
+									echo $linkRenderer->makelink(
+										$title,
+										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
+									);
 								}
 							?>
 						</div>	
@@ -602,7 +605,7 @@ class LoopTemplate extends BaseTemplate {
  					// outputs the first node (mainpage)
  					
  					$html .= '<li>
-					<a href="'. $tmpURL .'" class="aToc">
+					<a href="'. $tmpURL .'" class="aToc internal-link">
 						<span class="tocnumber'. $classIfOpened .'"></span>
 						<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
 					</a>';
