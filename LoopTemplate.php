@@ -47,7 +47,13 @@ class LoopTemplate extends BaseTemplate {
 													array('id' => 'loop-logo')
 												);
 											} else {
-												echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>' . '</a>';
+												//dd($this->data["sidebar"]["navigation"][0]["text"], $this->data);
+												echo $linkRenderer->makelink(
+													Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ), 
+													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
+													array('id' => 'loop-logo')
+												);
+												//echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>' . '</a>';
 											}
 										?>
 									</div>
@@ -69,7 +75,7 @@ class LoopTemplate extends BaseTemplate {
 									);
 								} else {
 									global $wgSitename;
-									$title = Title::newFromID( $wgSitename );
+									$title = Title::newFromText( $wgSitename );
 									echo $linkRenderer->makelink(
 										$title,
 										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
@@ -212,17 +218,19 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<?php if ( isset( $loopStructure->mainPage ) ) { ?>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
+						
 							<div class="panel-wrapper">
 								<?php 	$this->outputToc( $loopStructure ); 
-										$this->outputSpecialPages( ); ?>
+								
+								if( isset( $loopStructure->mainPage ) ) { 
+									$this->outputSpecialPages( );
+								} ?>
 							</div>
-							<?php if( $this->renderMode != "offline" ) { 
+							<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
 								$this->outputExportPanel( ); 
 							}?>
 						</div>	
-						<?php } ?>
 					</div>
 				</div> 
 			</section>
@@ -520,145 +528,183 @@ class LoopTemplate extends BaseTemplate {
 		
 		$article_id = $this->getSkin()->getTitle()->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$user = $this->getSkin()->getUser();
+		$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
+		$loopRenderMode = $user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 			
 		// storage for opened navigation tocs in the jstree
 		$openedNodes = array();
 			
-		if ( $lsi ) {
-			// get the current active tocNum
-			$activeTocNum = $lsi->tocNumber;
-			$activeTocText = $lsi->tocText;
-				
-				if( ! empty( $activeTocNum )) {
-	
-					$openedNodes = array( $activeTocNum );
+		
+		if ( isset( $loopStructure->mainPage ) ) { 
+
+			if ( $lsi ) {
+				// get the current active tocNum
+				$activeTocNum = $lsi->tocNumber;
+				$activeTocText = $lsi->tocText;
 					
-					// if the active structureitem has more subitems
-					if( strpos( $activeTocNum, '.' )) {
+					if( ! empty( $activeTocNum )) {
+		
+						$openedNodes = array( $activeTocNum );
 						
-						$activeTocNumLen = strlen( $activeTocNum );
-						
-						for( $i = 0; $i < $activeTocNumLen; $i++ ){
-						
-							$tmpTocNum = substr( $activeTocNum, 0, - $i );
-							$tmpLen = strlen( $tmpTocNum );
-							$lastChar = substr( $tmpTocNum, $tmpLen - 1 );
-						
-							if( $lastChar !== '.' && $tmpTocNum !== '' ) {
-									
-								$openedNodes[] = $tmpTocNum;
-									
-							}
-						}
-						
-					}
-	
-				}
-			}
-			
-			$user = $this->getSkin()->getUser();
-			$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
-			$loopRenderMode = $user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
-			$editButton = "";
-			
-			if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' && $loopEditMode ) {
-				$editButton = "<a href='" . Title::newFromText( 'Special:LoopStructureEdit' )->getFullURL() . "' id='editTocLink' class='ml-2'><i class='ic ic-edit'></i></a>";
-			}
-			
-			$html = '<div class="panel-heading">
-						<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
-					</div>
-					<div id="toc-nav" class="panel-body p-1 pb-2 pl-0 pl-xl-2"><ul>';
+						// if the active structureitem has more subitems
+						if( strpos( $activeTocNum, '.' )) {
 							
-			$rootNode = false;
+							$activeTocNumLen = strlen( $activeTocNum );
+							
+							for( $i = 0; $i < $activeTocNumLen; $i++ ){
+							
+								$tmpTocNum = substr( $activeTocNum, 0, - $i );
+								$tmpLen = strlen( $tmpTocNum );
+								$lastChar = substr( $tmpTocNum, $tmpLen - 1 );
+							
+								if( $lastChar !== '.' && $tmpTocNum !== '' ) {
+										
+									$openedNodes[] = $tmpTocNum;
+										
+								}
+							}
+							
+						}
+		
+					}
+				}
 			
-			// build JS tree
-			foreach( $loopStructure->getStructureitems() as $lsi) {
+				$editButton = "";
 				
-				$currentPageTitle = $this->getSkin()->getTitle();
-				$tmpChapter = $lsi->tocNumber;
-				$tmpTitle = Title::newFromID( $lsi->article );
-				$tmpURL = $tmpTitle->getFullURL();
-				$tmpText = $tmpTitle->getText();
-				$tmpAltText = $tmpText;
-				$tmpTocLevel = $lsi->tocLevel;
+				if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' && $loopEditMode ) {
+					$editButton = "<a href='" . Title::newFromText( 'Special:LoopStructureEdit' )->getFullURL() . "' id='editTocLink' class='ml-2'><i class='ic ic-edit'></i></a>";
+				}
 				
-				$classIfOpened = '';
+				$html = '<div class="panel-heading">
+							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
+						</div>
+						<div id="toc-nav" class="panel-body p-1 pb-2 pl-0 pl-xl-2"><ul>';
+								
+				$rootNode = false;
+				
+				// build JS tree
+				foreach( $loopStructure->getStructureitems() as $lsi) {
+					
+					$currentPageTitle = $this->getSkin()->getTitle();
+					$tmpChapter = $lsi->tocNumber;
+					$tmpTitle = Title::newFromID( $lsi->article );
+					$tmpURL = $tmpTitle->getFullURL();
+					$tmpText = $tmpTitle->getText();
+					$tmpAltText = $tmpText;
+					$tmpTocLevel = $lsi->tocLevel;
+					
+					$classIfOpened = '';
 
-				// check if current page is the active page, if true set css class
-				if( isset( $tmpText ) ) {
-				
-					if( $tmpText == $currentPageTitle ) {
-				
-						$classIfOpened = ' activeTocPage';
-				
+					// check if current page is the active page, if true set css class
+					if( isset( $tmpText ) ) {
+					
+						if( $tmpText == $currentPageTitle ) {
+					
+							$classIfOpened = ' activeTocPage';
+					
+						}
 					}
-				}
-				/*
-				if( ( strlen( $tmpText ) + (  2 * strlen( $tmpChapter ) ) ) > 26 ) {
-					$tmpText = substr( $tmpText, 0, 21 ) . "&hellip;"; // &hellip; = ...
-				
-				}
-				*/
- 				if( ! $rootNode ) {
+					/*
+					if( ( strlen( $tmpText ) + (  2 * strlen( $tmpChapter ) ) ) > 26 ) {
+						$tmpText = substr( $tmpText, 0, 21 ) . "&hellip;"; // &hellip; = ...
 					
- 					// outputs the first node (mainpage)
- 					
- 					$html .= '<li>
-					<a href="'. $tmpURL .'" class="aToc internal-link">
-						<span class="tocnumber'. $classIfOpened .'"></span>
-						<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
-					</a>';
-					$rootNode = true;
-					continue;
+					}
+					*/
+					if( ! $rootNode ) {
+						
+						// outputs the first node (mainpage)
+						
+						$html .= '<li>' .
+							$linkRenderer->makelink(
+								$tmpTitle,
+								new HtmlArmor( 
+									'<span class="tocnumber'. $classIfOpened .'"></span>
+									<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>' ),
+								array(
+									'class' => 'aToc')
+							);
+						/*
+						<a href="'. $tmpURL .'" class="aToc internal-link">
+							<span class="tocnumber'. $classIfOpened .'"></span>
+							<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
+						'</a>';*/
+						$rootNode = true;
+						continue;
+						
+					}
 					
- 				}
-				
- 				/*** *** *** *** ***  *** *** *** *** ***/
- 				/*** jstree logic for opened chapters ***/
- 				/*** *** *** *** ***  *** *** *** *** ***/
- 				
-				if( ! isset( $lastTmpTocLevel )) {
+					/*** *** *** *** ***  *** *** *** *** ***/
+					/*** jstree logic for opened chapters ***/
+					/*** *** *** *** ***  *** *** *** *** ***/
 					
+					if( ! isset( $lastTmpTocLevel )) {
+						
+						$lastTmpTocLevel = $tmpTocLevel;
+						
+					} 
+					
+					if( $tmpTocLevel > $lastTmpTocLevel ) {
+						$html .= '<ul>';
+					} else if ( $tmpTocLevel < $lastTmpTocLevel ) {
+						for ($i = $tmpTocLevel; $i < $lastTmpTocLevel; $i++) {
+							$html .= '</ul></li>';
+						}
+					} else {
+						$html .= '</li>';
+					}
+					
+					$jstreeData = '';
+					
+					if( in_array( $tmpChapter, $openedNodes ) ) {
+						
+						$jstreeData = ' data-jstree=\'{"opened":true,"selected":false}\'';
+
+					}
+					
+					/*** *** *** *** *** *** ***/
+					/*** end of jstree logic ***/
+					/*** *** *** *** *** *** ***/
+					
+					// outputs the page in jstree
+					
+					$html .= '<li'.$jstreeData.'>'.
+						$linkRenderer->makelink(
+							$tmpTitle,
+							new HtmlArmor( 
+								'<span class="tocnumber'. $classIfOpened .'">'.$tmpChapter.'</span>
+								<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>' ),
+							array(
+								'class' => 'aToc',
+								'title' => $tmpAltText
+							)
+						);
+								/* // changed to linkrenderer - class atoc is missing
+								<a href="'. $tmpURL .'" class="aToc" title="'. $tmpAltText .'">
+									<span class="tocnumber'. $classIfOpened.'">'.$tmpChapter.'</span>
+									<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
+								</a>';*/
+
 					$lastTmpTocLevel = $tmpTocLevel;
-					
-				} 
-				
-				if( $tmpTocLevel > $lastTmpTocLevel ) {
-					$html .= '<ul>';
-				} else if ( $tmpTocLevel < $lastTmpTocLevel ) {
-					for ($i = $tmpTocLevel; $i < $lastTmpTocLevel; $i++) {
-						$html .= '</ul></li>';
-					}
-				} else {
-					$html .= '</li>';
+
+				} // foreach toc item
+
+				$html .= '</li></ul></ul></div>';
+
+			} else {
+				$editButton = "";
+				$editMsg = "";
+				if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' ) {
+					$editButton = "<a href='" . Title::newFromText( 'Special:LoopStructureEdit' )->getFullURL() . "' id='editTocLink' class='ml-2'><i class='ic ic-edit'></i></a>";
+					$editMsg = "Bitte legen Sie ein Inhaltsverzeichnis an.";
 				}
-				
-				$jstreeData = '';
-				
-				if( in_array( $tmpChapter, $openedNodes ) ) {
-					
-					$jstreeData = ' data-jstree=\'{"opened":true,"selected":false}\'';
 
-				}
-				
-				/*** *** *** *** *** *** ***/
-				/*** end of jstree logic ***/
-				/*** *** *** *** *** *** ***/
-				
-				// outputs the page in jstree
-				
-				$html .= '<li'.$jstreeData.'>
-							<a href="'. $tmpURL .'" class="aToc" title="'. $tmpAltText .'">
-								<span class="tocnumber'. $classIfOpened.'">'.$tmpChapter.'</span>
-								<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
-							</a>';
-
-				$lastTmpTocLevel = $tmpTocLevel;
-
-			} // foreach toc item
-
-			$html .= '</li></ul></ul></div>';
+				$html = '<div class="panel-heading">
+					<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) .$editButton.'</h5>
+					</div>
+					<div id="toc-placeholder" class="panel-body p-1 pb-2 pl-3 pr-3 pt-2">'.$editMsg.'</div>';
+			}
 
 			echo $html;
 			 
@@ -680,8 +726,8 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputAudioButton( ) {
 		global $wgText2Speech, $wgOut;
-		
-		if ( $wgText2Speech ) {
+		if ( $wgText2Speech == "true" ) {
+			//dd($wgText2Speech);
 			$wgOut->addModules("skins.loop-plyr.js");
 			
 			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
@@ -865,6 +911,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		echo $html;
 	}
+
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
@@ -968,7 +1015,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
 				if ( ! empty ( $loopSettings->rightsType ) ) {
-					$html .=  '<a _target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
+					$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
 				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>
 				</div></div></div></div></div>';
