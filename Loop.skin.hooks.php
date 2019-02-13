@@ -57,5 +57,12 @@ class LoopSkinHooks {
 		
 		return true;
 	}	
+
+	public static function onHtmlPageLinkRendererEnd( $linkRenderer, $target, $isKnown, &$text, &$attribs, &$ret ) {
+
+		$attribs["class"] = $attribs["class"] . " internal-link";
+	
+		return true;
+	}
 	
 }

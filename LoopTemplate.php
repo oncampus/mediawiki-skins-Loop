@@ -75,10 +75,9 @@ class LoopTemplate extends BaseTemplate {
 									);
 								} else {
 									global $wgSitename;
-									$title = Title::newFromText( $wgSitename );
 									echo $linkRenderer->makelink(
-										$title,
-										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
+										Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
+										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>' )
 									);
 								}
 							?>
@@ -316,7 +315,7 @@ class LoopTemplate extends BaseTemplate {
 
 	}
 	private function outputNavigation( $loopStructure ) {
-		echo '<div class="btn-group float-left" id="top-nav">';
+		echo '<div class="btn-group float-left">';
 		global $wgTitle;
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
@@ -459,7 +458,7 @@ class LoopTemplate extends BaseTemplate {
 
 		if( $loopStructure ) {
 
-			$bottomNav = '<div class="btn-group" id="bottom-nav">';
+			$bottomNav = '<div class="btn-group">';
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
