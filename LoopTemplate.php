@@ -395,7 +395,10 @@ class LoopTemplate extends BaseTemplate {
 		
 		$link = $linkRenderer->makelink( 
 			new TitleValue( NS_SPECIAL, 'LoopStructure' ),
-			new HtmlArmor( $toc_button ) 
+			new HtmlArmor( $toc_button ),
+			array(
+				'id' => 'toc-button'
+			)
 		); 
 		echo $link;
 		
@@ -1006,8 +1009,8 @@ class LoopTemplate extends BaseTemplate {
 				}
 				$html .= '</div>
 				<div id="footer-center" class="text-center float-right col-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
-					<a href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a> | 
-					<a href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy-policy' ) . '</a>';
+					<a id="imprintlink" href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a> | 
+					<a id="privacylink" href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy-policy' ) . '</a>';
 					if ( ! empty( $loopSettings->oncampusLink ) ) {
 						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
 					}
