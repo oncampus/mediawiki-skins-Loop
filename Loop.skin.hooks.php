@@ -58,11 +58,48 @@ class LoopSkinHooks {
 		return true;
 	}	
 
+	/**
+	 * Change internal links in offline mode to local paths
+	 *
+	 * This is attached to the MediaWiki 'HtmlPageLinkRendererEnd' hook.
+	 *
+	 * @param Title $title
+	 * @param File $file
+	 * @param array $params
+	 * @param Parser $parser
+	 * @return bool true
+	 */
 	public static function onHtmlPageLinkRendererEnd( $linkRenderer, $target, $isKnown, &$text, &$attribs, &$ret ) {
 
-		$attribs["class"] = $attribs["class"] . " internal-link";
-	
+		global $wgOut, $wgServer;
+
+		$looprendermode = $wgOut->getUser()->getOption( 'LoopRenderMode', false, true );
+
+		if ( $looprendermode == "offline" ) {
+
+			$loopHtml = new LoopHtml();
+
+			if ( isset( $target->mArticleID ) ) { # don't pick special pages
+				$targetTitle = $target->mTextform ;
+				$lsi = LoopStructureItem::newFromText( $targetTitle );
+
+				if ( $lsi ) { # internal pages in structure
+					$newHref = $loopHtml->resolveUrl( $target->mUrlform, '.html');
+					$attribs['href'] = $newHref;
+					$attribs["class"] = $attribs["class"] . " local-link";
+
+				} else { # internal pages that are not in structure
+					$attribs['href'] = $wgServer . $attribs['href'];
+				}
+
+			} elseif ( $attribs['id'] == "toc-button" ) { # TOC button link
+				$newHref = $loopHtml->resolveUrl( "LoopStructure", '.html'); 
+				$attribs['href'] = $newHref;
+				$attribs["class"] = $attribs["class"] . " local-link";
+			}
+		}
+
 		return true;
+
 	}
-	
 }
