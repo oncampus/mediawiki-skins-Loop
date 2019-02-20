@@ -980,6 +980,7 @@ class LoopTemplate extends BaseTemplate {
 	private function outputFooter ( LoopSettings $loopSettings ) {
 		
 		global $wgRightsText, $wgRightsIcon, $wgRightsUrl;
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		$html = ""; 
 		
@@ -1007,10 +1008,37 @@ class LoopTemplate extends BaseTemplate {
 						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 					}
 				}
+				if ( strpos( $loopSettings->imprintLink, "http" ) !== false ) {
+					$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
+				} else {
+					$title = Title::newFromText( $loopSettings->imprintLink );
+					
+					if ( ! empty ($title->mTextform) ) {
+						$imprintElement = $linkRenderer->makeLink(
+							$title,
+							new HtmlArmor( $this->getSkin()->msg( 'imprint' ) ),
+							array( "id" => "imprintlink")
+						);
+					}
+				}
+				
+				if ( strpos( $loopSettings->privacyLink, "http" ) !== false ) {
+					$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
+				} else {
+					$title = Title::newFromText( $loopSettings->privacyLink );
+					
+					if ( ! empty ($title->mTextform) ) {
+						$privacyElement = $linkRenderer->makeLink(
+							$title,
+							new HtmlArmor( $this->getSkin()->msg( 'privacy' ) ),
+							array( "id" => "privacylink")
+						);
+					}
+				}
+
 				$html .= '</div>
 				<div id="footer-center" class="text-center float-right col-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
-					<a id="imprintlink" href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a> | 
-					<a id="privacylink" href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy-policy' ) . '</a>';
+					 '. $imprintElement .' | '. $privacyElement;
 					if ( ! empty( $loopSettings->oncampusLink ) ) {
 						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
 					}
