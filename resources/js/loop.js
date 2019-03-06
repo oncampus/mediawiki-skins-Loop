@@ -64,7 +64,7 @@ $( document ).ready( function () {
 			});
 			
 		}
-		$(".panel-wrapper").fadeIn(200);
+		$("#toc-nav, #toc-specialpages").slideDown(200);
 	}, 5);
 	//mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
 		$("#t2s-button").click(function(){

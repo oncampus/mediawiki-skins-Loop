@@ -580,9 +580,9 @@ class LoopTemplate extends BaseTemplate {
 				}
 				
 				$html = '<div class="panel-heading">
-							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
+							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
 						</div>
-						<div id="toc-nav" class="panel-body p-1 pb-2 pl-0 pl-xl-2"><ul>';
+						<div id="toc-nav" class="panel-body pr-1 pl-1 pb-2 pl-xl-2 pt-0"><ul>';
 								
 				$rootNode = false;
 				
@@ -682,11 +682,6 @@ class LoopTemplate extends BaseTemplate {
 								'title' => $tmpAltText
 							)
 						);
-								/* // changed to linkrenderer - class atoc is missing
-								<a href="'. $tmpURL .'" class="aToc" title="'. $tmpAltText .'">
-									<span class="tocnumber'. $classIfOpened.'">'.$tmpChapter.'</span>
-									<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
-								</a>';*/
 
 					$lastTmpTocLevel = $tmpTocLevel;
 
@@ -699,7 +694,7 @@ class LoopTemplate extends BaseTemplate {
 				$editMsg = "";
 				if( $user->isAllowed( 'loop-toc-edit' ) && $loopRenderMode == 'default' ) {
 					$editButton = "<a href='" . Title::newFromText( 'Special:LoopStructureEdit' )->getFullURL() . "' id='editTocLink' class='ml-2'><i class='ic ic-edit'></i></a>";
-					$editMsg = "Bitte legen Sie ein Inhaltsverzeichnis an.";
+					$editMsg = $this->getSkin()->msg("loop-no-mainpage-warning");
 				}
 
 				$html = '<div class="panel-heading">
