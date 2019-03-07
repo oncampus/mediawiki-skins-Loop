@@ -1003,7 +1003,7 @@ class LoopTemplate extends BaseTemplate {
 						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 					}
 				}
-				if ( strpos( $loopSettings->imprintLink, "http" ) !== false ) {
+				if ( filter_var( htmlspecialchars_decode( $loopSettings->imprintLink ), FILTER_VALIDATE_URL ) ) {
 					$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
 				} else {
 					$title = Title::newFromText( $loopSettings->imprintLink );
@@ -1017,7 +1017,7 @@ class LoopTemplate extends BaseTemplate {
 					}
 				}
 				
-				if ( strpos( $loopSettings->privacyLink, "http" ) !== false ) {
+				if ( filter_var( htmlspecialchars_decode( $loopSettings->privacyLink ), FILTER_VALIDATE_URL ) ) {
 					$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
 				} else {
 					$title = Title::newFromText( $loopSettings->privacyLink );

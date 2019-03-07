@@ -88,6 +88,12 @@ class LoopSkinHooks {
 					$attribs['href'] = $newHref;
 					$attribs["class"] = $attribs["class"] . " local-link";
 
+				} elseif ( isset ($attribs['id'] ) ) {
+					if ( $attribs['id'] == "imprintlink" || $attribs['id'] == "privacylink" ) { 
+						$newHref = $loopHtml->resolveUrl( $target->mUrlform, '.html');
+						$attribs['href'] = $newHref;
+						$attribs["class"] = $attribs["class"] . " local-link";
+					}
 				} else { # internal pages that are not in structure
 					$attribs['href'] = $wgServer . $attribs['href'];
 				}
@@ -96,7 +102,7 @@ class LoopSkinHooks {
 				$newHref = $loopHtml->resolveUrl( "LoopStructure", '.html'); 
 				$attribs['href'] = $newHref;
 				$attribs["class"] = $attribs["class"] . " local-link";
-			}
+			} 
 		}
 
 		return true;
