@@ -1,10 +1,12 @@
 $( document ).ready( function () {
-	$html = $( 'html' );
-	$body = $( 'body' );
-	$mobileNavBtn = $( '#toggle-mobile-menu-btn' );
-	$navMenu = $( '#sidebar-wrapper' ); 
-	$mobileSearchBtn = $( '#toggle-mobile-search-btn' );
-	$mobileSearchBar = $( '#mobile-searchbar' );
+	var html = $( 'html' );
+	var body = $( 'body' );
+	var mobileNavBtn = $( '#toggle-mobile-menu-btn' );
+	var navMenu = $( '#sidebar-wrapper' ); 
+	var mobileSearchBtn = $( '#toggle-mobile-search-btn' );
+	var mobileSearchBar = $( '#mobile-searchbar' );
+	var tocNav = $('#toc-nav');
+	var tocSpecialNav = $('#toc-specialpages');
 	
 	/**
 	 * Set position of footer for short pages to bottom of the window.
@@ -16,49 +18,55 @@ $( document ).ready( function () {
 	/**
 	 * Toggle visibility of mobile toc menu.
 	 */
-	$mobileNavBtn.click( function () {
-		$navMenu.toggleClass( 'mobile-sidebar' );
-	    $navMenu.toggleClass( 'd-none' );
-	    $navMenu.toggleClass( 'd-block' );
-	    $navMenu.toggleClass( 'd-sm-none' );
-	    $navMenu.toggleClass( 'd-sm-block' );
-	    $navMenu.toggleClass( 'd-md-none' );
-	    $navMenu.toggleClass( 'd-md-block' );
+	mobileNavBtn.click( function () {
+		navMenu.toggleClass( 'mobile-sidebar' );
+	    navMenu.toggleClass( 'd-none' );
+	    navMenu.toggleClass( 'd-block' );
+	    navMenu.toggleClass( 'd-sm-none' );
+	    navMenu.toggleClass( 'd-sm-block' );
+	    navMenu.toggleClass( 'd-md-none' );
+	    navMenu.toggleClass( 'd-md-block' );
 	});
-	$mobileSearchBtn.click( function (){
-		$mobileSearchBar.toggleClass( 'd-none' );
-		$mobileSearchBar.toggleClass( 'd-block' );
-		$mobileSearchBar.find( 'input' ).focus(); 
+	mobileSearchBtn.click( function (){
+		mobileSearchBar.toggleClass( 'd-none' );
+		mobileSearchBar.toggleClass( 'd-block' );
+		mobileSearchBar.find( 'input' ).focus(); 
 	});
 	
 	/**
 	 * JS TREE
 	 */
+	
+
 	 // assuring jstree is loaded and ready before executing
-	mw.loader.using( ['skins.loop-jstree.js'] ).then( function ( ) {
-		var tocNav = $('#toc-nav');
-		var tocSpecialNav = $('#toc-specialpages');
-		tocNav.jstree().on("select_node.jstree", function (e, data) {
-			var href = data.node.a_attr.href;
-			document.location.href = href;
-		});
-		tocNav.jstree({
-			"core" : {
-				"multiple" : false,
-			}
-		});
-		tocSpecialNav.jstree().on("select_node.jstree", function (e, data) {
-			var href = data.node.a_attr.href;
-			document.location.href = href;
-		});
-		tocSpecialNav.jstree({
-			"core" : {
-				  "multiple" : false,
-			}
-		});
-		$(".panel-wrapper").fadeIn(200);
-	});
-	mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
+	var jstreeInterval = setInterval( function() {
+		if( $( $.jstree ) ) {
+			// jsTree is loaded, end interval
+			clearInterval( jstreeInterval )
+			
+			tocNav.jstree().on("select_node.jstree", function (e, data) {
+				var href = data.node.a_attr.href;
+				document.location.href = href;
+			});
+			tocNav.jstree({
+				"core" : {
+					"multiple" : false,
+				}
+			});
+			tocSpecialNav.jstree().on("select_node.jstree", function (e, data) {
+				var href = data.node.a_attr.href;
+				document.location.href = href;
+			});
+			tocSpecialNav.jstree({
+				"core" : {
+					"multiple" : false,
+				}
+			});
+			
+		}
+		$("#toc-nav, #toc-specialpages").slideDown(200);
+	}, 5);
+	//mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
 		$("#t2s-button").click(function(){
 			$(this).hide()
 			const player = new Plyr("#t2s-audio", {
@@ -69,10 +77,10 @@ $( document ).ready( function () {
 			$("#audio-wrapper").addClass("col-12 col-sm-5 col-md-3").removeClass("col-1");
 			$("#breadcrumb-area").addClass("col-12 col-sm-7 col-md-9").removeClass("col-11");
 		});
-	});
-	mw.loader.using( ['skins.loop-bootstrap.js'] ).then( function ( ) {
-		$('.page-symbol').tooltip({ boundary: 'window' })
-	});
+	//});
+	
+	$('.page-symbol').tooltip({ boundary: 'window' })
+	
 	
 	$(window).on( "resize", function() { resizeTables( false ) } )
 	$(document).ready( resizeTables( true ) )

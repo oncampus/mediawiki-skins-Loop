@@ -47,6 +47,9 @@
 		],
 		"ParserMakeImageParams":[
 			"LoopSkinHooks::onParserMakeImageParams"
+		],
+		"HtmlPageLinkRendererEnd":[
+			"LoopSkinHooks::onHtmlPageLinkRendererEnd"
 		]
 	},
 	"ResourceModules": {

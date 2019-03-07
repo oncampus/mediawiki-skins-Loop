@@ -30,12 +30,12 @@ a:hover {
 	background-size: @banner-background-size;
 	background-position: @banner-background-position;
 }
-#loop-title, #loop-title:hover, #title-container {
-	color: @loop-title-color;
-	text-decoration: none;
+#title-container a, #title-container a:hover  {
+	text-decoration: none !important;
 	padding-top: 20px;
 }
-#loop-title h1 {
+h1#loop-title, h1#loop-title:hover {
+	color: @loop-title-color;
 	padding-top: @title-padding !important;
 }
 #banner-logo-container {
@@ -99,6 +99,9 @@ fieldset[disabled] .btn-light {
 }
 #admin-btn:after {
 	margin-left: -2px;
+}
+.dropdown-menu a.new {
+	color: inherit
 }
 #page-searchbar-md input,
 #page-searchbar-lg-xl input {
@@ -172,7 +175,7 @@ ol.breadcrumb {
 	box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
 }
 .panel-wrapper {
-	display: none;
+	
 	min-width: 160px !important;
 }
 #content-inner-wrapper{
@@ -199,10 +202,12 @@ ol.breadcrumb {
 	color: gray;
 }
 .page-symbol:hover {
-	scroll-y: none;
+	overflow-y: none;
 }
 .viewport {
 	max-width: none;
+	transform: scale(1);
+	transform-origin: 0 0;
 	-webkit-transform: scale(1);
 	-webkit-transform-origin: 0 0;
 	-ms-transform: scale(1);
@@ -219,6 +224,9 @@ ol.breadcrumb {
 /** *** *** *** *** *** **/
 /** *** J S T R E E *** **/
 /** *** *** *** *** *** **/
+#toc-nav, #toc-specialpages {
+	display: none;
+}
 .jstree-node a:after {
 	content: "";
 	height: 24px;
@@ -295,7 +303,7 @@ pre {
 code {
     background-color: fade(#e83e8c, 5%);
 }
-.mw-editsection-bracket {
+.mw-editsection-bracket, editsection {
 	display: none;
 }
 .mw-editsection, #editpagelink, #edittoclink {
@@ -309,9 +317,9 @@ code {
 .mw-editsection-bracket ~ a, #editpagelink {
 	text-decoration: none;
 }
-#mw-content-text :last-child > * {
-	/* margin-bottom: 0 !important; */
-}
+/* #mw-content-text :last-child > * {
+	 margin-bottom: 0 !important;
+} */
 #loopsettings-form label {
 	display: inline;
 }
