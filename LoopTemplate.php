@@ -24,6 +24,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
+		$user = $this->getSkin()->getUser();
 		$this->html( 'headelement' );
 		
 		if( $this->renderMode != "epub" ) { ?>
@@ -92,7 +93,7 @@ class LoopTemplate extends BaseTemplate {
 												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 												$this->outputPageEditMenu( );
 											}
-											if ( isset( $loopStructure->mainPage ) ) {?>
+											if ( isset( $loopStructure->mainPage ) && $user->isAllowed('read') ) {?>
 												<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
 										<?php }?>
 									</div>
@@ -218,17 +219,18 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-						
-							<div class="panel-wrapper">
-								<?php 	$this->outputToc( $loopStructure ); 
-								
-								if( isset( $loopStructure->mainPage ) ) { 
-									$this->outputSpecialPages( );
-								} ?>
-							</div>
-							<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
-								$this->outputExportPanel( ); 
-							}?>
+							<?php if( $user->isAllowed( 'read' ) ) { ?>
+								<div class="panel-wrapper">
+									<?php 	$this->outputToc( $loopStructure ); 
+									
+									if( isset( $loopStructure->mainPage ) ) { 
+										$this->outputSpecialPages( );
+									} ?>
+								</div>
+								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
+									$this->outputExportPanel( ); 
+								}?>
+							<?php } ?>
 						</div>	
 					</div>
 				</div> 
