@@ -13,7 +13,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgDefaultUserOptions;
+		global $wgDefaultUserOptions, $wgOut;
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
@@ -24,6 +24,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
+		$user = $this->getSkin()->getUser();
 		$this->html( 'headelement' );
 		
 		if( $this->renderMode != "epub" ) { ?>
@@ -88,15 +89,15 @@ class LoopTemplate extends BaseTemplate {
 									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
 										<?php $this->outputNavigation( $loopStructure ); 
 											echo '<div class="btn-group float-right">'; 
-											if( $this->renderMode != "offline" ) { 
+											if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { 
 												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 												$this->outputPageEditMenu( );
 											}
-											if ( isset( $loopStructure->mainPage ) ) {?>
+											if ( isset( $loopStructure->mainPage ) && $user->isAllowed('read') ) {?>
 												<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
 										<?php }?>
 									</div>
-									<?php if( $this->renderMode != "offline" ) { ?>
+									<?php if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { ?>
 										<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
 											<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
 												<?php
@@ -113,7 +114,7 @@ class LoopTemplate extends BaseTemplate {
 										</div>
 									<?php } ?>
 								</div>
-								<?php if( $this->renderMode != "offline" ) { ?>
+								<?php if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { ?>
 									<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
 										<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
 										<?php
@@ -142,7 +143,7 @@ class LoopTemplate extends BaseTemplate {
 				<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
 					<div class="container">
 						<div class="row">
-							<?php if( $this->renderMode != "offline" ) { ?>
+							<?php if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { ?>
 								<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
 									<form id="search-mobile" action="<?php $this->text( 'wgScript' ); ?>">
 										<?php
@@ -167,7 +168,7 @@ class LoopTemplate extends BaseTemplate {
 							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 float-left" id="breadcrumb-area">
 								<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 							</div>
-							<?php if( $this->renderMode != "offline" ) { 
+							<?php if( $this->renderMode != "offline" && $user->isAllowed('read') && $wgOut->isArticle() ) { 
 								            	
 								$this->outputAudioButton();
 							}?>
@@ -218,17 +219,18 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-						
-							<div class="panel-wrapper">
-								<?php 	$this->outputToc( $loopStructure ); 
-								
-								if( isset( $loopStructure->mainPage ) ) { 
-									$this->outputSpecialPages( );
-								} ?>
-							</div>
-							<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
-								$this->outputExportPanel( ); 
-							}?>
+							<?php if( $user->isAllowed( 'read' ) ) { ?>
+								<div class="panel-wrapper">
+									<?php 	$this->outputToc( $loopStructure ); 
+									
+									if( isset( $loopStructure->mainPage ) ) { 
+										$this->outputSpecialPages( );
+									} ?>
+								</div>
+								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
+									$this->outputExportPanel( ); 
+								}?>
+							<?php } ?>
 						</div>	
 					</div>
 				</div> 
@@ -320,6 +322,7 @@ class LoopTemplate extends BaseTemplate {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		$mainPage = $loopStructure->mainPage;
+		$user = $this->getSkin()->getUser();
 		
 		$article_id = $this->getSkin()->getTitle()->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
@@ -348,13 +351,13 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ).'" ';
 			
-		if ( ! isset( $previousChapterItem->article ) ) {
+		if ( ! isset( $previousChapterItem->article ) || ! $user->isAllowed('read') ) {
 			$previous_chapter_button .= 'disabled="disabled"';
 		}
 		
 		$previous_chapter_button .= '><span class="ic ic-chapter-previous"></span></button>';
 		
-		if( isset( $previousChapterItem->article ) ) {
+		if( isset( $previousChapterItem->article ) && $user->isAllowed('read') ) {
 			echo $linkRenderer->makelink(
 				Title::newFromID( $previousChapterItem->article ),
 				new HtmlArmor( $previous_chapter_button ),
@@ -372,13 +375,13 @@ class LoopTemplate extends BaseTemplate {
 		
 		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 		
-		if ( ! isset( $previousPage ) || $previousPage == 0 ) {
+		if ( ! isset( $previousPage ) || $previousPage == 0 || ! $user->isAllowed('read') ) {
 			$previous_page_button .= 'disabled="disabled"';
 		}
 		
 		$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 		
-		if( isset( $previousPage ) && $previousPage > 0 ) {
+		if( isset( $previousPage ) && $previousPage > 0 && $user->isAllowed('read') ) {
 			echo $linkRenderer->makelink(
 				Title::newFromID( $previousPage ),
 				new HtmlArmor( $previous_page_button ),
@@ -391,16 +394,26 @@ class LoopTemplate extends BaseTemplate {
 		
 		
 		// TOC  button
-		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'" ><span class="ic ic-toc"></span></button>';
+		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'"';
 		
-		$link = $linkRenderer->makelink( 
-			new TitleValue( NS_SPECIAL, 'LoopStructure' ),
-			new HtmlArmor( $toc_button ),
-			array(
-				'id' => 'toc-button'
-			)
-		); 
-		echo $link;
+		if ( ! isset( $previousPage ) || $previousPage == 0 || ! $user->isAllowed('read') ) {
+			$toc_button .= 'disabled="disabled"';
+		}
+		
+		$toc_button .= '><span class="ic ic-toc"></span></button>';
+		
+		if( $user->isAllowed('read') ) {
+
+			echo $linkRenderer->makelink( 
+				new TitleValue( NS_SPECIAL, 'LoopStructure' ),
+				new HtmlArmor( $toc_button ),
+				array(
+					'id' => 'toc-button'
+				)
+			); 
+		} else {
+			echo '<a href="#">'.$toc_button.'</a>';
+		}
 		
 		// next button
 		
@@ -410,12 +423,12 @@ class LoopTemplate extends BaseTemplate {
 		//dd( $nextPage );
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
-		if ( ! isset( $nextPage ) || $nextPage == 0 ) {
+		if ( ! isset( $nextPage ) || $nextPage == 0 || ! $user->isAllowed('read') ) {
 			$next_page_button .= 'disabled="disabled"';
 		}
 		$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 	
-		if( isset( $nextPage ) && $nextPage > 0 ) {
+		if( isset( $nextPage ) && $nextPage > 0 && $user->isAllowed('read') ) {
 			echo $linkRenderer->makelink(
 				Title::newFromID( $nextPage ),
 				new HtmlArmor( $next_page_button ),
@@ -434,13 +447,13 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-chapter' ).'" ';
 			
-		if ( ! isset( $nextChapterItem->article ) ) {
+		if ( ! isset( $nextChapterItem->article ) || ! $user->isAllowed('read') ) {
 			$next_chapter_button .= 'disabled="disabled"';
 		}
 		
 		$next_chapter_button .= '><span class="ic ic-chapter-next"></span></button>';
 		
-		if( isset( $nextChapterItem->article ) ) {
+		if( isset( $nextChapterItem->article ) && $user->isAllowed('read') ) {
 			echo $linkRenderer->makelink(
 				Title::newFromID( $nextChapterItem->article ),
 				new HtmlArmor( $next_chapter_button ),
@@ -466,7 +479,8 @@ class LoopTemplate extends BaseTemplate {
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		
+			$user = $this->getSkin()->getUser();
+
 			// Previous Page
 			if ( $lsi ) {
 				$previousPage = $lsi->previousArticle;
@@ -474,12 +488,12 @@ class LoopTemplate extends BaseTemplate {
 			
 			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn mr-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 			
-			if ( ! isset( $previousPage ) || $previousPage == 0  ) {
+			if ( ! isset( $previousPage ) || $previousPage == 0 || ! $user->isAllowed('read') ) {
 				$previous_page_button .= 'disabled="disabled"';
 			}
 			
 			$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
-			if( isset( $previousPage ) && $previousPage > 0) {
+			if( isset( $previousPage ) && $previousPage > 0 && $user->isAllowed('read')) {
 				$bottomNav .= $linkRenderer->makelink(
 					Title::newFromID( $previousPage ),
 					new HtmlArmor( $previous_page_button ),
@@ -496,12 +510,12 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 			
-			if ( ! isset( $nextPage ) || $nextPage == 0  ) {
+			if ( ! isset( $nextPage ) || $nextPage == 0 || ! $user->isAllowed('read') ) {
 				$next_page_button .= 'disabled="disabled"';
 			}
 			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 		
-			if( isset( $nextPage ) && $nextPage > 0 ) {
+			if( isset( $nextPage ) && $nextPage > 0 && $user->isAllowed('read') ) {
 				$bottomNav .= $linkRenderer->makelink(
 					Title::newFromID( $nextPage ),
 					new HtmlArmor( $next_page_button ),
@@ -740,7 +754,7 @@ class LoopTemplate extends BaseTemplate {
 		$user = $this->getSkin()->getUser();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
-		if ( $user->isAllowed( 'edit' ) ) {
+		if ( $user->isAllowed( 'edit' ) && $user->isAllowed( 'read' ) ) {
     
 		$content_navigation_skip=array();
 		$content_navigation_skip['namespaces']['main'] = true;
@@ -887,13 +901,21 @@ class LoopTemplate extends BaseTemplate {
 		}
 	} // outputPageEditMenu
 	private function outputPageSymbols () {
+		global $wgOut;
+		$user = $this->getSkin()->getUser();
 		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
-		if( $this->renderMode != "offline" ) { 
-			$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
-		} 
-		$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
-					<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>
-					<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
+		
+		if( $wgOut->isArticle() ) {
+			if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { 
+				$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
+			} 
+			
+			if( $user->isAllowed( 'read' ) ) { 
+			$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
+						<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+			}
+		}
+		$html .= '	<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
 				</div>';
 		echo $html;
 	}
