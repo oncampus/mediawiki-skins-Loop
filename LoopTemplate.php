@@ -479,7 +479,8 @@ class LoopTemplate extends BaseTemplate {
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		
+			$user = $this->getSkin()->getUser();
+
 			// Previous Page
 			if ( $lsi ) {
 				$previousPage = $lsi->previousArticle;
