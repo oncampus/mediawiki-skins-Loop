@@ -48,13 +48,11 @@ class LoopTemplate extends BaseTemplate {
 													array('id' => 'loop-logo')
 												);
 											} else {
-												//dd($this->data["sidebar"]["navigation"][0]["text"], $this->data);
 												echo $linkRenderer->makelink(
 													Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ), 
 													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
 													array('id' => 'loop-logo')
 												);
-												//echo '<a id="logo" href="' . htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) . '">' . '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>' . '</a>';
 											}
 										?>
 									</div>
@@ -420,7 +418,6 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$nextPage = $lsi->nextArticle;
 		}
-		//dd( $nextPage );
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
 		if ( ! isset( $nextPage ) || $nextPage == 0 || ! $user->isAllowed('read') ) {
@@ -641,11 +638,6 @@ class LoopTemplate extends BaseTemplate {
 								array(
 									'class' => 'aToc')
 							);
-						/*
-						<a href="'. $tmpURL .'" class="aToc internal-link">
-							<span class="tocnumber'. $classIfOpened .'"></span>
-							<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>
-						'</a>';*/
 						$rootNode = true;
 						continue;
 						
@@ -738,7 +730,6 @@ class LoopTemplate extends BaseTemplate {
 	private function outputAudioButton( ) {
 		global $wgText2Speech, $wgOut;
 		if ( $wgText2Speech == "true" ) {
-			//dd($wgText2Speech);
 			$wgOut->addModules("skins.loop-plyr.js");
 			
 			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
