@@ -22,7 +22,8 @@ class LoopTemplate extends BaseTemplate {
 		$this->loopSettings = new LoopSettings();
 		$this->loopSettings->loadSettings();
 		$this->user = $this->getSkin()->getUser();
-		
+		$this->title = $this->getSkin()->getTitle();
+
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
 
@@ -189,19 +190,19 @@ class LoopTemplate extends BaseTemplate {
 										} // end of excluding rendermode-epub 
 		            					if ( isset( $loopStructure->mainPage ) ) {
 		            	
-			            					$article_id = $this->getSkin()->getTitle()->getArticleID();
+			            					$article_id = $this->title->getArticleID();
 			            					$lsi = LoopStructureItem::newFromIds($article_id); 
 			            					
 								            if ( $lsi ) {
 								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
 
 								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
-								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->getSkin()->getTitle() . '&action=edit"><i class="ic ic-edit"></i></a>';
+								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->title . '&action=edit"><i class="ic ic-edit"></i></a>';
 								            	}
 								            	echo '</h1>';
 								            }
 							            } else {
-							            	echo '<h1 id="title">'.$this->getSkin()->getTitle().'</h1>';
+							            	echo '<h1 id="title">'.$this->title.'</h1>';
 										}
 										?>
 				
@@ -320,7 +321,7 @@ class LoopTemplate extends BaseTemplate {
 		$mainPage = $loopStructure->mainPage;
 		$user = $this->user;
 		
-		$article_id = $this->getSkin()->getTitle()->getArticleID();
+		$article_id = $this->title->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
 		
@@ -471,7 +472,7 @@ class LoopTemplate extends BaseTemplate {
 
 			$bottomNav = '<div class="btn-group">';
 			
-			$article_id = $this->getSkin()->getTitle()->getArticleID();
+			$article_id = $this->title->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
 			$user = $this->user;
 
@@ -536,7 +537,7 @@ class LoopTemplate extends BaseTemplate {
 			
 		global $wgDefaultUserOptions; 
 		
-		$article_id = $this->getSkin()->getTitle()->getArticleID();
+		$article_id = $this->title->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 		$user = $this->user;
 		$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
@@ -596,7 +597,7 @@ class LoopTemplate extends BaseTemplate {
 				// build JS tree
 				foreach( $loopStructure->getStructureitems() as $lsi) {
 					
-					$currentPageTitle = $this->getSkin()->getTitle();
+					$currentPageTitle = $this->title;
 					$tmpChapter = $lsi->tocNumber;
 					$tmpTitle = Title::newFromID( $lsi->article );
 					$tmpURL = $tmpTitle->getFullURL();
@@ -714,7 +715,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		if ( isset( $loopStructure->mainPage ) ) {
 			
-			$article_id = $this->getSkin()->getTitle()->getArticleID();
+			$article_id = $this->title->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
 			
 			if( $lsi ) {
@@ -779,7 +780,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		}
 		// Link for editing TOC
-		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
 			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
 				echo $this->linkRenderer->makelink( 
 					new TitleValue( 
@@ -793,7 +794,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		// Loop Edit Mode
 			
-		$nameSpace = $this->getSkin()->getTitle()->getNameSpace();
+		$nameSpace = $this->title->getNameSpace();
 		
 		if ( $user->isAllowed( 'edit' ) ) {
 			
