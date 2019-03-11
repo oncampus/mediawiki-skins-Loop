@@ -17,14 +17,15 @@ class LoopTemplate extends BaseTemplate {
 		 
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$this->linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
-		$loopSettings = new LoopSettings();
-		$loopSettings->loadSettings();
+		$this->loopSettings = new LoopSettings();
+		$this->loopSettings->loadSettings();
+		$this->user = $this->getSkin()->getUser();
 		
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
-		$user = $this->getSkin()->getUser();
+
 		$this->html( 'headelement' );
 		
 		if( $this->renderMode != "epub" ) { ?>
@@ -38,17 +39,17 @@ class LoopTemplate extends BaseTemplate {
 									<div class="col-9" id="logo-wrapper">
 										<?php 
 											$customLogo = '';
-											if( $loopSettings->customLogo == 'useCustomLogo' && ! empty( $loopSettings->customLogoFilePath ) ) {
-												$customLogo = ' style="background-image:url('.$loopSettings->customLogoFilePath.');"';
+											if( $this->loopSettings->customLogo == 'useCustomLogo' && ! empty( $this->loopSettings->customLogoFilePath ) ) {
+												$customLogo = ' style="background-image:url('.$this->loopSettings->customLogoFilePath.');"';
 											}
 											if( isset( $loopStructure->mainPage ) ) {
-												echo $linkRenderer->makelink(
+												echo $this->linkRenderer->makelink(
 													Title::newFromID( $loopStructure->mainPage ), 
 													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
 													array('id' => 'loop-logo')
 												);
 											} else {
-												echo $linkRenderer->makelink(
+												echo $this->linkRenderer->makelink(
 													Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ), 
 													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
 													array('id' => 'loop-logo')
@@ -68,13 +69,13 @@ class LoopTemplate extends BaseTemplate {
 							<?php 
 								if( isset( $loopStructure->mainPage ) ) {
 									$title = Title::newFromID( $loopStructure->mainPage );
-									echo $linkRenderer->makelink(
+									echo $this->linkRenderer->makelink(
 										$title,
 										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
 									);
 								} else {
 									global $wgSitename;
-									echo $linkRenderer->makelink(
+									echo $this->linkRenderer->makelink(
 										Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
 										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>' )
 									);
@@ -87,15 +88,15 @@ class LoopTemplate extends BaseTemplate {
 									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
 										<?php $this->outputNavigation( $loopStructure ); 
 											echo '<div class="btn-group float-right">'; 
-											if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { 
+											if( $this->renderMode != "offline" && $this->user->isAllowed( 'read' ) ) { 
 												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
 												$this->outputPageEditMenu( );
 											}
-											if ( isset( $loopStructure->mainPage ) && $user->isAllowed('read') ) {?>
+											if ( isset( $loopStructure->mainPage ) && $this->user->isAllowed('read') ) {?>
 												<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
 										<?php }?>
 									</div>
-									<?php if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { ?>
+									<?php if( $this->renderMode != "offline" && $this->user->isAllowed( 'read' ) ) { ?>
 										<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
 											<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
 												<?php
@@ -112,7 +113,7 @@ class LoopTemplate extends BaseTemplate {
 										</div>
 									<?php } ?>
 								</div>
-								<?php if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { ?>
+								<?php if( $this->renderMode != "offline" && $this->user->isAllowed( 'read' ) ) { ?>
 									<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
 										<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
 										<?php
@@ -141,7 +142,7 @@ class LoopTemplate extends BaseTemplate {
 				<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
 					<div class="container">
 						<div class="row">
-							<?php if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { ?>
+							<?php if( $this->renderMode != "offline" && $this->user->isAllowed( 'read' ) ) { ?>
 								<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
 									<form id="search-mobile" action="<?php $this->text( 'wgScript' ); ?>">
 										<?php
@@ -166,7 +167,7 @@ class LoopTemplate extends BaseTemplate {
 							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 float-left" id="breadcrumb-area">
 								<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 							</div>
-							<?php if( $this->renderMode != "offline" && $user->isAllowed('read') && $wgOut->isArticle() ) { 
+							<?php if( $this->renderMode != "offline" && $this->user->isAllowed('read') && $wgOut->isArticle() ) { 
 								            	
 								$this->outputAudioButton();
 							}?>
@@ -217,7 +218,7 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $user->isAllowed( 'read' ) ) { ?>
+							<?php if( $this->user->isAllowed( 'read' ) ) { ?>
 								<div class="panel-wrapper">
 									<?php 	$this->outputToc( $loopStructure ); 
 									
@@ -236,18 +237,17 @@ class LoopTemplate extends BaseTemplate {
 		</div> 
 		<!--FOOTER SECTION-->
 		<footer>
-			<?php $this->outputFooter( $loopSettings ); ?>
+			<?php $this->outputFooter( ); ?>
 		</footer>
 	<?php 
 		}
 	}
 	
 	private function outputUserMenu() {
-		global $wgOut; 
 		
 		$personTools = $this->getPersonalTools ();
 		
-		$user = $wgOut->getUser();
+		$user = $this->user;
 		
 		if( $user->isLoggedIn ()) {
 			if ( ! $userName = $user->getRealName ()) {
@@ -316,11 +316,9 @@ class LoopTemplate extends BaseTemplate {
 	}
 	private function outputNavigation( $loopStructure ) {
 		echo '<div class="btn-group float-left">';
-		global $wgTitle;
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		$mainPage = $loopStructure->mainPage;
-		$user = $this->getSkin()->getUser();
+		$user = $this->user;
 		
 		$article_id = $this->getSkin()->getTitle()->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
@@ -332,7 +330,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$home_button .= '><span class="ic ic-home"></span></button>';
 		if( $mainPage ) {
-			echo $linkRenderer->makelink(
+			echo $this->linkRenderer->makelink(
 				Title::newFromID($mainPage), 
 				new HtmlArmor( $home_button ),
 				array('class' => 'nav-btn',
@@ -356,7 +354,7 @@ class LoopTemplate extends BaseTemplate {
 		$previous_chapter_button .= '><span class="ic ic-chapter-previous"></span></button>';
 		
 		if( isset( $previousChapterItem->article ) && $user->isAllowed('read') ) {
-			echo $linkRenderer->makelink(
+			echo $this->linkRenderer->makelink(
 				Title::newFromID( $previousChapterItem->article ),
 				new HtmlArmor( $previous_chapter_button ),
 				array('class' => 'nav-btn',
@@ -380,7 +378,7 @@ class LoopTemplate extends BaseTemplate {
 		$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 		
 		if( isset( $previousPage ) && $previousPage > 0 && $user->isAllowed('read') ) {
-			echo $linkRenderer->makelink(
+			echo $this->linkRenderer->makelink(
 				Title::newFromID( $previousPage ),
 				new HtmlArmor( $previous_page_button ),
 				array('class' => 'nav-btn',
@@ -402,7 +400,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		if( $user->isAllowed('read') ) {
 
-			echo $linkRenderer->makelink( 
+			echo $this->linkRenderer->makelink( 
 				new TitleValue( NS_SPECIAL, 'LoopStructure' ),
 				new HtmlArmor( $toc_button ),
 				array(
@@ -426,7 +424,7 @@ class LoopTemplate extends BaseTemplate {
 		$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 	
 		if( isset( $nextPage ) && $nextPage > 0 && $user->isAllowed('read') ) {
-			echo $linkRenderer->makelink(
+			echo $this->linkRenderer->makelink(
 				Title::newFromID( $nextPage ),
 				new HtmlArmor( $next_page_button ),
 				array('class' => 'nav-btn',
@@ -451,7 +449,7 @@ class LoopTemplate extends BaseTemplate {
 		$next_chapter_button .= '><span class="ic ic-chapter-next"></span></button>';
 		
 		if( isset( $nextChapterItem->article ) && $user->isAllowed('read') ) {
-			echo $linkRenderer->makelink(
+			echo $this->linkRenderer->makelink(
 				Title::newFromID( $nextChapterItem->article ),
 				new HtmlArmor( $next_chapter_button ),
 				array('class' => 'nav-btn',
@@ -475,8 +473,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			$article_id = $this->getSkin()->getTitle()->getArticleID();
 			$lsi = LoopStructureItem::newFromIds( $article_id );
-			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-			$user = $this->getSkin()->getUser();
+			$user = $this->user;
 
 			// Previous Page
 			if ( $lsi ) {
@@ -491,7 +488,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 			if( isset( $previousPage ) && $previousPage > 0 && $user->isAllowed('read')) {
-				$bottomNav .= $linkRenderer->makelink(
+				$bottomNav .= $this->linkRenderer->makelink(
 					Title::newFromID( $previousPage ),
 					new HtmlArmor( $previous_page_button ),
 					array('class' => 'nav-btn',
@@ -513,7 +510,7 @@ class LoopTemplate extends BaseTemplate {
 			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 		
 			if( isset( $nextPage ) && $nextPage > 0 && $user->isAllowed('read') ) {
-				$bottomNav .= $linkRenderer->makelink(
+				$bottomNav .= $this->linkRenderer->makelink(
 					Title::newFromID( $nextPage ),
 					new HtmlArmor( $next_page_button ),
 					array( 'class' => 'nav-btn',
@@ -541,8 +538,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$article_id = $this->getSkin()->getTitle()->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		$user = $this->getSkin()->getUser();
+		$user = $this->user;
 		$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
 		$loopRenderMode = $user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 			
@@ -630,7 +626,7 @@ class LoopTemplate extends BaseTemplate {
 						// outputs the first node (mainpage)
 						
 						$html .= '<li>' .
-							$linkRenderer->makelink(
+							$this->linkRenderer->makelink(
 								$tmpTitle,
 								new HtmlArmor( 
 									'<span class="tocnumber'. $classIfOpened .'"></span>
@@ -678,7 +674,7 @@ class LoopTemplate extends BaseTemplate {
 					// outputs the page in jstree
 					
 					$html .= '<li'.$jstreeData.'>'.
-						$linkRenderer->makelink(
+						$this->linkRenderer->makelink(
 							$tmpTitle,
 							new HtmlArmor( 
 								'<span class="tocnumber'. $classIfOpened .'">'.$tmpChapter.'</span>
@@ -742,8 +738,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		global $wgDefaultUserOptions;
 		
-		$user = $this->getSkin()->getUser();
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$user = $this->user;
 		
 		if ( $user->isAllowed( 'edit' ) && $user->isAllowed( 'read' ) ) {
     
@@ -786,7 +781,7 @@ class LoopTemplate extends BaseTemplate {
 		// Link for editing TOC
 		if ( $this->getSkin()->getTitle() == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
 			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
-				echo $linkRenderer->makelink( 
+				echo $this->linkRenderer->makelink( 
 					new TitleValue( 
 						NS_SPECIAL, 
 						'LoopStructureEdit' 
@@ -813,7 +808,7 @@ class LoopTemplate extends BaseTemplate {
 				$loopEditmodeClass = "nav-loop-editmode-off";
 				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
 			}					
-			echo $linkRenderer->makelink(
+			echo $this->linkRenderer->makelink(
 				$this->getSkin()->getRelevantTitle(),
 				new HtmlArmor( '<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg ),
 				array(
@@ -837,7 +832,7 @@ class LoopTemplate extends BaseTemplate {
 				$loopOfflinemodeButtonValue = "offline";
 				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' );
 			 			
-				echo $linkRenderer->makelink(
+				echo $this->linkRenderer->makelink(
 					$this->getSkin()->getRelevantTitle(),
 					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $loopOfflinemodeMsg ),
 					array(
@@ -855,7 +850,7 @@ class LoopTemplate extends BaseTemplate {
 				$loopEpubModeButtonValue = "epub";
 				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' );
 						
-				echo $linkRenderer->makelink(
+				echo $this->linkRenderer->makelink(
 					$this->getSkin()->getRelevantTitle(),
 					new HtmlArmor( '<span class="ic ic-file-epub"></span> ' . $loopEpubModeMsg ),
 					array(
@@ -875,16 +870,16 @@ class LoopTemplate extends BaseTemplate {
 		echo '<div class="dropdown-divider"></div>';
 		
 		if ( $user->isAllowed( "loop-settings-edit" ) ) {
-			echo $linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'LoopSettings' ), new HtmlArmor( '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ) ),
+			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'LoopSettings' ), new HtmlArmor( '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ) ),
 					array('class' => 'dropdown-item') );
 		}
 		
 		if ( $user->isAllowed( "purgecache" ) ) {
-			echo $linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'PurgeCache' ), new HtmlArmor( '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ) ),
+			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'PurgeCache' ), new HtmlArmor( '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ) ),
 					array('class' => 'dropdown-item') );
 		}
 		
-		echo $linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'Specialpages' ), new HtmlArmor( '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' ) ),
+		echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'Specialpages' ), new HtmlArmor( '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' ) ),
 				array('class' => 'dropdown-item') );
 		
 		echo '</div></div>';
@@ -893,7 +888,7 @@ class LoopTemplate extends BaseTemplate {
 	} // outputPageEditMenu
 	private function outputPageSymbols () {
 		global $wgOut;
-		$user = $this->getSkin()->getUser();
+		$user = $this->user;
 		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
 		
 		if( $wgOut->isArticle() ) {
@@ -903,7 +898,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			if( $user->isAllowed( 'read' ) ) { 
 			$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
-						<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus*/ .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+						<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus */.'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
 			}
 		}
 		$html .= '	<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
@@ -924,7 +919,6 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' ) || 
 			 $user->isAllowed( 'loop-export-html' ) || $user->isAllowed( 'loop-export-mp3' ) ) { # TODO other export formats
@@ -936,7 +930,7 @@ class LoopTemplate extends BaseTemplate {
 							<div class="pb-2">';
 
 			if ( $user->isAllowed( 'loop-export-pdf' )) {
-				$pdfExportLink = $linkRenderer->makelink( 
+				$pdfExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
 					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
@@ -946,7 +940,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<span>'.$pdfExportLink.'</span><br/>';
 			}			
 			if ( $user->isAllowed( 'loop-export-xml' )) {
-				$xmlExportLink = $linkRenderer->makelink( 
+				$xmlExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
 					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
@@ -957,7 +951,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
 			}	
 			if ( $user->isAllowed( 'loop-export-html' )) {
-				$htmlExportLink = $linkRenderer->makelink( 
+				$htmlExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/html' ), 
 					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-html' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-html' ),
@@ -968,7 +962,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
 			}
 			if ( $user->isAllowed( 'loop-export-mp3' )) {
-				$mp3ExportLink = $linkRenderer->makelink( 
+				$mp3ExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
 					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
@@ -985,17 +979,16 @@ class LoopTemplate extends BaseTemplate {
 		}
 	}
 
-	private function outputFooter ( LoopSettings $loopSettings ) {
+	private function outputFooter ( ) {
 		
 		global $wgRightsText, $wgRightsIcon, $wgRightsUrl;
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		
 		$html = ""; 
 		
-		if ( $loopSettings->extraFooter == "useExtraFooter" && ! empty( $loopSettings->extraFooterParsed ) ) {
+		if ( $this->loopSettings->extraFooter == "useExtraFooter" && ! empty( $this->loopSettings->extraFooterParsed ) ) {
 			$html .= '<div class="col-12 text-center" id="extra-footer">
 					<div id="extra-footer-content" class="p-3">' . 
-						$loopSettings->extraFooterParsed . '</div></div>';
+						$this->loopSettings->extraFooterParsed . '</div></div>';
 		}
 		$html .= '<div class="container-fluid">
 		<div class="row">
@@ -1004,11 +997,11 @@ class LoopTemplate extends BaseTemplate {
 					<div id="footer-right" class="pl-0 pr-0 text-center text-sm-right float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-0">';
 					
 					$socialIcons = array( 
-						'Facebook' => array( 'icon' => $loopSettings->facebookIcon, 'link' => $loopSettings->facebookLink ),
-						'Twitter' => array( 'icon' => $loopSettings->twitterIcon, 'link' => $loopSettings->twitterLink ),
-						'Youtube' => array( 'icon' => $loopSettings->youtubeIcon, 'link' => $loopSettings->youtubeLink ),
-						'Github' => array( 'icon' => $loopSettings->githubIcon, 'link' => $loopSettings->githubLink ), 
-						'Instagram' => array( 'icon' => $loopSettings->instagramIcon, 'link' => $loopSettings->instagramLink )
+						'Facebook' => array( 'icon' => $this->loopSettings->facebookIcon, 'link' => $this->loopSettings->facebookLink ),
+						'Twitter' => array( 'icon' => $this->loopSettings->twitterIcon, 'link' => $this->loopSettings->twitterLink ),
+						'Youtube' => array( 'icon' => $this->loopSettings->youtubeIcon, 'link' => $this->loopSettings->youtubeLink ),
+						'Github' => array( 'icon' => $this->loopSettings->githubIcon, 'link' => $this->loopSettings->githubLink ), 
+						'Instagram' => array( 'icon' => $this->loopSettings->instagramIcon, 'link' => $this->loopSettings->instagramLink )
 					);
 				foreach( $socialIcons as $socialIcon ) {
 
@@ -1016,13 +1009,13 @@ class LoopTemplate extends BaseTemplate {
 						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 					}
 				}
-				if ( filter_var( htmlspecialchars_decode( $loopSettings->imprintLink ), FILTER_VALIDATE_URL ) ) {
-					$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
+				if ( filter_var( htmlspecialchars_decode( $this->loopSettings->imprintLink ), FILTER_VALIDATE_URL ) ) {
+					$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $this->loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
 				} else {
-					$title = Title::newFromText( $loopSettings->imprintLink );
+					$title = Title::newFromText( $this->loopSettings->imprintLink );
 					
 					if ( ! empty ($title->mTextform) ) {
-						$imprintElement = $linkRenderer->makeLink(
+						$imprintElement = $this->linkRenderer->makeLink(
 							$title,
 							new HtmlArmor( $this->getSkin()->msg( 'imprint' ) ),
 							array( "id" => "imprintlink")
@@ -1030,13 +1023,13 @@ class LoopTemplate extends BaseTemplate {
 					}
 				}
 				
-				if ( filter_var( htmlspecialchars_decode( $loopSettings->privacyLink ), FILTER_VALIDATE_URL ) ) {
-					$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
+				if ( filter_var( htmlspecialchars_decode( $this->loopSettings->privacyLink ), FILTER_VALIDATE_URL ) ) {
+					$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $this->loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
 				} else {
-					$title = Title::newFromText( $loopSettings->privacyLink );
+					$title = Title::newFromText( $this->loopSettings->privacyLink );
 					
 					if ( ! empty ($title->mTextform) ) {
-						$privacyElement = $linkRenderer->makeLink(
+						$privacyElement = $this->linkRenderer->makeLink(
 							$title,
 							new HtmlArmor( $this->getSkin()->msg( 'privacy' ) ),
 							array( "id" => "privacylink")
@@ -1047,12 +1040,12 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '</div>
 				<div id="footer-center" class="text-center float-right col-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
 					 '. $imprintElement .' | '. $privacyElement;
-					if ( ! empty( $loopSettings->oncampusLink ) ) {
+					if ( ! empty( $this->loopSettings->oncampusLink ) ) {
 						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
 					}
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
-				if ( ! empty ( $loopSettings->rightsType ) ) {
+				if ( ! empty ( $this->loopSettings->rightsType ) ) {
 					$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
 				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>
