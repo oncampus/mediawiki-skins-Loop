@@ -27,6 +27,7 @@ class LoopTemplate extends BaseTemplate {
 		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
 
+		//dd($this->title->flaggedRevsArticle);
 		$this->html( 'headelement' );
 		
 		if( $this->renderMode != "epub" ) { ?>
@@ -893,15 +894,23 @@ class LoopTemplate extends BaseTemplate {
 		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
 		
 		if( $wgOut->isArticle() ) {
-			if( $this->renderMode != "offline" && $user->isAllowed( 'read' ) ) { 
+			
+			$this->pageRevisionStatus = $this->getPageRevisionStatus();
+
+			if( $this->renderMode != "offline"  ) { 
 				$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
 			} 
 			
-			if( $user->isAllowed( 'read' ) ) { 
-			$this->pageRevisionStatus = $this->getPageRevisionStatus();
+			$html .= '<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>';
 
-			$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
-						<span class="page-symbol align-middle ic ic-revision ' . $this->pageRevisionStatus .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+			if( $this->pageRevisionStatus ) { 
+				$html .= '<span class="page-symbol align-middle ic ic-revision ' . $this->pageRevisionStatus .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+				//$html .= '<span class="page-symbol align-middle ic ic-revision ' . $this->pageRevisionStatus .'" id="page-changes" title=" ' . "" .'"></span>';
+				//$html.= $this->getSkin()->msg( "revreview-newest-basic", 1 );
+			}
+			if( $this->pendingChanges ) { 
+				$html .= '<span class="page-symbol align-middle ic ic-editmode ' . $this->pageRevisionStatus .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+				
 			}
 		}
 		$html .= '	<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
@@ -1059,18 +1068,52 @@ class LoopTemplate extends BaseTemplate {
 
 	function getPageRevisionStatus() {
 
-		$title = $this->getSkin()->getTitle();
-		$fr = new FlaggableWikiPage($title);
+		$fr = new FlaggableWikiPage( $this->title );
 		
+		$this->pendingChanges = false;
+
 		if ( $fr ) {
 			$pending = $fr->revsArePending();
+			$stableRev = $fr->getBestFlaggedRevId();
+			$queryValues = $this->getSkin()->getContext()->getRequest()->getQueryValues();
+			$pageData = $fr->loadPageData(21);
+			dd($pageData);
+			if ( isset( $queryValues["oldid"] ) ) { # currently shown page is different from standard
+				$oldId = $queryValues["oldid"];
 
+				if ( $oldId < $stableRev ) { 
+					return "differentFromStable"; # Es gibt eine neuere, geprüfte Version dieser Seite.
+				} elseif ( $oldId > $stableRev ) { 
+					return "differentFromStable"; # Diese Seite enthält noch nicht überprüfte Änderungen.
+				}
+			} elseif ( isset( $queryValues["stable"] ) ) {
+				$stable = $queryValues["stable"];
+				//dd($stable);
+				if ($stable == 0) { #TODO: seiten, deren aktuellste rev stable ist, werden auch gelb angezeigt, obwohl sie stable sind.
+					echo $this->data["subtitle"];
+					return "differentFromStable"; # Diese Seite enthält noch nicht überprüfte Änderungen. (oder ist die aktuellste)
+				}
+				
+			}
+			$latestRev = $this->title->flaggedRevsArticle->mLatest;
+			echo "pending = $pending; stable = $stableRev; latestRev = $latestRev";
+			if ( $stableRev != null ) {
+
+				if ( $pending > 0 ) {
+					echo $this->data["subtitle"];
+					$this->pendingChanges = true; # add button about pending changes
+
+				}
+
+				return "currentStable"; # Diese Seite wurde geprüft.
+			}
+
+			return "neverStabilized"; # Diese Seite wurde noch nie geprüft.
 
 		} else {
-			return "";
+			return false;
 		}
 		//dd($fr->revsArePending());
-		dd($title->flaggedRevsArticle);
-		return "staged";
 	}
+
 }
