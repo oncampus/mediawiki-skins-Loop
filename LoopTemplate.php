@@ -897,8 +897,10 @@ class LoopTemplate extends BaseTemplate {
 			} 
 			
 			if( $user->isAllowed( 'read' ) ) { 
+			$this->pageRevisionStatus = $this->getPageRevisionStatus();
+
 			$html .= '	<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>
-						<span class="page-symbol align-middle ic ic-revision ' /*. $this->pageRevisionStatus */.'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+						<span class="page-symbol align-middle ic ic-revision ' . $this->pageRevisionStatus .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
 			}
 		}
 		$html .= '	<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
@@ -1052,5 +1054,22 @@ class LoopTemplate extends BaseTemplate {
 				</div></div></div></div></div>';
 		
 		echo $html;
+	}
+
+	function getPageRevisionStatus() {
+
+		$title = $this->getSkin()->getTitle();
+		$fr = new FlaggableWikiPage($title);
+		
+		if ( $fr ) {
+			$pending = $fr->revsArePending();
+
+
+		} else {
+			return "";
+		}
+		//dd($fr->revsArePending());
+		dd($title->flaggedRevsArticle);
+		return "staged";
 	}
 }
