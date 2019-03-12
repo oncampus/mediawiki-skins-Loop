@@ -31,5 +31,12 @@
 	"privacy-policy": "Datenschutz",
 	"loop-skinstyle-loop-common": "Standard",
 	"loop-skinstyle-loop-oncampus": "oncampus Theme",
-	"loop-no-mainpage-warning": "Bitte legen Sie ein Inhaltsverzeichnis an."
+	"loop-skinstyle-loop-thl": "THL Theme",
+	"loop-no-mainpage-warning": "Bitte legen Sie ein Inhaltsverzeichnis an.",
+	"loop-fr-stable": "Dies ist die geprüfte Version dieses Artikels.",
+	"loop-fr-olderthanlateststable": "Es gibt eine neuere, geprüfte Version dieses Artikels.",
+	"loop-fr-newerthanlateststable": "Dieser Artikel enthält noch nicht überprüfte Änderungen.",
+	"loop-fr-neverstabilized": "Dieser Artikel wurde noch nie geprüft.",
+	"loop-fr-pendingchanges": "Für diesen Artikel liegen Änderungsvorschläge vor."
+
 }

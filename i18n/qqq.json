@@ -31,5 +31,11 @@
 	"privacy-policy": "Link title for privacy policy page",
 	"loop-skinstyle-loop-common": "Title for LOOP skinstyle loop-common",
 	"loop-skinstyle-loop-oncampus": "Title for LOOP skinstyle loop-oncampus",
-	"loop-no-mainpage-warning": "Hint message for creating a TOC/Mainpage (LoopStructure)"
+	"loop-skinstyle-loop-thl": "Title for LOOP skinstyle loop-thl",
+	"loop-no-mainpage-warning": "Hint message for creating a TOC/Mainpage (LoopStructure)",
+	"loop-fr-stable": "Tooltip for revision-page-icon on stable pages",
+	"loop-fr-olderthanlateststable": "Tooltip for revision-page-icon on pages that are older than the latest stable version",
+	"loop-fr-newerthanlateststable": "Tooltip for revision-page-icon on pages that have unapproved changes from the latest stable version",
+	"loop-fr-neverstabilized": "Tooltip for revision-page-icon on pages that have never been stabilized",
+	"loop-fr-pendingchanges": "Tooltip for revision-page-icon on pages that have pending changes after last stabilization"
 }

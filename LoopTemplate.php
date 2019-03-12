@@ -897,21 +897,31 @@ class LoopTemplate extends BaseTemplate {
 			
 			$this->pageRevisionStatus = $this->getPageRevisionStatus();
 
-			if( $this->renderMode != "offline"  ) { 
-				$html .= '<span class="page-symbol align-middle ic ic-bug" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
-			} 
-			
-			$html .= '<span class="page-symbol align-middle ic ic-info" id="page-info" title="' . $this->data['lastmod']. '"></span>';
-
 			if( $this->pageRevisionStatus ) { 
-				$html .= '<span class="page-symbol align-middle ic ic-revision ' . $this->pageRevisionStatus .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
-				//$html .= '<span class="page-symbol align-middle ic ic-revision ' . $this->pageRevisionStatus .'" id="page-changes" title=" ' . "" .'"></span>';
-				//$html.= $this->getSkin()->msg( "revreview-newest-basic", 1 );
-			}
-			if( $this->pendingChanges ) { 
-				$html .= '<span class="page-symbol align-middle ic ic-editmode ' . $this->pageRevisionStatus .'" id="page-status" title=" ' .'Page status placeholder'/*. $this->pageRevisionText*/ .'"></span>';
+				if ( $this->pageRevisionStatus == "currentStable" ) {
+					$revBtn = "rev-stable";
+				} else {
+					$revBtn = "rev-unstable";
+				}
+				$html .= '<span class="page-symbol align-middle ic ic-'.$revBtn.' pr-1 ' . $this->pageRevisionStatus .'" id="page-status" title=" ' . $this->pageRevMsg .'"></span>';
 				
 			}
+			if( $this->pendingChanges && $this->renderMode != "offline" ) { 
+				$pendingChangesBtn = '<span class="page-symbol align-middle ic ic-rev-pendingchanges pr-1" id="page-status" title=" ' . $this->getSkin()->msg("loop-fr-pendingchanges")->text() .'"></span>';
+				$html .= $this->linkRenderer->makeLink(
+					$this->title,
+					new HtmlArmor( $pendingChangesBtn ),
+					array("id" => "rev-pendingchanges-link"),
+					array("diff" => "curr")
+				);
+			}
+
+			if( $this->renderMode != "offline" ) { 
+				$html .= '<span class="page-symbol align-middle ic ic-bug pr-1" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
+			} 
+			
+			$html .= '<span class="page-symbol align-middle ic ic-info pr-0" id="page-info" title="' . $this->data['lastmod']. '"></span>';
+
 		}
 		$html .= '	<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
 				</div>';
@@ -1076,44 +1086,52 @@ class LoopTemplate extends BaseTemplate {
 			$pending = $fr->revsArePending();
 			$stableRev = $fr->getBestFlaggedRevId();
 			$queryValues = $this->getSkin()->getContext()->getRequest()->getQueryValues();
-			$pageData = $fr->loadPageData(21);
-			dd($pageData);
-			if ( isset( $queryValues["oldid"] ) ) { # currently shown page is different from standard
+			$latestRev = $this->title->flaggedRevsArticle->mLatest;
+			if ( isset( $queryValues["diff"] ) ) {
+				return false; # don't show rev button on diff pages
+			} elseif ( isset( $queryValues["oldid"] ) ) { #  ?oldid=XX shows one specific edit. stable, older or newer.
 				$oldId = $queryValues["oldid"];
 
 				if ( $oldId < $stableRev ) { 
-					return "differentFromStable"; # Es gibt eine neuere, geprüfte Version dieser Seite.
+					$this->pageRevMsg = $this->getSkin()->msg("loop-fr-olderthanlateststable")->text();
+					return "differentFromStable";
 				} elseif ( $oldId > $stableRev ) { 
-					return "differentFromStable"; # Diese Seite enthält noch nicht überprüfte Änderungen.
+					$this->pageRevMsg = $this->getSkin()->msg("loop-fr-newerthanlateststable")->text();
+					return "differentFromStable"; 
 				}
-			} elseif ( isset( $queryValues["stable"] ) ) {
+			} elseif ( isset( $queryValues["stable"] ) ) { // ?stable=0 shows the most recent edit, stable or not
 				$stable = $queryValues["stable"];
-				//dd($stable);
-				if ($stable == 0) { #TODO: seiten, deren aktuellste rev stable ist, werden auch gelb angezeigt, obwohl sie stable sind.
-					echo $this->data["subtitle"];
-					return "differentFromStable"; # Diese Seite enthält noch nicht überprüfte Änderungen. (oder ist die aktuellste)
+				if ($stable == 0) {
+					
+					if ( $latestRev == $stableRev ) { 
+						$this->pageRevMsg = $this->getSkin()->msg("loop-fr-stable")->text();
+						return "currentStable"; 
+					} elseif ( $latestRev > $stableRev ) { 
+						$this->pageRevMsg = $this->getSkin()->msg("loop-fr-newerthanlateststable")->text();
+						return "differentFromStable"; 
+					}
+				
 				}
 				
 			}
-			$latestRev = $this->title->flaggedRevsArticle->mLatest;
-			echo "pending = $pending; stable = $stableRev; latestRev = $latestRev";
 			if ( $stableRev != null ) {
 
 				if ( $pending > 0 ) {
-					echo $this->data["subtitle"];
+
 					$this->pendingChanges = true; # add button about pending changes
 
 				}
-
+				$this->pageRevMsg = $this->getSkin()->msg("loop-fr-stable")->text();
 				return "currentStable"; # Diese Seite wurde geprüft.
+
 			}
 
-			return "neverStabilized"; # Diese Seite wurde noch nie geprüft.
+			$this->pageRevMsg = $this->getSkin()->msg("loop-fr-neverstabilized")->text();
+			return "neverStabilized"; 
 
 		} else {
 			return false;
 		}
-		//dd($fr->revsArePending());
 	}
 
 }

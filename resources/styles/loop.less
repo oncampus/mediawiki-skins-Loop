@@ -199,19 +199,25 @@ ol.breadcrumb {
 }
 .page-symbol {
 	font-size: 16px;
-	color: gray;
+	color: @page-symbols-color;
+}
+#rev-pendingchanges-link:hover {
+	text-decoration: none;
+}
+#rev-pendingchanges-link .ic {
+	color: @page-symbol-pendingchanges-color;
+}
+#rev-pendingchanges-link:hover .ic {
+	color: darken(@page-symbol-pendingchanges-color, 10%);
 }
 .page-symbol:hover {
 	overflow-y: none;
 }
 .page-symbol.currentStable {
-	color: green;
+	color: @page-symbol-stable-color;
 }
 .page-symbol.differentFromStable {
-	color: yellow;
-}
-.page-symbol.neverStabilized {
-	color: red;
+	color: @page-symbol-unstable-color;
 }
 .viewport {
 	max-width: none;

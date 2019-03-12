@@ -31,5 +31,11 @@
 	"privacy-policy": "Privacy policy",
 	"loop-skinstyle-loop-common": "Standard",
 	"loop-skinstyle-loop-oncampus": "oncampus theme",
-	"loop-no-mainpage-warning": "Please create a Table of Contents."
+	"loop-skinstyle-loop-thl": "THL theme",
+	"loop-no-mainpage-warning": "Please create a Table of Contents.",
+	"loop-fr-stable": "This is the approved version of that article.",
+	"loop-fr-olderthanlateststable": "There is a newer, approved version of this article.",
+	"loop-fr-newerthanlateststable": "This article contains unapproved changes.",
+	"loop-fr-neverstabilized": "This article has never been approved yet.",
+	"loop-fr-pendingchanges": "There are pending changes for this article."
 }
