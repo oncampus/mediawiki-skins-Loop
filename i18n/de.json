@@ -33,10 +33,10 @@
 	"loop-skinstyle-loop-oncampus": "oncampus Theme",
 	"loop-skinstyle-loop-thl": "THL Theme",
 	"loop-no-mainpage-warning": "Bitte legen Sie ein Inhaltsverzeichnis an.",
+	"loop-fr-panel-title": "Seitenstatus",
 	"loop-fr-stable": "Dies ist die geprüfte Version dieses Artikels.",
 	"loop-fr-olderthanlateststable": "Es gibt eine neuere, geprüfte Version dieses Artikels.",
 	"loop-fr-newerthanlateststable": "Dieser Artikel enthält noch nicht überprüfte Änderungen.",
 	"loop-fr-neverstabilized": "Dieser Artikel wurde noch nie geprüft.",
-	"loop-fr-pendingchanges": "Für diesen Artikel liegen Änderungsvorschläge vor."
-
+	"loop-fr-pendingchanges": "Für diesen Artikel {{PLURAL:$1|liegt|liegen}} $1 {{PLURAL:$1|Änderungsvorschlag|Änderungsvorschläge}} vor."
 }

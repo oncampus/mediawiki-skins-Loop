@@ -220,7 +220,11 @@ class LoopTemplate extends BaseTemplate {
 							</div> <!--End of row-->
 						</div>
 						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $this->user->isAllowed( 'read' ) ) { ?>
+							<?php if( $this->user->isAllowed( 'read' ) ) { 
+								
+								if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
+									$this->outputFlaggedRevsPanel();
+								} ?>
 								<div class="panel-wrapper">
 									<?php 	$this->outputToc( $loopStructure ); 
 									
@@ -230,8 +234,8 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
 									$this->outputExportPanel( ); 
-								}?>
-							<?php } ?>
+								}
+							} ?>
 						</div>	
 					</div>
 				</div> 
@@ -752,6 +756,7 @@ class LoopTemplate extends BaseTemplate {
 		$content_navigation_icon=array();
 		$content_navigation_icon['views']['edit'] = 'edit';
 		$content_navigation_icon['views']['history'] = 'history';
+		$content_navigation_icon['views']['current'] = 'rev-pendingchanges';
 		$content_navigation_icon['actions']['delete'] = 'delete';
 		$content_navigation_icon['actions']['move'] = 'move';
 		$content_navigation_icon['actions']['protect'] = 'protect';
@@ -907,7 +912,9 @@ class LoopTemplate extends BaseTemplate {
 				
 			}
 			if( $this->pendingChanges && $this->renderMode != "offline" ) { 
-				$pendingChangesBtn = '<span class="page-symbol align-middle ic ic-rev-pendingchanges pr-1" id="page-status" title=" ' . $this->getSkin()->msg("loop-fr-pendingchanges")->text() .'"></span>';
+				
+				$pending = $this->fr->revsArePending();
+				$pendingChangesBtn = '<span class="page-symbol align-middle ic ic-rev-pendingchanges pr-1" id="page-changes" title=" ' . $this->getSkin()->msg("loop-fr-pendingchanges", $pending )->text() .'"></span>';
 				$html .= $this->linkRenderer->makeLink(
 					$this->title,
 					new HtmlArmor( $pendingChangesBtn ),
@@ -927,6 +934,7 @@ class LoopTemplate extends BaseTemplate {
 				</div>';
 		echo $html;
 	}
+
 	private function outputSpecialPages () {
 		
 		$html = '<div class="panel-body p-1 pb-3 pl-0 pl-xl-2 pt-2" id="toc-specialpages">
@@ -1076,19 +1084,19 @@ class LoopTemplate extends BaseTemplate {
 		echo $html;
 	}
 
-	function getPageRevisionStatus() {
+	private function getPageRevisionStatus() {
 
-		$fr = new FlaggableWikiPage( $this->title );
+		$this->fr = new FlaggableWikiPage( $this->title );
 		
 		$this->pendingChanges = false;
 
-		if ( $fr ) {
-			$pending = $fr->revsArePending();
-			$stableRev = $fr->getBestFlaggedRevId();
+		if ( $this->fr ) {
+			$pending = $this->fr->revsArePending();
+			$stableRev = $this->fr->getBestFlaggedRevId();
 			$queryValues = $this->getSkin()->getContext()->getRequest()->getQueryValues();
 			$latestRev = $this->title->flaggedRevsArticle->mLatest;
-			if ( isset( $queryValues["diff"] ) ) {
-				return false; # don't show rev button on diff pages
+			if ( isset( $queryValues["diff"] ) ) { # don't show rev on diff pages
+				return false;
 			} elseif ( isset( $queryValues["oldid"] ) ) { #  ?oldid=XX shows one specific edit. stable, older or newer.
 				$oldId = $queryValues["oldid"];
 
@@ -1110,27 +1118,87 @@ class LoopTemplate extends BaseTemplate {
 						$this->pageRevMsg = $this->getSkin()->msg("loop-fr-newerthanlateststable")->text();
 						return "differentFromStable"; 
 					}
-				
 				}
-				
 			}
 			if ( $stableRev != null ) {
-
 				if ( $pending > 0 ) {
-
 					$this->pendingChanges = true; # add button about pending changes
-
 				}
 				$this->pageRevMsg = $this->getSkin()->msg("loop-fr-stable")->text();
 				return "currentStable"; # Diese Seite wurde geprüft.
-
 			}
-
 			$this->pageRevMsg = $this->getSkin()->msg("loop-fr-neverstabilized")->text();
 			return "neverStabilized"; 
-
 		} else {
 			return false;
+		}
+	}
+
+	private function outputFlaggedRevsPanel () {
+
+		if( $this->pageRevisionStatus ) { 
+
+			$pending = $this->fr->revsArePending();
+			
+			$html = '<div class="panel-wrapper">
+				<div class="panel-heading">
+					<h5 class="panel-title mb-0 pl-3 pr-3 pt-2 pb-2">'.$this->getSkin()->msg("loop-fr-panel-title")->text().'</h5>
+				</div>
+				<div class="panel-body pl-3 pr-3 pb-3" id="loop-fr-panel">';
+				
+				if ( $this->pageRevisionStatus == "currentStable" ) {
+					$revBtn = "rev-stable";
+				} else {
+					$revBtn = "rev-unstable";
+				}
+				$html .= '<p class="loop-fr-status ml-3 mb-1"><span class="ic ic-' . $revBtn . ' ' . $this->pageRevisionStatus .'" id="fr-page-status" title=" ' . $this->pageRevMsg . '"></span><span class="ml-1 inline-flex">' . $this->pageRevMsg . '</span></p>';
+
+			if( $this->pendingChanges && $this->renderMode != "offline" ) { 
+				
+				$pending = $this->fr->revsArePending();
+				$pendingChangesBtn = '<p class="loop-fr-status ml-3 mb-1"><span class="ic ic-rev-pendingchanges" id="fr-page-changes" title=" ' . $this->getSkin()->msg("loop-fr-pendingchanges", $pending )->text() .'"></span><span class="ml-1 inline-flex">' .  $this->getSkin()->msg("loop-fr-pendingchanges", "$pending ")->text() . '</span></p>';
+				$html .= $this->linkRenderer->makeLink(
+					$this->title,
+					new HtmlArmor( $pendingChangesBtn ),
+					array("id" => "rev-pendingchanges"),
+					array("diff" => "curr")
+				);
+			}	
+
+			$dom = new domDocument;
+			$dom->formatOutput = true;
+			$dom->loadHTML( '<?xml encoding="utf-8" ?>' . $this->data['dataAfterContent'], LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOXMLDECL );
+
+			if ( $dom->getElementById( 'mw-fr-reviewform' ) ) {
+
+				$dom->getElementById( 'mw-fr-reviewform' )->setAttribute("class", "mt-2" );
+				$dom->getElementById( 'mw-fr-commentbox' )->setAttribute( "class", "d-none" ); # hide commentbox
+				$dom->getElementById( 'mw-fr-reviewformlegend' )->setAttribute( "class", "d-none" ); # hide title
+				$dom->getElementById( 'mw-fr-ratingselects' )->setAttribute( "class", "d-none" ); # hide select boxes, as there is nothing to select
+
+				if ( $dom->getElementById( 'mw-fr-reviewing-status' ) ) { # hide info text
+					$dom->getElementById( 'mw-fr-reviewing-status' )->setAttribute( "class", "d-none" );
+				}
+
+				$mwBtnClasses = "btn btn-sm mw-ui-button mw-ui-primary mw-ui-progressive float-left mb-1 mr-1"; # MW-LOOP button design
+				$dom->getElementById( 'mw-fr-submit-unaccept' )->setAttribute( "class", $mwBtnClasses );
+
+				$revisionAcceptBtn = $dom->getElementById( 'mw-fr-submit-accept' );
+
+				if ( $this->pageRevisionStatus == "currentStable" ) {
+					$revisionAcceptBtn->setAttribute( "class", "d-none" );
+				} else {
+					$revisionAcceptBtn->setAttribute( "class", $mwBtnClasses );
+				}
+
+				$html .= $dom->saveHTML();
+				$html = str_replace("&nbsp;", "", $html);
+
+			}
+			
+			$html .= '</div></div>';
+
+			echo $html;
 		}
 	}
 
