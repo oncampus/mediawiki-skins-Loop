@@ -98,7 +98,7 @@ class LoopSkinHooks {
 					$attribs['href'] = $wgServer . $attribs['href'];
 				}
 
-			} elseif ( $attribs['id'] == "toc-button" ) { # TOC button link
+			} elseif ( isset ($attribs['id']) && $attribs['id'] == "toc-button" ) { # TOC button link
 				$newHref = $loopHtml->resolveUrl( "LoopStructure", '.html'); 
 				$attribs['href'] = $newHref;
 				$attribs["class"] = $attribs["class"] . " local-link";
