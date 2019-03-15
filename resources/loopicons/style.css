@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'loopfont';
-  src:  url('fonts/loopfont.eot?1v75k2');
-  src:  url('fonts/loopfont.eot?1v75k2#iefix') format('embedded-opentype'),
-    url('fonts/loopfont.ttf?1v75k2') format('truetype'),
-    url('fonts/loopfont.woff?1v75k2') format('woff'),
-    url('fonts/loopfont.svg?1v75k2#loopfont') format('svg');
+  src:  url('fonts/loopfont.eot?e0tzyh');
+  src:  url('fonts/loopfont.eot?e0tzyh#iefix') format('embedded-opentype'),
+    url('fonts/loopfont.ttf?e0tzyh') format('truetype'),
+    url('fonts/loopfont.woff?e0tzyh') format('woff'),
+    url('fonts/loopfont.svg?e0tzyh#loopfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-rev-unstable:before {
+  content: "\e943";
+}
+.ic-rev-pendingchanges:before {
+  content: "\e95f";
+}
 .ic-text2speech:before {
   content: "\e905";
 }
@@ -235,7 +241,7 @@
 .ic-info:before {
   content: "\e921";
 }
-.ic-revision:before {
+.ic-rev-stable:before {
   content: "\e93a";
 }
 .ic-top:before {
@@ -249,9 +255,6 @@
 }
 .ic-social-twitter:before {
   content: "\e945";
-}
-.ic-social-googleplus:before {
-  content: "\e943";
 }
 .ic-social-github:before {
   content: "\e942";

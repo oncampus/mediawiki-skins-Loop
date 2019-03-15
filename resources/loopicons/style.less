@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '@{icomoon-font-family}';
-  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?1v75k2');
-  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?1v75k2#iefix') format('embedded-opentype'),
-    url('@{icomoon-font-path}/@{icomoon-font-family}.ttf?1v75k2') format('truetype'),
-    url('@{icomoon-font-path}/@{icomoon-font-family}.woff?1v75k2') format('woff'),
-    url('@{icomoon-font-path}/@{icomoon-font-family}.svg?1v75k2#@{icomoon-font-family}') format('svg');
+  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?e0tzyh');
+  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?e0tzyh#iefix') format('embedded-opentype'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.ttf?e0tzyh') format('truetype'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.woff?e0tzyh') format('woff'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.svg?e0tzyh#@{icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,6 +26,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-rev-unstable {
+  &:before {
+    content: @ic-rev-unstable; 
+  }
+}
+.ic-rev-pendingchanges {
+  &:before {
+    content: @ic-rev-pendingchanges; 
+  }
+}
 .ic-text2speech {
   &:before {
     content: @ic-text2speech; 
@@ -363,9 +373,9 @@
     content: @ic-info; 
   }
 }
-.ic-revision {
+.ic-rev-stable {
   &:before {
-    content: @ic-revision; 
+    content: @ic-rev-stable; 
   }
 }
 .ic-top {
@@ -386,11 +396,6 @@
 .ic-social-twitter {
   &:before {
     content: @ic-social-twitter; 
-  }
-}
-.ic-social-googleplus {
-  &:before {
-    content: @ic-social-googleplus; 
   }
 }
 .ic-social-github {

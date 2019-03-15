@@ -199,10 +199,25 @@ ol.breadcrumb {
 }
 .page-symbol {
 	font-size: 16px;
-	color: gray;
+	color: @page-symbols-color;
+}
+#rev-pendingchanges-link:hover {
+	text-decoration: none;
+}
+#rev-pendingchanges-link .ic, #fr-page-changes {
+	color: @page-symbol-pendingchanges-color;
+}
+#rev-pendingchanges-link:hover .ic {
+	color: darken(@page-symbol-pendingchanges-color, 10%);
 }
 .page-symbol:hover {
 	overflow-y: none;
+}
+.currentStable {
+	color: @page-symbol-stable-color;
+}
+.differentFromStable {
+	color: @page-symbol-unstable-color;
 }
 .viewport {
 	max-width: none;
@@ -323,7 +338,25 @@ code {
 #loopsettings-form label {
 	display: inline;
 }
-
+/* FlaggedRevs */
+.flaggedrevs_reviewform {
+	background: none;
+	font-size: 15.5px;
+}
+#loop-fr-panel .flaggedrevs_reviewform p {
+	margin-bottom: 0 !important;
+}
+#loop-fr-panel .ic {
+	margin-left: -1rem;
+}
+.loop-fr-status {
+	font-size: 15.5px;
+	line-height: 19px;
+}
+#loop-fr-panel p > #mw-fr-reviewing-status,
+label[for=mw-fr-commentbox] {
+	display: none;
+}
 
 /** *** *** *** *** *** *** *** *** *** *** **/
 /** MEDIAWIKI-UI and OO-UI INPUT CHANGES **/
