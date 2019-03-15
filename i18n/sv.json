@@ -28,5 +28,7 @@
 	"imprint": "Imprint",
 	"privacy-policy": "Dataskydd",
 	"loop-skinstyle-loop-common": "Standard",
-	"loop-skinstyle-loop-oncampus": "oncampus Theme"
+	"loop-skinstyle-loop-oncampus": "oncampus Theme",
+	"loop-no-mainpage-warning": "Vänligen skapa en innehållsförteckning.",
+	"loop-audio-unavailable": "Denna funktion är inte tillgänglig."
 }

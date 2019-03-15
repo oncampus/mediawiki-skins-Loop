@@ -30,5 +30,7 @@
 	"imprint": "Link title for imprint page",
 	"privacy-policy": "Link title for privacy policy page",
 	"loop-skinstyle-loop-common": "Title for LOOP skinstyle loop-common",
-	"loop-skinstyle-loop-oncampus": "Title for LOOP skinstyle loop-oncampus"
+	"loop-skinstyle-loop-oncampus": "Title for LOOP skinstyle loop-oncampus",
+	"loop-no-mainpage-warning": "Hint message for creating a TOC/Mainpage (LoopStructure)",
+	"loop-audio-unavailable": "Message when audio button is clicked but does not work"
 }
