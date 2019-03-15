@@ -1171,29 +1171,40 @@ class LoopTemplate extends BaseTemplate {
 
 			if ( $dom->getElementById( 'mw-fr-reviewform' ) ) {
 
-				$dom->getElementById( 'mw-fr-reviewform' )->setAttribute("class", "mt-2" );
-				$dom->getElementById( 'mw-fr-commentbox' )->setAttribute( "class", "d-none" ); # hide commentbox
-				$dom->getElementById( 'mw-fr-reviewformlegend' )->setAttribute( "class", "d-none" ); # hide title
-				$dom->getElementById( 'mw-fr-ratingselects' )->setAttribute( "class", "d-none" ); # hide select boxes, as there is nothing to select
+				$form = new domDocument;
+				
+				$dataAfterContentForms = $dom->getElementsByTagName( 'form' );
 
-				if ( $dom->getElementById( 'mw-fr-reviewing-status' ) ) { # hide info text
-					$dom->getElementById( 'mw-fr-reviewing-status' )->setAttribute( "class", "d-none" );
+				foreach ($dataAfterContentForms as $tmpform ) { 
+					if ( $tmpform->getAttribute("id") == "mw-fr-reviewform" ) { #check for required FlaggedRevs form in dataAfterContent
+						$frForm = $form->importNode($tmpform, true);
+					}
 				}
+				
+				if ( isset( $frForm ) ) {
+					$form->appendChild( $frForm );
+					$form->getElementById( 'mw-fr-commentbox' )->setAttribute( "class", "d-none" ); # hide commentbox
+					$form->getElementById( 'mw-fr-reviewformlegend' )->setAttribute( "class", "d-none" ); # hide title
+					$form->getElementById( 'mw-fr-ratingselects' )->setAttribute( "class", "d-none" ); # hide select boxes, as there is nothing to select
 
-				$mwBtnClasses = "btn btn-sm mw-ui-button mw-ui-primary mw-ui-progressive float-left mb-1 mr-1"; # MW-LOOP button design
-				$dom->getElementById( 'mw-fr-submit-unaccept' )->setAttribute( "class", $mwBtnClasses );
+					if ( $form->getElementById( 'mw-fr-reviewing-status' ) ) { # hide info text
+						$form->getElementById( 'mw-fr-reviewing-status' )->setAttribute( "class", "d-none" );
+					}
 
-				$revisionAcceptBtn = $dom->getElementById( 'mw-fr-submit-accept' );
+					$mwBtnClasses = "btn btn-sm mw-ui-button mw-ui-primary mw-ui-progressive float-left mb-1 mr-1"; # MW-LOOP button design
+					$form->getElementById( 'mw-fr-submit-unaccept' )->setAttribute( "class", $mwBtnClasses );
 
-				if ( $this->pageRevisionStatus == "currentStable" ) {
-					$revisionAcceptBtn->setAttribute( "class", "d-none" );
-				} else {
-					$revisionAcceptBtn->setAttribute( "class", $mwBtnClasses );
+					$revisionAcceptBtn = $form->getElementById( 'mw-fr-submit-accept' );
+
+					if ( $this->pageRevisionStatus == "currentStable" ) {
+						$revisionAcceptBtn->setAttribute( "class", "d-none" );
+					} else {
+						$revisionAcceptBtn->setAttribute( "class", $mwBtnClasses );
+					}
+
+					$html .= $form->saveHTML();
+					$html = str_replace("&nbsp;", "", $html);
 				}
-
-				$html .= $dom->saveHTML();
-				$html = str_replace("&nbsp;", "", $html);
-
 			}
 			
 			$html .= '</div></div>';
