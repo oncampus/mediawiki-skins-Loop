@@ -1021,7 +1021,9 @@ class LoopTemplate extends BaseTemplate {
 			$extraFooterTitle = Title::newFromText( "MediaWiki:ExtraFooter" );
 			$extraFooterWikiPage = new WikiPage( $extraFooterTitle );
 			$parserOptions = $extraFooterWikiPage->makeParserOptions( $this->getSkin()->getContext() );
-			$html .= $extraFooterWikiPage->getParserOutput( $parserOptions )->mText; 
+			if ( $extraFooterWikiPage->getParserOutput( $parserOptions ) ) {
+				$html .= $extraFooterWikiPage->getParserOutput( $parserOptions )->mText; 
+			}
 			$html .=  '</div></div>';
 		}
 		$html .= '<div class="container-fluid">
