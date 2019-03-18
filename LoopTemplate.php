@@ -1015,10 +1015,18 @@ class LoopTemplate extends BaseTemplate {
 		
 		$html = ""; 
 		
-		if ( $this->loopSettings->extraFooter == "useExtraFooter" && ! empty( $this->loopSettings->extraFooterParsed ) ) {
+		if ( $this->loopSettings->extraFooter == "useExtraFooter" ) {
 			$html .= '<div class="col-12 text-center" id="extra-footer">
-					<div id="extra-footer-content" class="p-3">' . 
-						$this->loopSettings->extraFooterParsed . '</div></div>';
+					<div id="extra-footer-content" class="p-3">';
+			
+			$article = Article::newFromTitle( $this->title, $this->getSkin()->getContext() );
+			$localParser = new Parser();
+			$tmpTitle = Title::newFromText( 'NO TITLE' );
+			$parserOutput = $localParser->parse( "{{MediaWiki:ExtraFooter}}", $tmpTitle, new ParserOptions() );
+
+			$html .= $parserOutput->mText;
+			
+			$html .=  '</div></div>';
 		}
 		$html .= '<div class="container-fluid">
 		<div class="row">
