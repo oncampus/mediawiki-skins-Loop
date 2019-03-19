@@ -731,15 +731,15 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputAudioButton( ) {
 		global $wgText2Speech;
+		$article_id = $this->title->getArticleID();
 		
-		if ( $wgText2Speech && $this->data['isarticle'] ) {
+		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 ) {
 			
 			global $wgOut, $wgLanguageCode;
 			$wgOut->addModules("skins.loop-plyr.js");
-			$article_id = $this->getSkin()->getTitle()->getArticleID();
-			
+			$revId = Article::newFromId( $article_id )->getRevIdFetched();
 			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
-					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1" data-server="'. $_SERVER['SERVER_NAME'] .'" data-article="'. $article_id .'" data-revid="'. Article::newFromId($article_id)->getRevIdFetched() .'"></span>
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1" data-server="'. $_SERVER['SERVER_NAME'] .'" data-article="'. $article_id .'" data-revid="'. $revId .'"></span>
 					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
 			
