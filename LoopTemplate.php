@@ -747,7 +747,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$user = $this->user;
 		
-		if ( $user->isAllowed( 'edit' ) && $user->isAllowed( 'read' ) ) {
+		if ( $user->isAllowedAll( 'edit', 'read' ) ) {
     
 		$content_navigation_skip=array();
 		$content_navigation_skip['namespaces']['main'] = true;
@@ -927,8 +927,7 @@ class LoopTemplate extends BaseTemplate {
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
 		
-		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' ) || 
-			 $user->isAllowed( 'loop-export-html' ) || $user->isAllowed( 'loop-export-mp3' ) ) { # TODO other export formats
+		if ( $user->isAllowedAny( 'loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3' ) ) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
 						<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</h5>
