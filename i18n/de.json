@@ -32,5 +32,12 @@
 	"loop-skinstyle-loop-common": "Standard",
 	"loop-skinstyle-loop-oncampus": "oncampus Theme",
 	"loop-no-mainpage-warning": "Bitte legen Sie ein Inhaltsverzeichnis an.",
-	"loop-audio-unavailable": "Diese Funktion ist zurzeit nicht verfügbar."
+	"loop-audio-unavailable": "Diese Funktion ist zurzeit nicht verfügbar.",
+	"loop-skinstyle-loop-thl": "THL Theme",
+	"loop-fr-panel-title": "Seitenstatus",
+	"loop-fr-stable": "Dies ist die geprüfte Version dieser Seite.",
+	"loop-fr-olderthanlateststable": "Es gibt eine neuere, geprüfte Version dieser Seite.",
+	"loop-fr-newerthanlateststable": "Diese Seite enthält noch nicht überprüfte Änderungen.",
+	"loop-fr-neverstabilized": "Diese Seite wurde noch nicht geprüft.",
+	"loop-fr-pendingchanges": "Für diese Seite {{PLURAL:$1|liegt|liegen}} $1 {{PLURAL:$1|Änderungsvorschlag|Änderungsvorschläge}} vor."
 }
