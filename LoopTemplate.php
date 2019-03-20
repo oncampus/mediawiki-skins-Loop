@@ -963,8 +963,10 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
+							
+			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken;
 
-			if ( $user->isAllowed( 'loop-export-pdf' )) {
+			if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
 				$pdfExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
 					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
