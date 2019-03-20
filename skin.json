@@ -25,10 +25,6 @@
 		"remoteSkinPath": "Loop"
 	},
 	"config": {
-		"Text2Speech": {
-			"value" : "false",
-			"description" : "Possibility to disable text to speech feature if it is chargeable"
-		},
 		"LoopRenderMode": {
 			"value" : "default",
 			"description" : "Defines type of render mode. [ default | offline ]"
