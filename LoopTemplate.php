@@ -736,10 +736,21 @@ class LoopTemplate extends BaseTemplate {
 		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 ) {
 			
 			global $wgOut, $wgLanguageCode;
+
+			$mp3ExportLink = $this->linkRenderer->makelink( 
+				new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
+				new HtmlArmor( '' ), 
+				array( 
+					'id' => 'loopexportrequestlink',
+					'class' => 'd-none' 
+				),
+				array( 'articleId' => $article_id )
+			);
+
 			$wgOut->addModules("skins.loop-plyr.js");
-			$revId = Article::newFromId( $article_id )->getRevIdFetched();
 			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
-					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1" data-server="'. $_SERVER['SERVER_NAME'] .'" data-article="'. $article_id .'" data-revid="'. $revId .'"></span>
+					'.$mp3ExportLink.'
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1" data-server="'. $_SERVER['SERVER_NAME'] .'" data-article="'. $article_id .'"></span>
 					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
 			

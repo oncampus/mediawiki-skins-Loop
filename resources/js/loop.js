@@ -68,12 +68,31 @@ $( document ).ready( function () {
 	}, 5);
 	//mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
 		$("#t2s-button").click(function(){
-			$(this).hide()
-			const player = new Plyr("#t2s-audio", {
-				"volume": 1,
-				"autoplay": true,
-				"muted": false
+			$server = $("#t2s-button").data("server")
+			$service_url = $("#loopexportrequestlink").attr("href")
+			$server_url = $server + $service_url;
+
+			$.ajax({
+				url: $server_url,
+				cache: false,
+				dataType: "html"
+			}).done(function(data) {
+				console.log(data)
+				$("#t2s-audio source").attr("src", data)
+				
+				$(this).hide()
+				const player = new Plyr("#t2s-audio", {
+					"volume": 1,
+					"autoplay": true,
+					"muted": false
+				});
+				
+			}).fail(function(xhr, textStatus, errorThrown) { 
+				console.log(textStatus + " : " + xhr.responseText);
 			});
+
+
+			
 			
 			
 		});
