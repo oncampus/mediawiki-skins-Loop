@@ -398,7 +398,7 @@ class LoopTemplate extends BaseTemplate {
 		// TOC  button
 		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'"';
 		
-		if ( ! isset( $previousPage ) || $previousPage == 0 || ! $user->isAllowed('read') ) {
+		if ( ! $user->isAllowed('read') ) {
 			$toc_button .= 'disabled="disabled"';
 		}
 		
