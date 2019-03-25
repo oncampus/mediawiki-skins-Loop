@@ -733,7 +733,7 @@ class LoopTemplate extends BaseTemplate {
 		global $wgText2Speech;
 		$article_id = $this->title->getArticleID();
 		
-		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 ) {
+		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) ) {
 			
 			global $wgOut, $wgLanguageCode;
 
@@ -750,7 +750,7 @@ class LoopTemplate extends BaseTemplate {
 			$wgOut->addModules("skins.loop-plyr.js");
 			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
 					'.$mp3ExportLink.'
-					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1" data-server="'. $_SERVER['SERVER_NAME'] .'" data-article="'. $article_id .'"></span>
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1"></span>
 					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
 			

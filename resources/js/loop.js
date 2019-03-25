@@ -66,37 +66,30 @@ $( document ).ready( function () {
 		}
 		$("#toc-nav, #toc-specialpages").slideDown(200);
 	}, 5);
-	//mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
-		$("#t2s-button").click(function(){
-			$server = $("#t2s-button").data("server")
-			$service_url = $("#loopexportrequestlink").attr("href")
-			$server_url = $server + $service_url;
+	$("#t2s-button").click(function(){
 
-			$.ajax({
-				url: $server_url,
-				cache: false,
-				dataType: "html"
-			}).done(function(data) {
-				console.log(data)
-				$("#t2s-audio source").attr("src", data)
-				
-				$(this).hide()
-				const player = new Plyr("#t2s-audio", {
-					"volume": 1,
-					"autoplay": true,
-					"muted": false
-				});
-				
-			}).fail(function(xhr, textStatus, errorThrown) { 
-				console.log(textStatus + " : " + xhr.responseText);
+		$service_url = $("#loopexportrequestlink").attr("href");
+
+		$(this).hide()
+		console.log($service_url)
+		$.ajax({
+			url: $service_url,
+			cache: false,
+			dataType: "html"
+		}).done(function(data) {
+			console.log(data)
+			$("#t2s-audio source").attr("src", data)
+			
+			const player = new Plyr("#t2s-audio", {
+				"volume": 1,
+				"autoplay": true,
+				"muted": false
 			});
-
-
 			
-			
-			
+		}).fail(function(xhr, textStatus, errorThrown) { 
+			console.log(textStatus + " : " );
 		});
-	//});
+	});
 	
 	$('.page-symbol').tooltip({ boundary: 'window' })
 	
