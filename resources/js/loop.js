@@ -70,16 +70,16 @@ $( document ).ready( function () {
 
 		$service_url = $("#loopexportrequestlink").attr("href");
 
-		$(this).hide()
-		console.log($service_url)
+		$(this).removeClass("ic-audio").addClass("rotating ic-buffering")
+		
 		$.ajax({
 			url: $service_url,
 			cache: false,
 			dataType: "html"
 		}).done(function(data) {
-			console.log(data)
+			//console.log(data)
 			$("#t2s-audio source").attr("src", data)
-			
+			$("#t2s-button").hide();
 			const player = new Plyr("#t2s-audio", {
 				"volume": 1,
 				"autoplay": true,

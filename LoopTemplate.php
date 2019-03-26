@@ -750,7 +750,7 @@ class LoopTemplate extends BaseTemplate {
 			$wgOut->addModules("skins.loop-plyr.js");
 			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
 					'.$mp3ExportLink.'
-					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1"></span>
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1 mt-1 mr-3 float-right"></span>
 					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
 			

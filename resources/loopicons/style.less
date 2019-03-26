@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '@{icomoon-font-family}';
-  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?e0tzyh');
-  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?e0tzyh#iefix') format('embedded-opentype'),
-    url('@{icomoon-font-path}/@{icomoon-font-family}.ttf?e0tzyh') format('truetype'),
-    url('@{icomoon-font-path}/@{icomoon-font-family}.woff?e0tzyh') format('woff'),
-    url('@{icomoon-font-path}/@{icomoon-font-family}.svg?e0tzyh#@{icomoon-font-family}') format('svg');
+  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?w0rtyz');
+  src:  url('@{icomoon-font-path}/@{icomoon-font-family}.eot?w0rtyz#iefix') format('embedded-opentype'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.ttf?w0rtyz') format('truetype'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.woff?w0rtyz') format('woff'),
+    url('@{icomoon-font-path}/@{icomoon-font-family}.svg?w0rtyz#@{icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,6 +26,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-buffering {
+  &:before {
+    content: @ic-buffering; 
+  }
+}
 .ic-rev-unstable {
   &:before {
     content: @ic-rev-unstable; 
