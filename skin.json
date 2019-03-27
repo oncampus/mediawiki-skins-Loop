@@ -61,10 +61,6 @@
 			"position": "top",
 			"styles": "resources/js/plyr/dist/plyr.css"
 		},
-		"skins.loop-jstree": {
-			"position": "top",
-			"styles": "resources/js/jstree/dist/themes/default/style.min.css"
-		},
 		"skins.loop.js": {
 			"position": "bottom",
 			"scripts": [
@@ -81,12 +77,6 @@
 			"position": "bottom",
 			"scripts": [
 					"vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js"
-				]
-		},
-		"skins.loop-jstree.js": {
-			"position": "bottom",
-			"scripts": [
-					"resources/js/jstree/dist/jstree.js"
 				]
 		},
 		"skins.loop-plyr.js": {

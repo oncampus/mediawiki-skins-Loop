@@ -273,8 +273,26 @@ ol.breadcrumb {
 /** *** *** *** *** *** **/
 /** *** J S T R E E *** **/
 /** *** *** *** *** *** **/
-#toc-nav, #toc-specialpages {
+#toc-nav a {
+	color: inherit;
+}
+.toc-caret {
+	margin-left: -15px;
+}
+
+.nested {
 	display: none;
+}
+.activeToc {
+	display: inline-block !important;
+}
+.openToc > ul.nested,
+.openToc ~ .nested {
+	display: block !important;
+}
+#toc-nav ul, #toc-specialpages {
+	
+	list-style-type: none;
 }
 .jstree-node a:after {
 	content: "";
@@ -289,13 +307,13 @@ ol.breadcrumb {
 	background: -o-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 	background: linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 }
-.jstree-container-ul {
+#toc-nav ul {
 	overflow: hidden;
 }
 .jstree-themeicon {
 	display: none !important;
 }
-.activeTocPage{
+.activeToc {
 	font-weight: bold;
 }
 .jstree-anchor.jstree-hovered {

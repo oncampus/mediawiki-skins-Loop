@@ -1,7 +1,0 @@
-[submodule "jstree"]
-	path = resources/js/jstree
-	url = https://github.com/oncampus/jstree.git
-
-[submodule "plyr"]
-	path = resources/js/plyr
-	url = https://github.com/oncampus/plyr.git

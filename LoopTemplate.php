@@ -609,15 +609,25 @@ class LoopTemplate extends BaseTemplate {
 					$tmpText = $tmpTitle->getText();
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
+
+					$nextNode = $lsi->nextArticle;
+					$nextTocLevel = 1;
+					$nextLsi = LoopStructureItem::newFromIds($nextNode);
+					if ( $nextLsi ) {
+						$nextTocLevel = $nextLsi->tocLevel;
+					}
+					#dd($nextTocLevel);
 					
-					$classIfOpened = '';
+					$activeClass = '';
+					$openClass = '';
 
 					// check if current page is the active page, if true set css class
 					if( isset( $tmpText ) ) {
 					
 						if( $tmpText == $currentPageTitle ) {
 					
-							$classIfOpened = ' activeTocPage';
+							$activeClass = ' activeToc';
+							$openClass = ' openToc';
 					
 						}
 					}
@@ -631,12 +641,12 @@ class LoopTemplate extends BaseTemplate {
 						
 						// outputs the first node (mainpage)
 						
-						$html .= '<li>' .
+						$html .= '<li class="'.$openClass.'">' .
 							$this->linkRenderer->makelink(
 								$tmpTitle,
 								new HtmlArmor( 
-									'<span class="tocnumber'. $classIfOpened .'"></span>
-									<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>' ),
+									'<span class="tocnumber'. $activeClass .'"></span>
+									<span class="toctext'. $activeClass .'">'. $tmpText .'</span>' ),
 								array(
 									'class' => 'aToc')
 							);
@@ -654,9 +664,13 @@ class LoopTemplate extends BaseTemplate {
 						$lastTmpTocLevel = $tmpTocLevel;
 						
 					} 
-					
+					$caret = '';
+					if ( $tmpTocLevel < $nextTocLevel ) {
+						$caret .= '<span class="ic ic-page-next toc-caret"></span>'; # if has children;
+					}
+
 					if( $tmpTocLevel > $lastTmpTocLevel ) {
-						$html .= '<ul>';
+						$html .=  '<ul class="nested '.$openClass.'">'; 
 					} else if ( $tmpTocLevel < $lastTmpTocLevel ) {
 						for ($i = $tmpTocLevel; $i < $lastTmpTocLevel; $i++) {
 							$html .= '</ul></li>';
@@ -665,11 +679,11 @@ class LoopTemplate extends BaseTemplate {
 						$html .= '</li>';
 					}
 					
-					$jstreeData = '';
+					$nodeData = '';
 					
 					if( in_array( $tmpChapter, $openedNodes ) ) {
 						
-						$jstreeData = ' data-jstree=\'{"opened":true,"selected":false}\'';
+						$nodeData = ' class="openToc"';
 
 					}
 					
@@ -679,12 +693,13 @@ class LoopTemplate extends BaseTemplate {
 					
 					// outputs the page in jstree
 					
-					$html .= '<li'.$jstreeData.'>'.
+					$html .= '<li'.$nodeData.'  data-toc-level="'.$tmpTocLevel.'">' . $caret .
+					
 						$this->linkRenderer->makelink(
 							$tmpTitle,
 							new HtmlArmor( 
-								'<span class="tocnumber'. $classIfOpened .'">'.$tmpChapter.'</span>
-								<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>' ),
+								'<span class="tocnumber'. $activeClass .'">'.$tmpTocLevel.'</span>
+								<span class="toctext'. $activeClass .'">('.$nextTocLevel .')</span>' ),
 							array(
 								'class' => 'aToc',
 								'title' => $tmpAltText
