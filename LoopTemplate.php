@@ -219,10 +219,9 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $this->user->isAllowed( 'read' ) ) { 
-								
-								if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
+						<?php if( $this->user->isAllowed( 'read' ) ) { ?>
+							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
+							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
 									$this->outputFlaggedRevsPanel();
 								} ?>
 								<div class="panel-wrapper">
@@ -235,8 +234,9 @@ class LoopTemplate extends BaseTemplate {
 								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
 									$this->outputExportPanel( ); 
 								}
-							} ?>
+								?>
 						</div>	
+						<?php } ?>
 					</div>
 				</div> 
 			</section>
@@ -548,9 +548,8 @@ class LoopTemplate extends BaseTemplate {
 		$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
 		$loopRenderMode = $user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 			
-		// storage for opened navigation tocs in the jstree
+		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
-			
 		
 		if ( isset( $loopStructure->mainPage ) ) { 
 
@@ -580,9 +579,7 @@ class LoopTemplate extends BaseTemplate {
 										
 								}
 							}
-							
 						}
-		
 					}
 				}
 			
@@ -595,11 +592,11 @@ class LoopTemplate extends BaseTemplate {
 				$html = '<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
 						</div>
-						<div id="toc-nav" class="panel-body pr-1 pl-1 pb-2 pl-xl-2 pt-0"><ul>';
+						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul>';
 								
 				$rootNode = false;
 				
-				// build JS tree
+				// build TOC tree
 				foreach( $loopStructure->getStructureitems() as $lsi) {
 					
 					$currentPageTitle = $this->title;
@@ -616,7 +613,6 @@ class LoopTemplate extends BaseTemplate {
 					if ( $nextLsi ) {
 						$nextTocLevel = $nextLsi->tocLevel;
 					}
-					#dd($nextTocLevel);
 					
 					$activeClass = '';
 					$openClass = '';
@@ -626,8 +622,8 @@ class LoopTemplate extends BaseTemplate {
 					
 						if( $tmpText == $currentPageTitle ) {
 					
-							$activeClass = ' activeToc';
-							$openClass = ' openToc';
+							$activeClass = 'activeToc';
+							$openClass = 'openNode';
 					
 						}
 					}
@@ -641,12 +637,12 @@ class LoopTemplate extends BaseTemplate {
 						
 						// outputs the first node (mainpage)
 						
-						$html .= '<li class="'.$openClass.'">' .
+						$html .= '<li class="toc-main mb-1">' .
 							$this->linkRenderer->makelink(
 								$tmpTitle,
 								new HtmlArmor( 
-									'<span class="tocnumber'. $activeClass .'"></span>
-									<span class="toctext'. $activeClass .'">'. $tmpText .'</span>' ),
+									'<span class="tocnumber '. $tmpChapter .'"></span>
+									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' ),
 								array(
 									'class' => 'aToc')
 							);
@@ -655,22 +651,24 @@ class LoopTemplate extends BaseTemplate {
 						
 					}
 					
-					/*** *** *** *** ***  *** *** *** *** ***/
-					/*** jstree logic for opened chapters ***/
-					/*** *** *** *** ***  *** *** *** *** ***/
+					/*** *** *** *** *** *** *** *** ** ***/
+					/*** tree logic for opened chapters ***/
+					/*** *** *** *** *** *** *** *** ** ***/
 					
 					if( ! isset( $lastTmpTocLevel )) {
 						
 						$lastTmpTocLevel = $tmpTocLevel;
 						
 					} 
-					$caret = '';
-					if ( $tmpTocLevel < $nextTocLevel ) {
-						$caret .= '<span class="ic ic-page-next toc-caret"></span>'; # if has children;
+					$caret = 'caret';
+					if ( $tmpTocLevel >= $nextTocLevel ) {
+						$caret = 'nocaret';
 					}
 
+					$caret = '<div class="toc-node toc-'.$caret.'"></div>'; # caret if there are child nodes
+					
 					if( $tmpTocLevel > $lastTmpTocLevel ) {
-						$html .=  '<ul class="nested '.$openClass.'">'; 
+						$html .=  '<ul class="nestedNode '.$openClass.'">'; 
 					} else if ( $tmpTocLevel < $lastTmpTocLevel ) {
 						for ($i = $tmpTocLevel; $i < $lastTmpTocLevel; $i++) {
 							$html .= '</ul></li>';
@@ -683,25 +681,25 @@ class LoopTemplate extends BaseTemplate {
 					
 					if( in_array( $tmpChapter, $openedNodes ) ) {
 						
-						$nodeData = ' class="openToc"';
+						$nodeData = ' class="openNode"';
 
 					}
 					
-					/*** *** *** *** *** *** ***/
-					/*** end of jstree logic ***/
-					/*** *** *** *** *** *** ***/
+					/*** *** *** ***  *** *** ***/
+					/*** end of toctree logic ***/
+					/*** *** *** ***  *** *** ***/
 					
-					// outputs the page in jstree
+					// outputs the page in a tree
 					
 					$html .= '<li'.$nodeData.'  data-toc-level="'.$tmpTocLevel.'">' . $caret .
 					
 						$this->linkRenderer->makelink(
 							$tmpTitle,
 							new HtmlArmor( 
-								'<span class="tocnumber'. $activeClass .'">'.$tmpTocLevel.'</span>
-								<span class="toctext'. $activeClass .'">('.$nextTocLevel .')</span>' ),
+								'<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>
+								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' ),
 							array(
-								'class' => 'aToc',
+								'class' => 'aToc ml-1',
 								'title' => $tmpAltText
 							)
 						);
@@ -969,10 +967,10 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputSpecialPages () {
 		
-		$html = '<div class="panel-body p-1 pb-3 pl-0 pl-xl-2 pt-2" id="toc-specialpages">
+		$html = '<div class="panel-body p-1 pb-2 pl-0 pl-xl-2 pt-2 toc-tree" id="toc-specialpages">
 			<ul>
-				<li>Platzhalterverzeichnis</li>
-				<li>Platzhalterverzeichnis</li>
+				<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> Platzhalterverzeichnis</li>
+				<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> Platzhalterverzeichnis</li>
 			</ul>
 		</div>';
 		

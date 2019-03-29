@@ -33,44 +33,11 @@ $( document ).ready( function () {
 		mobileSearchBar.find( 'input' ).focus(); 
 	});
 	
-	/**
-	 * JS TREE
-	 */
-	//$(".nested.opened").parent("li").addClass("opened").removeClass("nested")
-	//$(".nested.opened").parent("li").parent("ul").addClass("opened").removeClass("nested")
-	//$(".nested.opened").parent("ul").addClass("opened").removeClass("nested")
-	//$(".nested.opened").parent("li").siblings().addClass("opened").removeClass("nested")
-
-	 // assuring jstree is loaded and ready before executing
-	//var jstreeInterval = setInterval( function() {
-		//if( $( $.jstree ) ) {
-			// jsTree is loaded, end interval
-			//clearInterval( jstreeInterval )
-			/*const VanillaTree = require('vanillatree');
-		const tree = new VanillaTree(tocNav);
-
-			tocNav.tree().on("select_node.jstree", function (e, data) {
-				var href = data.node.a_attr.href;
-				document.location.href = href;
-			});
-			tocNav.tree({
-				"core" : {
-					"multiple" : false,
-				}
-			});
-			tocSpecialNav.tree().on("select_node.jstree", function (e, data) {
-				var href = data.node.a_attr.href;
-				document.location.href = href;
-			});
-			tocSpecialNav.tree({
-				"core" : {
-					"multiple" : false,
-				}
-			});
-			
-		//}*/
-		$("#toc-nav, #toc-specialpages").slideDown(200);
-	//}, 5);
+	$(".toc-caret").click(function(){
+		$(this).parent().toggleClass("openNode")
+		$(this).toggleClass("openCaret");
+	})
+	
 	$("#t2s-button").click(function(){
 
 		$service_url = $("#loopexportrequestlink").attr("href");

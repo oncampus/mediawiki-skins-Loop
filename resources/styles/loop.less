@@ -270,31 +270,73 @@ ol.breadcrumb {
 .errorbox {
 	max-width: 100%;
 }
-/** *** *** *** *** *** **/
-/** *** J S T R E E *** **/
-/** *** *** *** *** *** **/
+/** *** *** *** *** *** * **/
+/** *** T O C T R E E *** **/
+/** *** *** *** *** *** * **/
+@tree-url: "../../img/tree.png";
+@open: -44px -6px;
+@closed:  -12px -6px;
+@corner: -76px -6px;
+@line: -110px -4px;
+
 #toc-nav a {
 	color: inherit;
 }
-.toc-caret {
-	margin-left: -15px;
+.toc-node, .toc-node-bg {
+	width: 10px;
+	height: 24px;
+	background-image: url(@tree-url);
+	background-position: @closed;
+	background-repeat: repeat-y;
+	vertical-align: middle;
+	display: inline-block;
 }
-
-.nested {
+.openNode > .toc-caret {
+	background-position: @open;
+}
+.toc-nocaret {
+	background-position: @corner;
+}
+.toc-caret {
+	cursor:pointer;
+}
+.toc-tree ul {
+	margin: 0;
+	padding: 0;
+    line-height: 20px;
+	overflow: hidden;
+}
+.toc-tree ul, #toc-specialpages ul {
+	list-style-type: none;
+}
+.toc-tree li {
+	margin-left: 8px;
+	padding: 0;
+	list-style-type: none;
+    white-space: nowrap;
+}
+.toc-tree li:not(:last-child)  {
+	background-image: url(@tree-url);
+	background-position: @line;
+	background-repeat: repeat-y;
+}
+.aToc {
+    white-space: nowrap;
+}
+.aToc:hover {
+	text-decoration: none;
+}
+.nestedNode {
 	display: none;
 }
 .activeToc {
-	display: inline-block !important;
+	font-weight: bold;
 }
-.openToc > ul.nested,
-.openToc ~ .nested {
+.openNode > ul.nestedNode,
+.openNode ~ .nestedNode {
 	display: block !important;
 }
-#toc-nav ul, #toc-specialpages {
-	
-	list-style-type: none;
-}
-.jstree-node a:after {
+.toc-tree li a:after {
 	content: "";
 	height: 24px;
 	width: 40px;
@@ -307,28 +349,8 @@ ol.breadcrumb {
 	background: -o-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 	background: linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 }
-#toc-nav ul {
-	overflow: hidden;
-}
-.jstree-themeicon {
-	display: none !important;
-}
-.activeToc {
-	font-weight: bold;
-}
-.jstree-anchor.jstree-hovered {
-	background: lighten(@sidebar-background, 3%) !important;
-	box-shadow: none !important;
-	font-weight: 600;
-}
-.jstree-default .jstree-clicked {
-	background: darken(@sidebar-background, 10%);
-}
-.jstree-default .jstree-node {
-	 margin-left: 8px;
-}
-.jstree-default .jstree-icon:empty {
-	width: 18px;
+li.toc-main {
+	background: none !important;
 }
 /** *** ** *** **/
 /** WIKIEDITOR **/
@@ -522,9 +544,6 @@ footer {
 	#sidebar-wrapper {
 		background-color: fade(black, 30%);
 	}
-	.jstree-node a:after {
-		right: 1rem;
-	}
 }
 @media all and (max-width: 767px) and (min-width: 576px), all and (max-width: 1210px) and (min-width: 1995px){
 	.container {
@@ -534,11 +553,6 @@ footer {
 		max-width: 100% !important;
 		margin-left: 0;
 		margin-right: 0;
-	}
-}
-@media all and (max-width: 1200px) {
-	.panel-wrapper {
-		font-size: 14.5px;
 	}
 }
 @media all and (min-width: 768px) and (max-width: 991px) {
