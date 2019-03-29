@@ -273,16 +273,17 @@ ol.breadcrumb {
 /** *** *** *** *** *** * **/
 /** *** T O C T R E E *** **/
 /** *** *** *** *** *** * **/
-@tree-url: "../../img/tree.png";
+@tree-url: "../../img/32px.png";
 @open: -44px -6px;
 @closed:  -12px -6px;
-@corner: -76px -6px;
-@line: -110px -4px;
+@corner: -74px -6px;
+@line: -100px 0px;
+@line-last: -100px -16px;
 
 #toc-nav a {
 	color: inherit;
 }
-.toc-node, .toc-node-bg {
+.toc-node {
 	width: 10px;
 	height: 24px;
 	background-image: url(@tree-url);
@@ -291,11 +292,19 @@ ol.breadcrumb {
 	vertical-align: middle;
 	display: inline-block;
 }
+ul .toc-node:last-child {
+	background-position: @closed;
+}
 .openNode > .toc-caret {
+	background-position: @open;
+}
+.openNode ~ .toc-caret:last-child {
 	background-position: @open;
 }
 .toc-nocaret {
 	background-position: @corner;
+}
+li:last-child .toc-nocaret {
 }
 .toc-caret {
 	cursor:pointer;
@@ -315,10 +324,14 @@ ol.breadcrumb {
 	list-style-type: none;
     white-space: nowrap;
 }
-.toc-tree li:not(:last-child)  {
+.toc-tree ul li  {
 	background-image: url(@tree-url);
 	background-position: @line;
 	background-repeat: repeat-y;
+}
+.toc-tree ul li:last-child  {
+	background-position: @line-last;
+	background-repeat: no-repeat;
 }
 .aToc {
     white-space: nowrap;
