@@ -33,37 +33,45 @@ $( document ).ready( function () {
 		mobileSearchBar.find( 'input' ).focus(); 
 	});
 	
-	$(".toc-caret").click(function(){
+	// TOC navigation function
+	$(".toc-caret").click( function (){
 		$(this).parent().toggleClass("openNode")
 		$(this).toggleClass("openCaret");
 	})
 
-	$("#t2s-button").click(function(){
-
+	// Page audio button
+	$("#t2s-button").click( function (){
 		$service_url = $("#loopexportrequestlink").attr("href");
 
 		$(this).removeClass("ic-audio").addClass("rotating ic-buffering")
 		
 		$.ajax({
-			//url: $service_url,
+			url: $service_url,
 			cache: false,
 			dataType: "html"
 		}).done(function(data) {
 			//console.log(data)
 			$("#t2s-audio source").attr("src", data)
 			$("#t2s-button").hide();
-			/*const player = new Plyr("#t2s-audio", {
+			const player = new Plyr("#t2s-audio", {
 				"volume": 1,
 				"autoplay": true,
 				"muted": false
-			});*/
+			});
 			
 		}).fail(function(xhr, textStatus, errorThrown) { 
-			console.log(textStatus + " : " );
+			//console.log(textStatus + " : " + errorThrown );
 		});
 	});
 	
+	
+	// Page button tooltips
 	$('.page-symbol').tooltip({ boundary: 'window' })
+
+	// Jump to top button
+	$('#page-topjump').click(function(){ 
+		$('html, body').animate({ scrollTop: 0 }, 'fast');
+	 })
 	
 	
 	$(window).on( "resize", function() { resizeTables( false ) } )
