@@ -66,18 +66,30 @@ $( document ).ready( function () {
 		}
 		$("#toc-nav, #toc-specialpages").slideDown(200);
 	}, 5);
-	//mw.loader.using( ['skins.loop-plyr.js'] ).then( function ( ) {
-		$("#t2s-button").click(function(){
-			$(this).hide()
+	$("#t2s-button").click(function(){
+
+		$service_url = $("#loopexportrequestlink").attr("href");
+
+		$(this).removeClass("ic-audio").addClass("rotating ic-buffering")
+		
+		$.ajax({
+			url: $service_url,
+			cache: false,
+			dataType: "html"
+		}).done(function(data) {
+			//console.log(data)
+			$("#t2s-audio source").attr("src", data)
+			$("#t2s-button").hide();
 			const player = new Plyr("#t2s-audio", {
 				"volume": 1,
 				"autoplay": true,
 				"muted": false
 			});
-			$("#audio-wrapper").addClass("col-12 col-sm-5 col-md-3").removeClass("col-1");
-			$("#breadcrumb-area").addClass("col-12 col-sm-7 col-md-9").removeClass("col-11");
+			
+		}).fail(function(xhr, textStatus, errorThrown) { 
+			console.log(textStatus + " : " );
 		});
-	//});
+	});
 	
 	$('.page-symbol').tooltip({ boundary: 'window' })
 	
@@ -126,7 +138,3 @@ $( document ).ready( function () {
 		}
 	}
 });
-
-
-
-	

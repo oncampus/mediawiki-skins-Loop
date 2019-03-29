@@ -25,23 +25,19 @@
 		"remoteSkinPath": "Loop"
 	},
 	"config": {
-        "Text2Speech": {
-        	"value" : "false",
-        	"description" : "Possibility to disable text to speech feature if it is chargeable"
-        },
-        "LoopRenderMode": {
-        	"value" : "default",
-        	"description" : "Defines type of render mode. [ default | offline ]"
-        },
-        "LoopSkinStyles": {
-        	"value": [ "loop-common", "loop-oncampus" ],
-        	"description": "Sets skin style"
-        }
+		"LoopRenderMode": {
+			"value" : "default",
+			"description" : "Defines type of render mode. [ default | offline ]"
+		},
+		"LoopSkinStyles": {
+			"value": [ "loop-common", "loop-oncampus" ],
+			"description": "Sets skin style"
+		}
 	},
     "DefaultUserOptions": {
 		"LoopSkinStyle": "loop-common"
-    },
-    "Hooks": {
+	},
+	"Hooks": {
 		"SkinEditSectionLinks": [
 			"LoopSkinHooks::onSkinEditSectionLinks"
 		],
@@ -73,7 +69,13 @@
 			"position": "bottom",
 			"scripts": [
 					"resources/js/loop.js"
-				]
+				],
+			"dependencies": [
+					"mediawiki.jqueryMsg"
+			],
+			"messages": [
+					"loop-audio-unavailable"
+			]
 		},	
 		"skins.loop-bootstrap.js": {
 			"position": "bottom",

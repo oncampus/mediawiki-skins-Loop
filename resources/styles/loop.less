@@ -125,11 +125,29 @@ ol.breadcrumb {
 }
 #t2s-button {
 	cursor: pointer;
-	
+	width: 16px;
 	color: @icon-color;
 }
-#t2s-audio {
+#t2s-button {
 	display: block;
+}
+@keyframes rotating {
+    from {
+    transform: rotate(0deg);
+    }
+    to {
+    transform: rotate(360deg);
+    }
+}
+#t2s-audio.rotating { 
+	animation: rotating 5s infinite;
+	-webkit-animation: rotating 5s infinite;
+}
+.rotating {
+    animation: rotating 2s linear infinite;
+}
+.plyr {
+	width: 100%;
 }
 .plyr--audio .plyr__controls {
 	padding: 0 !important;
@@ -137,6 +155,22 @@ ol.breadcrumb {
 	border-radius: 5px !important;
 	margin-left: 0 !important;
 }
+.plyr--full-ui input[type=range] {
+	color: @accent-color !important;
+}
+.plyr--audio .plyr__control.plyr__tab-focus, 
+.plyr--audio .plyr__control:hover, 	
+.plyr--audio .plyr__control[aria-expanded=true] {
+	background-color: @accent-color !important;
+	color: @font-on-accent-color !important;
+}
+
+.plyr__control--overlaid{background:fade(@accent-color,0.8) !important;color:@font-on-accent-color;}
+.plyr__control.plyr__tab-focus{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
+.plyr--full-ui input[type=range].plyr__tab-focus::-webkit-slider-runnable-track{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
+.plyr--full-ui input[type=range].plyr__tab-focus::-moz-range-track{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
+.plyr--full-ui input[type=range].plyr__tab-focus::-ms-track{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
+
 #audio-wrapper .plyr {
 	float: right;
 }
@@ -301,9 +335,6 @@ ol.breadcrumb {
 .image img, .fullImageLink a img, .thumb, .thumbinner, .responsive-image {
 	max-width: 100% !important;
 	height: auto !important;
-}
-.toc#toc {
-	display: none;
 }
 .thumbcaption {
 	display: none;

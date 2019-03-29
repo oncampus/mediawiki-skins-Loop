@@ -398,7 +398,7 @@ class LoopTemplate extends BaseTemplate {
 		// TOC  button
 		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'"';
 		
-		if ( ! isset( $previousPage ) || $previousPage == 0 || ! $user->isAllowed('read') ) {
+		if ( ! $user->isAllowed('read') ) {
 			$toc_button .= 'disabled="disabled"';
 		}
 		
@@ -730,14 +730,31 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputAudioButton( ) {
-		global $wgText2Speech, $wgOut;
-		if ( $wgText2Speech == "true" ) {
-			$wgOut->addModules("skins.loop-plyr.js");
+		global $wgText2Speech;
+		$article_id = $this->title->getArticleID();
+		
+		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) ) {
 			
-			echo '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 pr-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
-					<span id="t2s-button" class="ic ic-audio pr-sm-3"></span>
-					<audio id="t2s-audio"><source type="audio/mp3"></source></audio>
+			global $wgOut, $wgLanguageCode;
+
+			$mp3ExportLink = $this->linkRenderer->makelink( 
+				new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
+				new HtmlArmor( '' ), 
+				array( 
+					'id' => 'loopexportrequestlink',
+					'class' => 'd-none' 
+				),
+				array( 'articleId' => $article_id )
+			);
+
+			$wgOut->addModules("skins.loop-plyr.js");
+			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
+					'.$mp3ExportLink.'
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1 mt-1 mr-3 float-right"></span>
+					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
+			
+			echo $html;
 		}
 	}
 	private function outputPageEditMenu( ) {
@@ -746,7 +763,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$user = $this->user;
 		
-		if ( $user->isAllowed( 'edit' ) && $user->isAllowed( 'read' ) ) {
+		if ( $user->isAllowedAll( 'edit', 'read' ) ) {
     
 		$content_navigation_skip=array();
 		$content_navigation_skip['namespaces']['main'] = true;
@@ -950,16 +967,17 @@ class LoopTemplate extends BaseTemplate {
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
 		
-		if ( $user->isAllowed( 'loop-export-xml' ) || $user->isAllowed( 'loop-export-pdf' ) || 
-			 $user->isAllowed( 'loop-export-html' ) || $user->isAllowed( 'loop-export-mp3' ) ) { # TODO other export formats
+		if ( $user->isAllowedAny( 'loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3' ) ) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
 						<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</h5>
 						</div>
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
+							
+			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken;
 
-			if ( $user->isAllowed( 'loop-export-pdf' )) {
+			if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
 				$pdfExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
 					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
