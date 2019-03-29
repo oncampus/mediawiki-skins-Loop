@@ -59,7 +59,7 @@
 		},
 		"skins.loop-plyr": {
 			"position": "top",
-			"styles": "resources/js/plyr/dist/plyr.css"
+			"styles": "../../node_modules/plyr/dist/plyr.css"
 		},
 		"skins.loop.js": {
 			"position": "bottom",
@@ -82,7 +82,7 @@
 		"skins.loop-plyr.js": {
 			"position": "bottom",
 			"scripts": [
-					"resources/js/plyr/dist/plyr.js"
+					"././node_modules/plyr.js"
 				]
 		},
 		"skins.loop-common": {
