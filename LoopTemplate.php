@@ -198,7 +198,15 @@ class LoopTemplate extends BaseTemplate {
 								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
 
 								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
-								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->title . '&action=edit"><i class="ic ic-edit"></i></a>';
+													echo $this->linkRenderer->makeLink(
+														$this->title,
+														new HtmlArmor('<i class="ic ic-edit"></i>'),
+														array( 
+															"id" => "editpagelink",
+															"class" => "ml-2"
+														),
+														array( "action" => "edit" )
+													);
 								            	}
 								            	echo '</h1>';
 								            }
