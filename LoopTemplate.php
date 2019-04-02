@@ -743,10 +743,10 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputAudioButton( ) {
-		global $wgText2Speech;
+		global $wgText2Speech, $wgText2SpeechServiceUrl;
 		$article_id = $this->title->getArticleID();
 		
-		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) ) {
+		if ( $wgText2Speech && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) && ! empty( $wgText2SpeechServiceUrl ) ) {
 			
 			global $wgOut, $wgLanguageCode;
 
@@ -988,7 +988,7 @@ class LoopTemplate extends BaseTemplate {
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
 							
-			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken;
+			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken, $wgText2Speech, $wgText2SpeechServiceUrl;
 
 			if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
 				$pdfExportLink = $this->linkRenderer->makelink( 
@@ -1022,7 +1022,7 @@ class LoopTemplate extends BaseTemplate {
 				);
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
 			}
-			if ( $user->isAllowed( 'loop-export-mp3' )) {
+			if ( $user->isAllowed( 'loop-export-mp3' ) && $wgText2Speech && ! empty( $wgText2SpeechServiceUrl ) ) {
 				$mp3ExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
 					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
