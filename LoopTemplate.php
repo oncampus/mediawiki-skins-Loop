@@ -345,13 +345,14 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromID($mainPage), 
 				new HtmlArmor( $home_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
 				);
 		} else {
 			global $wgSitename;
 			echo $this->linkRenderer->makelink(
 				Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
 				new HtmlArmor( $home_button ),
+				array()
 			);
 		}
 		
