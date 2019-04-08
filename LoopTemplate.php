@@ -165,8 +165,8 @@ class LoopTemplate extends BaseTemplate {
 				</div>
 				<div class="container" id="breadcrumb-container">
 					<div class="row">
-						<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 pl-2 pr-2 pr-sm-0" id="breadcrumb-wrapper">
-							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 float-left" id="breadcrumb-area">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 p-0" id="breadcrumb-wrapper">
+							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pr-2 pr-sm-0 float-left" id="breadcrumb-area">
 								<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 							</div>
 							<?php if( $this->renderMode != "offline" && $this->user->isAllowed('read') && $wgOut->isArticle() ) { 
@@ -771,9 +771,9 @@ class LoopTemplate extends BaseTemplate {
 			);
 
 			$wgOut->addModules("skins.loop-plyr.js");
-			$html = '<div class="col-1 mt-2 mb-2 mt-md-2 mb-md-2 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
+			$html = '<div class="col-1 mt-1 mb-1 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
 					'.$mp3ExportLink.'
-					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1 mt-1 mr-3 float-right"></span>
+					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1 mt-2 mr-3 float-right"></span>
 					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
 			
