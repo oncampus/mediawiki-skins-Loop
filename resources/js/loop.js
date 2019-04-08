@@ -42,8 +42,10 @@ $( document ).ready( function () {
 	// Page audio button
 	$("#t2s-button").click( function (){
 		$service_url = $("#loopexportrequestlink").attr("href");
-
+		
 		$(this).removeClass("ic-audio").addClass("rotating ic-buffering")
+		$("#audio-wrapper").removeClass("col-1").addClass("col-12 col-sm-5 col-lg-4")
+		$("#breadcrumb-area").removeClass("col-11").addClass("col-12 col-sm-7 col-lg-8")
 		
 		$.ajax({
 			url: $service_url,
@@ -71,7 +73,7 @@ $( document ).ready( function () {
 					//'rewind', // Rewind by the seek time (default 10 seconds)
 					//'fast-forward', // Fast forward by the seek time (default 10 seconds)
 					//'duration', // The full duration of the media
-					//'volume', // Volume control
+					'volume', // Volume control
 					//'pip', // Picture-in-picture (currently Safari only)
 					//'airplay', // Airplay (currently Safari only)
 					//'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
