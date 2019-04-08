@@ -227,7 +227,7 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<?php if( $this->user->isAllowed( 'read' ) ) { ?>
+						<?php if( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
 							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
 							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
 									$this->outputFlaggedRevsPanel();
@@ -338,11 +338,8 @@ class LoopTemplate extends BaseTemplate {
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
 		
-		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'" ';
-		if ( ! $mainPage ) {
-			$home_button .= 'disabled="disabled"';
-		}
-		$home_button .= '><span class="ic ic-home"></span></button>';
+		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
+		
 		if( $mainPage ) {
 			echo $this->linkRenderer->makelink(
 				Title::newFromID($mainPage), 
@@ -351,7 +348,11 @@ class LoopTemplate extends BaseTemplate {
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
 				);
 		} else {
-			echo '<a href="#">'.$home_button.'</a>';
+			global $wgSitename;
+			echo $this->linkRenderer->makelink(
+				Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
+				new HtmlArmor( $home_button ),
+			);
 		}
 		
 		// Previous Chapter
