@@ -148,10 +148,11 @@ ol.breadcrumb {
 }
 .plyr {
 	width: 100%;
+	user-select: none;
 }
 .plyr--audio .plyr__controls {
 	padding: 0 !important;
-	background: #eff1f2 !important;
+	background: @player-background !important;
 	border-radius: 5px !important;
 	margin-left: 0 !important;
 }
@@ -164,7 +165,6 @@ ol.breadcrumb {
 	background-color: @accent-color !important;
 	color: @font-on-accent-color !important;
 }
-
 .plyr__control--overlaid{background:fade(@accent-color,0.8) !important;color:@font-on-accent-color;}
 .plyr__control.plyr__tab-focus{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
 .plyr--full-ui input[type=range].plyr__tab-focus::-webkit-slider-runnable-track{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
@@ -173,27 +173,6 @@ ol.breadcrumb {
 
 #audio-wrapper .plyr {
 	float: right;
-}
-#audio-wrapper .plyr__volume input[type=range] {
-	display: none;
-}
-.plyr__control {
-	padding: 5px !important;
-}
-.plyr__control[data-playr=play] {
-	margin-right: -5px !important;
-}
-.plyr__control svg use {
-	height: 10px !important;
-}
-.plyr__time {
-	font-size: 12px !important;
-	min-width: 36px !important;
-	text-align: right !important;
-	margin-right: -5px !important;
-}
-.plyr__volume {
-	margin-right: -12px !important;
 }
 
 /* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
@@ -207,6 +186,7 @@ ol.breadcrumb {
 	-webkit-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
 	-moz-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
 	box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
+	user-select: none;
 }
 .toc#toc {
 	display: none;
