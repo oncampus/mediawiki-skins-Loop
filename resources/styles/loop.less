@@ -148,10 +148,11 @@ ol.breadcrumb {
 }
 .plyr {
 	width: 100%;
+	user-select: none;
 }
 .plyr--audio .plyr__controls {
 	padding: 0 !important;
-	background: #eff1f2 !important;
+	background: @player-background !important;
 	border-radius: 5px !important;
 	margin-left: 0 !important;
 }
@@ -164,7 +165,6 @@ ol.breadcrumb {
 	background-color: @accent-color !important;
 	color: @font-on-accent-color !important;
 }
-
 .plyr__control--overlaid{background:fade(@accent-color,0.8) !important;color:@font-on-accent-color;}
 .plyr__control.plyr__tab-focus{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
 .plyr--full-ui input[type=range].plyr__tab-focus::-webkit-slider-runnable-track{box-shadow:0 0 0 5px fade(@accent-color,0.5) !important;}
@@ -173,27 +173,6 @@ ol.breadcrumb {
 
 #audio-wrapper .plyr {
 	float: right;
-}
-#audio-wrapper .plyr__volume input[type=range] {
-	display: none;
-}
-.plyr__control {
-	padding: 5px !important;
-}
-.plyr__control[data-playr=play] {
-	margin-right: -5px !important;
-}
-.plyr__control svg {
-	height: 14px !important;
-}
-.plyr__time {
-	font-size: 12px !important;
-	min-width: 36px !important;
-	text-align: right !important;
-	margin-right: -5px !important;
-}
-.plyr__volume {
-	margin-right: -12px !important;
 }
 
 /* THIRD SECTION WITH PAGE CONTENT, TOC PANEL, EXPORT PANEL AND INFO BUTTONS */
@@ -207,6 +186,10 @@ ol.breadcrumb {
 	-webkit-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
 	-moz-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
 	box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
+	user-select: none;
+}
+.toc#toc {
+	display: none;
 }
 .panel-wrapper {
 	
@@ -270,13 +253,81 @@ ol.breadcrumb {
 .errorbox {
 	max-width: 100%;
 }
-/** *** *** *** *** *** **/
-/** *** J S T R E E *** **/
-/** *** *** *** *** *** **/
-#toc-nav, #toc-specialpages {
+/** *** *** *** *** *** * **/
+/** *** T O C T R E E *** **/
+/** *** *** *** *** *** * **/
+@tree-url: "../../img/tree.png";
+@open: -44px -6px;
+@closed:  -12px -6px;
+@corner: -74px -6px;
+@line: -100px 0px;
+@line-last: -100px -16px;
+
+#toc-nav a {
+	color: inherit;
+}
+.toc-node {
+	width: 10px;
+	height: 24px;
+	background-image: url(@tree-url);
+	background-position: @closed;
+	background-repeat: repeat-y;
+	vertical-align: middle;
+	display: inline-block;
+}
+.openNode > .toc-caret {
+	background-position: @open;
+}
+.openNode ~ .toc-caret:last-child {
+	background-position: @open;
+}
+.toc-nocaret {
+	background-position: @corner;
+}
+.toc-caret {
+	cursor:pointer;
+}
+.toc-tree ul {
+	margin: 0;
+	padding: 0;
+    line-height: 20px;
+	overflow: hidden;
+}
+.toc-tree ul, #toc-specialpages ul {
+	list-style-type: none;
+}
+.toc-tree li {
+	margin-left: 8px;
+	padding: 0;
+	list-style-type: none;
+    white-space: nowrap;
+}
+.toc-tree ul li  {
+	background-image: url(@tree-url);
+	background-position: @line;
+	background-repeat: repeat-y;
+}
+.toc-tree ul li:last-child  {
+	background-position: @line-last;
+	background-repeat: no-repeat;
+}
+.aToc {
+    white-space: nowrap;
+}
+.aToc:hover {
+	text-decoration: none;
+}
+.nestedNode {
 	display: none;
 }
-.jstree-node a:after {
+.activeToc {
+	font-weight: bold;
+}
+.openNode > ul.nestedNode,
+.openNode ~ .nestedNode {
+	display: block !important;
+}
+.toc-tree li a:after {
 	content: "";
 	height: 24px;
 	width: 40px;
@@ -289,28 +340,8 @@ ol.breadcrumb {
 	background: -o-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 	background: linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 }
-.jstree-container-ul {
-	overflow: hidden;
-}
-.jstree-themeicon {
-	display: none !important;
-}
-.activeTocPage{
-	font-weight: bold;
-}
-.jstree-anchor.jstree-hovered {
-	background: lighten(@sidebar-background, 3%) !important;
-	box-shadow: none !important;
-	font-weight: 600;
-}
-.jstree-default .jstree-clicked {
-	background: darken(@sidebar-background, 10%);
-}
-.jstree-default .jstree-node {
-	 margin-left: 8px;
-}
-.jstree-default .jstree-icon:empty {
-	width: 18px;
+li.toc-main {
+	background: none !important;
 }
 /** *** ** *** **/
 /** WIKIEDITOR **/
@@ -504,9 +535,6 @@ footer {
 	#sidebar-wrapper {
 		background-color: fade(black, 30%);
 	}
-	.jstree-node a:after {
-		right: 1rem;
-	}
 }
 @media all and (max-width: 767px) and (min-width: 576px), all and (max-width: 1210px) and (min-width: 1995px){
 	.container {
@@ -516,11 +544,6 @@ footer {
 		max-width: 100% !important;
 		margin-left: 0;
 		margin-right: 0;
-	}
-}
-@media all and (max-width: 1200px) {
-	.panel-wrapper {
-		font-size: 14.5px;
 	}
 }
 @media all and (min-width: 768px) and (max-width: 991px) {

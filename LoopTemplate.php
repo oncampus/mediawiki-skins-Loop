@@ -198,7 +198,15 @@ class LoopTemplate extends BaseTemplate {
 								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
 
 								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
-								            		echo ' <a id="editpagelink" href="/index.php?title=' . $this->title . '&action=edit"><i class="ic ic-edit"></i></a>';
+													echo $this->linkRenderer->makeLink(
+														$this->title,
+														new HtmlArmor('<i class="ic ic-edit"></i>'),
+														array( 
+															"id" => "editpagelink",
+															"class" => "ml-2"
+														),
+														array( "action" => "edit" )
+													);
 								            	}
 								            	echo '</h1>';
 								            }
@@ -219,10 +227,9 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $this->user->isAllowed( 'read' ) ) { 
-								
-								if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
+						<?php if( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
+							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
+							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
 									$this->outputFlaggedRevsPanel();
 								} ?>
 								<div class="panel-wrapper">
@@ -235,8 +242,9 @@ class LoopTemplate extends BaseTemplate {
 								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
 									$this->outputExportPanel( ); 
 								}
-							} ?>
+								?>
 						</div>	
+						<?php } ?>
 					</div>
 				</div> 
 			</section>
@@ -330,20 +338,22 @@ class LoopTemplate extends BaseTemplate {
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
 		
-		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'" ';
-		if ( ! $mainPage ) {
-			$home_button .= 'disabled="disabled"';
-		}
-		$home_button .= '><span class="ic ic-home"></span></button>';
+		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
+		
 		if( $mainPage ) {
 			echo $this->linkRenderer->makelink(
 				Title::newFromID($mainPage), 
 				new HtmlArmor( $home_button ),
 				array('class' => 'nav-btn',
-				'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
+					'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
 				);
 		} else {
-			echo '<a href="#">'.$home_button.'</a>';
+			global $wgSitename;
+			echo $this->linkRenderer->makelink(
+				Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
+				new HtmlArmor( $home_button ),
+				array()
+			);
 		}
 		
 		// Previous Chapter
@@ -548,9 +558,8 @@ class LoopTemplate extends BaseTemplate {
 		$loopEditMode = $user->getOption( 'LoopEditMode', false, true );
 		$loopRenderMode = $user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 			
-		// storage for opened navigation tocs in the jstree
+		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
-			
 		
 		if ( isset( $loopStructure->mainPage ) ) { 
 
@@ -580,9 +589,7 @@ class LoopTemplate extends BaseTemplate {
 										
 								}
 							}
-							
 						}
-		
 					}
 				}
 			
@@ -595,11 +602,11 @@ class LoopTemplate extends BaseTemplate {
 				$html = '<div class="panel-heading">
 							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
 						</div>
-						<div id="toc-nav" class="panel-body pr-1 pl-1 pb-2 pl-xl-2 pt-0"><ul>';
+						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul>';
 								
 				$rootNode = false;
 				
-				// build JS tree
+				// build TOC tree
 				foreach( $loopStructure->getStructureitems() as $lsi) {
 					
 					$currentPageTitle = $this->title;
@@ -609,15 +616,24 @@ class LoopTemplate extends BaseTemplate {
 					$tmpText = $tmpTitle->getText();
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
+
+					$nextNode = $lsi->nextArticle;
+					$nextTocLevel = 1;
+					$nextLsi = LoopStructureItem::newFromIds($nextNode);
+					if ( $nextLsi ) {
+						$nextTocLevel = $nextLsi->tocLevel;
+					}
 					
-					$classIfOpened = '';
+					$activeClass = '';
+					$openClass = '';
 
 					// check if current page is the active page, if true set css class
 					if( isset( $tmpText ) ) {
 					
 						if( $tmpText == $currentPageTitle ) {
 					
-							$classIfOpened = ' activeTocPage';
+							$activeClass = 'activeToc';
+							$openClass = 'openNode';
 					
 						}
 					}
@@ -631,12 +647,12 @@ class LoopTemplate extends BaseTemplate {
 						
 						// outputs the first node (mainpage)
 						
-						$html .= '<li>' .
+						$html .= '<li class="toc-main mb-1">' .
 							$this->linkRenderer->makelink(
 								$tmpTitle,
 								new HtmlArmor( 
-									'<span class="tocnumber'. $classIfOpened .'"></span>
-									<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>' ),
+									'<span class="tocnumber '. $tmpChapter .'"></span>
+									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' ),
 								array(
 									'class' => 'aToc')
 							);
@@ -645,18 +661,24 @@ class LoopTemplate extends BaseTemplate {
 						
 					}
 					
-					/*** *** *** *** ***  *** *** *** *** ***/
-					/*** jstree logic for opened chapters ***/
-					/*** *** *** *** ***  *** *** *** *** ***/
+					/*** *** *** *** *** *** *** *** ** ***/
+					/*** tree logic for opened chapters ***/
+					/*** *** *** *** *** *** *** *** ** ***/
 					
 					if( ! isset( $lastTmpTocLevel )) {
 						
 						$lastTmpTocLevel = $tmpTocLevel;
 						
 					} 
+					$caret = 'caret';
+					if ( $tmpTocLevel >= $nextTocLevel ) {
+						$caret = 'nocaret';
+					}
+
+					$caret = '<div class="toc-node toc-'.$caret.'"></div>'; # caret if there are child nodes
 					
 					if( $tmpTocLevel > $lastTmpTocLevel ) {
-						$html .= '<ul>';
+						$html .=  '<ul class="nestedNode '.$openClass.'">'; 
 					} else if ( $tmpTocLevel < $lastTmpTocLevel ) {
 						for ($i = $tmpTocLevel; $i < $lastTmpTocLevel; $i++) {
 							$html .= '</ul></li>';
@@ -665,28 +687,29 @@ class LoopTemplate extends BaseTemplate {
 						$html .= '</li>';
 					}
 					
-					$jstreeData = '';
+					$nodeData = '';
 					
 					if( in_array( $tmpChapter, $openedNodes ) ) {
 						
-						$jstreeData = ' data-jstree=\'{"opened":true,"selected":false}\'';
+						$nodeData = ' class="openNode"';
 
 					}
 					
-					/*** *** *** *** *** *** ***/
-					/*** end of jstree logic ***/
-					/*** *** *** *** *** *** ***/
+					/*** *** *** ***  *** *** ***/
+					/*** end of toctree logic ***/
+					/*** *** *** ***  *** *** ***/
 					
-					// outputs the page in jstree
+					// outputs the page in a tree
 					
-					$html .= '<li'.$jstreeData.'>'.
+					$html .= '<li'.$nodeData.'  data-toc-level="'.$tmpTocLevel.'">' . $caret .
+					
 						$this->linkRenderer->makelink(
 							$tmpTitle,
 							new HtmlArmor( 
-								'<span class="tocnumber'. $classIfOpened .'">'.$tmpChapter.'</span>
-								<span class="toctext'. $classIfOpened .'">'. $tmpText .'</span>' ),
+								'<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>
+								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' ),
 							array(
-								'class' => 'aToc',
+								'class' => 'aToc ml-1',
 								'title' => $tmpAltText
 							)
 						);
@@ -730,10 +753,10 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputAudioButton( ) {
-		global $wgText2Speech;
+		global $wgText2Speech, $wgText2SpeechServiceUrl;
 		$article_id = $this->title->getArticleID();
 		
-		if ( $wgText2Speech == 1 && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) ) {
+		if ( $wgText2Speech && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) && ! empty( $wgText2SpeechServiceUrl ) ) {
 			
 			global $wgOut, $wgLanguageCode;
 
@@ -954,10 +977,10 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputSpecialPages () {
 		
-		$html = '<div class="panel-body p-1 pb-3 pl-0 pl-xl-2 pt-2" id="toc-specialpages">
+		$html = '<div class="panel-body p-1 pb-2 pl-0 pl-xl-2 pt-2 toc-tree" id="toc-specialpages">
 			<ul>
-				<li>Platzhalterverzeichnis</li>
-				<li>Platzhalterverzeichnis</li>
+				<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> Platzhalterverzeichnis</li>
+				<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> Platzhalterverzeichnis</li>
 			</ul>
 		</div>';
 		
@@ -975,7 +998,7 @@ class LoopTemplate extends BaseTemplate {
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
 							
-			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken;
+			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken, $wgText2Speech, $wgText2SpeechServiceUrl;
 
 			if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
 				$pdfExportLink = $this->linkRenderer->makelink( 
@@ -1009,7 +1032,7 @@ class LoopTemplate extends BaseTemplate {
 				);
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
 			}
-			if ( $user->isAllowed( 'loop-export-mp3' )) {
+			if ( $user->isAllowed( 'loop-export-mp3' ) && $wgText2Speech && ! empty( $wgText2SpeechServiceUrl ) ) {
 				$mp3ExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
 					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 

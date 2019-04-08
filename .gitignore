@@ -3,8 +3,6 @@
 /composer.lock
 /composer.local.json
 
-# plyr
-/resources/js/plyr/*
-
-# plyr
-/resources/js/jstree/*
+# npm
+/node_modules
+package-lock.json

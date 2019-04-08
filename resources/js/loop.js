@@ -33,41 +33,14 @@ $( document ).ready( function () {
 		mobileSearchBar.find( 'input' ).focus(); 
 	});
 	
-	/**
-	 * JS TREE
-	 */
-	
+	// TOC navigation function
+	$(".toc-caret").click( function (){
+		$(this).parent().toggleClass("openNode")
+		$(this).toggleClass("openCaret");
+	})
 
-	 // assuring jstree is loaded and ready before executing
-	var jstreeInterval = setInterval( function() {
-		if( $( $.jstree ) ) {
-			// jsTree is loaded, end interval
-			clearInterval( jstreeInterval )
-			
-			tocNav.jstree().on("select_node.jstree", function (e, data) {
-				var href = data.node.a_attr.href;
-				document.location.href = href;
-			});
-			tocNav.jstree({
-				"core" : {
-					"multiple" : false,
-				}
-			});
-			tocSpecialNav.jstree().on("select_node.jstree", function (e, data) {
-				var href = data.node.a_attr.href;
-				document.location.href = href;
-			});
-			tocSpecialNav.jstree({
-				"core" : {
-					"multiple" : false,
-				}
-			});
-			
-		}
-		$("#toc-nav, #toc-specialpages").slideDown(200);
-	}, 5);
-	$("#t2s-button").click(function(){
-
+	// Page audio button
+	$("#t2s-button").click( function (){
 		$service_url = $("#loopexportrequestlink").attr("href");
 
 		$(this).removeClass("ic-audio").addClass("rotating ic-buffering")
@@ -83,15 +56,42 @@ $( document ).ready( function () {
 			const player = new Plyr("#t2s-audio", {
 				"volume": 1,
 				"autoplay": true,
-				"muted": false
+				"muted": false,
+				"iconUrl": mw.config.get("stylepath") + "/Loop/node_modules/plyr/dist/plyr.svg", // use svg icons from server, not from cdn
+				"controls": [
+					'play', // Play/pause playback
+					'progress', // The progress bar and scrubber for playback and buffering
+					'current-time', // The current time of playback
+					'mute', // Toggle mute
+					'captions', // Toggle captions
+					'settings', // Settings menu
+					/* optional settings to add */
+					//'play-large', // The large play button in the center
+					//'restart', // Restart playback
+					//'rewind', // Rewind by the seek time (default 10 seconds)
+					//'fast-forward', // Fast forward by the seek time (default 10 seconds)
+					//'duration', // The full duration of the media
+					//'volume', // Volume control
+					//'pip', // Picture-in-picture (currently Safari only)
+					//'airplay', // Airplay (currently Safari only)
+					//'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
+					//'fullscreen', // Toggle fullscreen
+				]
 			});
 			
 		}).fail(function(xhr, textStatus, errorThrown) { 
-			console.log(textStatus + " : " );
+			//console.log(textStatus + " : " + errorThrown );
 		});
 	});
 	
+	
+	// Page button tooltips
 	$('.page-symbol').tooltip({ boundary: 'window' })
+
+	// Jump to top button
+	$('#page-topjump').click(function(){ 
+		$('html, body').animate({ scrollTop: 0 }, 'fast');
+	 })
 	
 	
 	$(window).on( "resize", function() { resizeTables( false ) } )

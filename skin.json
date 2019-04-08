@@ -59,11 +59,7 @@
 		},
 		"skins.loop-plyr": {
 			"position": "top",
-			"styles": "resources/js/plyr/dist/plyr.css"
-		},
-		"skins.loop-jstree": {
-			"position": "top",
-			"styles": "resources/js/jstree/dist/themes/default/style.min.css"
+			"styles": "node_modules/plyr/dist/plyr.css"
 		},
 		"skins.loop.js": {
 			"position": "bottom",
@@ -83,16 +79,9 @@
 					"vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js"
 				]
 		},
-		"skins.loop-jstree.js": {
-			"position": "bottom",
-			"scripts": [
-					"resources/js/jstree/dist/jstree.js"
-				]
-		},
 		"skins.loop-plyr.js": {
-			"position": "bottom",
 			"scripts": [
-					"resources/js/plyr/dist/plyr.js"
+					"node_modules/plyr/dist/plyr.min.js"
 				]
 		},
 		"skins.loop-common": {
