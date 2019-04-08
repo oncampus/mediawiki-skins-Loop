@@ -761,7 +761,7 @@ class LoopTemplate extends BaseTemplate {
 			global $wgOut, $wgLanguageCode;
 
 			$mp3ExportLink = $this->linkRenderer->makelink( 
-				new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
+				new TitleValue( NS_SPECIAL, 'LoopExport/pageaudio' ), 
 				new HtmlArmor( '' ), 
 				array( 
 					'id' => 'loopexportrequestlink',
