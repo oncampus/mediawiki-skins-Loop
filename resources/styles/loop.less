@@ -492,6 +492,76 @@ label[for=mw-fr-commentbox] {
 	box-shadow: inset 0 0 0 1px darken(@mw-ui-highlighted-button-bg, 5%);
 }
 
+/** *** *** *** *** *** *** *** *** *** *** **/
+/**                LOOP AREA                **/
+/** *** *** *** *** *** *** *** *** *** *** **/
+
+.looparea {
+    width: calc(~"100% + 131px"); // magic number
+    left: -100px;
+    position: relative;
+}
+
+.looparea-container {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.looparea-left {
+    min-width: 85px;
+    max-width: 85px;
+    text-align: center;
+    border-right: 3px solid @looparea-color;
+    font-size: 0.8rem;
+    color: #000;
+    position: relative;
+    padding: 25px 5px 5px 5px;
+}
+
+.looparea-right {
+    padding: 1rem 2rem 1rem 1rem;
+    background: #f7f7f7;
+    width: 100%;
+    margin-right: 15px;
+}
+
+.looparea [class^="ic-"], .looparea [class*=" ic-"] {
+    font-size: 2rem;
+    color: @looparea-color;
+}
+
+.looparea-left-type {
+    display: block;
+    font-weight: 700;
+    color: @looparea-color;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 9px;
+}
+
+.looparea .ownicon {
+    width: 40px;
+    height: 40px;
+    display: block;
+    background-size: contain;
+    margin: 0 auto;
+}
+ 
+
+/* state */
+.looparea.renderhide {
+    display: none;
+}
+
+.looparea.rendericon .looparea-right {
+    background: none;
+}
+
+.looparea.rendericon .looparea-left {
+    border-right: none;
+}
+
 /* FOURTH SECTION WITH FOOTER */
 footer {
 	display: none;
@@ -576,74 +646,6 @@ footer {
 	}
 }
 
-/* LoopArea */
-
-.looparea {
-    width: calc(~"100% + 131px"); // magic number
-    left: -100px;
-    position: relative;
-}
-
-.looparea-container {
-    display: flex;
-    margin-bottom: 15px;
-}
-
-.looparea-left {
-    min-width: 85px;
-    max-width: 85px;
-    text-align: center;
-    border-right: 3px solid @accent-color;
-    font-size: 0.8rem;
-    color: #000;
-    position: relative;
-    padding: 25px 5px 5px 5px;
-}
-
-.looparea-right {
-    padding: 1rem 2rem 1rem 1rem;
-    background: #f7f7f7;
-    width: 100%;
-    margin-right: 15px;
-}
-
-.looparea [class^="ic-"], [class*=" ic-"] {
-    font-size: 2rem;
-    color: @accent-color;
-}
-
-.looparea-left-type {
-    display: block;
-    font-weight: 700;
-    color: @accent-color;
-    margin-top: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    font-size: 9px;
-}
-
-.looparea .ownicon {
-    width: 40px;
-    height: 40px;
-    display: block;
-    background-size: contain;
-    margin: 0 auto;
-}
-
-
-/* state */
-.looparea.renderhide {
-    display: none;
-}
-
-.looparea.rendericon .looparea-right {
-    background: none;
-}
-
-.looparea.rendericon .looparea-left {
-    border-right: none;
-}
-
 @media(max-width: 880px) {
 
     .looparea-container {
@@ -670,7 +672,7 @@ footer {
         display: flex;
         min-width: inherit;
         max-width: inherit;
-        border-left: 3px solid @accent-color;
+        border-left: 3px solid @looparea-color;
         border-right: 0;
         background: #f7f7f7;
         padding-left: 15px;
