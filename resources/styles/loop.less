@@ -499,12 +499,12 @@ label[for=mw-fr-commentbox] {
 .looparea {
     width: calc(~"100% + 131px"); // magic number
     left: -100px;
-    position: relative;
+	position: relative;
+	clear: both;
 }
 
 .looparea-container {
     display: flex;
-    margin-bottom: 15px;
 }
 
 .looparea-left {
@@ -514,14 +514,12 @@ label[for=mw-fr-commentbox] {
     border-right: 3px solid @looparea-color;
     font-size: 0.8rem;
     position: relative;
-    padding: 25px 5px 5px 5px;
 }
 
 .looparea-right {
-    padding: 1rem 2rem 1rem 1rem;
     background: @looparea-background;
     width: 100%;
-    margin-right: 15px;
+    margin-right: 15px; /* class m-3 is missing 1-2 pixels */
 }
 
 .looparea [class^="ic-"], .looparea [class*=" ic-"] {
@@ -675,11 +673,11 @@ footer {
         border-left: 3px solid @looparea-color;
         border-right: 0;
         background: #f7f7f7;
-        padding-left: 15px;
+        padding-left: 15px !important; /* temporär wegen Bootstrap-CSS-Klassen*/
     }
 
     .looparea-right {
-        border-left: 3px solid @accent-color;
+        border-left: 3px solid @looparea-color;
         padding-top: 10px; 
     }
 
