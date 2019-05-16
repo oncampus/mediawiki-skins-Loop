@@ -236,7 +236,7 @@ class LoopTemplate extends BaseTemplate {
 									<?php 	$this->outputToc( $loopStructure ); 
 									
 									if( isset( $loopStructure->mainPage ) ) { 
-										$this->outputSpecialPages( );
+										$this->outputSpecialPages( $loopStructure );
 									} ?>
 								</div>
 								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
@@ -975,16 +975,38 @@ class LoopTemplate extends BaseTemplate {
 		echo $html;
 	}
 
-	private function outputSpecialPages () {
+	private function outputSpecialPages ($loopStructure) {
 		
-		$html = '<div class="panel-body p-1 pb-2 pl-0 pl-xl-2 pt-2 toc-tree" id="toc-specialpages">
-			<ul>
-				<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> Platzhalterverzeichnis</li>
-				<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> Platzhalterverzeichnis</li>
-			</ul>
+		$outputSpecialPages = false;
+
+		$html = '<div class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-2 toc-tree" id="toc-specialpages"><ul>';
+			
+			$objects_array = array (
+				'loop_figure' => 'LoopFigures',
+				'loop_task' => 'LoopTasks',
+				'loop_formula' => 'LoopFormulas',
+				'loop_listing' => 'LoopListings',
+				'loop_media' => 'LoopMedia',
+				'loop_table' => 'LoopTables'
+			);
+			foreach ( $objects_array as $object => $type ) { 
+				#dd($type);
+				if ( $loopStructure->hasObjects( $object ) ) {
+					$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
+						new TitleValue( NS_SPECIAL, $type ),
+						new HtmlArmor( $this->getSkin()->msg( strtolower( $type ) ) ),
+						array("class"=>"aToc")
+					) . '</li>';
+					$outputSpecialPages = true;
+				}
+			}
+			
+		$html .= '</ul>
 		</div>';
+		if ( $outputSpecialPages ) {
+			echo $html;
+		}
 		
-		echo $html;
 	}
 
 	private function outputExportPanel () {
