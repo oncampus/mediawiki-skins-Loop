@@ -708,7 +708,9 @@ footer {
 @media(max-width: 880px) {
 
     .looparea-container {
-        display: block;
+		display: block;
+		margin-left: -16px;
+    	margin-right: -16px;
     }
 
     .looparea [class^="ic-"], .looparea [class*=" ic-"] {
@@ -744,5 +746,14 @@ footer {
 
     .looparea .ownicon {
         margin: inherit;
-    }
+	}
+}
+
+@media(max-width: 768px) {
+
+	.looparea-container {
+		margin-left: -8px;
+		margin-right: -8px;
+	}
+	
 }
