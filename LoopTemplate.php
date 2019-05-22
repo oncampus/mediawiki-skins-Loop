@@ -184,8 +184,8 @@ class LoopTemplate extends BaseTemplate {
 					<div class="row">
 						<div class="col-12 col-lg-9" id="content-wrapper">
 							<div class="row mb-3" id="content-inner-wrapper">
-								<div class="col-12 pr-1 pr-sm-2 pr-md-3">
-									<div class="col-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
+								<div class="col-12 pr-1 pr-sm-2 pr-md-3 pl-1 pl-sm-2 pl-md-3">
+									<div class="col-12 col-md-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
 									
 	           							<?php 
 										} // end of excluding rendermode-epub 
