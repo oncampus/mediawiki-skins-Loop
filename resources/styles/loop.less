@@ -709,7 +709,7 @@ footer {
 	}
 }
 
-@media(max-width: 880px) {
+@media(max-width: 991px) {
 
     .looparea-container {
 		display: block;
@@ -741,7 +741,11 @@ footer {
         border-right: 0;
         background: #f7f7f7;
         padding-left: 15px !important; /* temporär wegen Bootstrap-CSS-Klassen*/
-    }
+	}
+	
+	.rendericon .looparea-left {
+		background: none;
+	}
 
     .looparea-right {
         border-left: 3px solid @looparea-color;
@@ -760,4 +764,15 @@ footer {
 		margin-right: -8px;
 	}
 	
+}
+
+/* fix conflicting font touching border */
+@media (max-width:1100px) and (min-width:991px) {
+	.looparea-left-type {
+		letter-spacing: 0;
+	}
+	.looparea-left {
+		margin-left: 5px;
+		min-width: 80px;
+	}
 }
