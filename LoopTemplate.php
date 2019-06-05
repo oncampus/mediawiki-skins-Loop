@@ -277,20 +277,20 @@ class LoopTemplate extends BaseTemplate {
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 			
 			if ( isset ( $personTools ['userpage'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
+				echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '" alt="'.$personTools ['userpage'] ['links'] [0] ['text'].'"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
 			}
 
 			if ( isset ( $personTools ['watchlist'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
+				echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '" alt="'.$personTools ['watchlist'] ['links'] [0] ['text'].'"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
 			}
 
 			if ( isset ( $personTools ['preferences'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
+				echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '" alt="'.$personTools ['preferences'] ['links'] [0] ['text'].'"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
 			}
 
 			if ( isset ( $personTools ['logout'] )) {
 				echo '<div class="dropdown-divider"></div>';
-				echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
+				echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
 			}
 			echo '	</div>
 				</div>
@@ -299,31 +299,43 @@ class LoopTemplate extends BaseTemplate {
 		} else {
 			
 			$loggedin = false;
-			
-			echo '<div id="usermenu"><div class="dropdown float-right mt-2">
-			<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-			<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
-			
-			if ( isset ( $personTools ['login'] ) ) {
-				echo $personTools ['login'] ['links'] [0] ['text'];
-			}
-			
-			echo '</span>
-			</button>
-			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 
 			if ( isset ( $personTools ['createaccount'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['createaccount'] ['links'] [0] ['href'] . '"><span class="ic ic-createaccount pr-1"></span>  ' . $personTools ['createaccount'] ['links'] [0] ['text'] . '</a>';
-				echo '<div class="dropdown-divider"></div>';
-			}
-			
-			if ( isset ( $personTools ['login'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['login'] ['links'] [0] ['href'] . '"><span class="ic ic-login pr-1"></span>  ' . $personTools ['login'] ['links'] [0] ['text'] . '</a>';
-			}
+				echo '<div id="usermenu"><div class="dropdown float-right mt-2">
+				<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
+				
+				if ( isset ( $personTools ['login'] ) ) {
+					echo $personTools ['login'] ['links'] [0] ['text'];
+				}
+				
+				echo '</span>
+				</button>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
+	
+				if ( isset ( $personTools ['login'] ) ) {
+					echo '<a class="dropdown-item" href="' . $personTools ['login'] ['links'] [0] ['href'] . '" alt="'.$personTools ['login'] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools ['login'] ['links'] [0] ['text'] . '</a>';
+					echo '<div class="dropdown-divider"></div>';
+				}
 
-			echo '	</div>
-				</div>
-			</div>';
+				if ( isset ( $personTools ['createaccount'] ) ) {
+					echo '<a class="dropdown-item" href="' . $personTools ['createaccount'] ['links'] [0] ['href'] . '" alt="'.$personTools ['createaccount'] ['links'] [0] ['text'].'"><span class="ic ic-createaccount pr-1"></span>  ' . $personTools ['createaccount'] ['links'] [0] ['text'] . '</a>';
+
+				}
+	
+				echo '	</div>
+					</div>
+				</div>';
+			} elseif ( isset ( $personTools ['login'] ) ) {
+				echo '<div class="float-right mt-2">
+				<a id="login-button" href="' . $personTools ['login'] ['links'] [0] ['href'] . '" alt="'.$personTools ['login'] ['links'] [0] ['text'].'">
+				<button class="btn btn-light btn-sm" type="button" id="user-menu-dropdown" aria-haspopup="true" aria-expanded="true">
+				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
+
+				echo $personTools ['login'] ['links'] [0] ['text'];
+				echo '</span></button></a></div>';
+				
+			}
 		}
 		
 
