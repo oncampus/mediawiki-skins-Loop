@@ -382,15 +382,8 @@ class LoopTemplate extends BaseTemplate {
 		$previous_chapter_button .= '><span class="ic ic-chapter-previous"></span></button>';
 		
 		if( isset( $previousChapterItem->article ) && $user->isAllowed('read') ) {
-			
-			$previousChapterItemTitle = Title::newFromId( $previousChapterItem->tocText );
-			if ( $previousChapterItemTitle ) {
-			} else {
-				$previousChapterItemTitle = Title::newFromText( $previousChapterItem->tocText );
-			}
-
 			echo $this->linkRenderer->makelink(
-				$previousChapterItemTitle,
+				Title::newFromID( $previousChapterItem->article ),
 				new HtmlArmor( $previous_chapter_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ) )
@@ -402,7 +395,6 @@ class LoopTemplate extends BaseTemplate {
 		// Previous Page
 		if ( $lsi ) {
 			$previousPage = $lsi->previousArticle;
-			$previousPageItem = LoopStructureItem::newFromIds($previousPage);
 		}
 		
 		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
@@ -414,15 +406,8 @@ class LoopTemplate extends BaseTemplate {
 		$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 		
 		if( isset( $previousPage ) && $previousPage > 0 && $user->isAllowed('read') ) {
-			
-			$previousPageItemTitle = Title::newFromId( $previousPageItem->tocText );
-			if ( $previousPageItemTitle ) {
-			} else {
-				$previousPageItemTitle = Title::newFromText( $previousPageItem->tocText );
-			}
-
 			echo $this->linkRenderer->makelink(
-				$previousPageItemTitle,
+				Title::newFromID( $previousPage ),
 				new HtmlArmor( $previous_page_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) )
@@ -458,7 +443,6 @@ class LoopTemplate extends BaseTemplate {
 		
 		if ( $lsi ) {
 			$nextPage = $lsi->nextArticle;
-			$nextPageItem = LoopStructureItem::newFromIds($nextPage);
 		}
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
@@ -468,15 +452,8 @@ class LoopTemplate extends BaseTemplate {
 		$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 	
 		if( isset( $nextPage ) && $nextPage > 0 && $user->isAllowed('read') ) {
-			
-			$nextPageItemTitle = Title::newFromId( $nextPageItem->tocText );
-			if ( $nextPageItemTitle ) {
-			} else {
-				$nextPageItemTitle = Title::newFromText( $nextPageItem->tocText );
-			}
-
 			echo $this->linkRenderer->makelink(
-				$nextPageItemTitle,
+				Title::newFromID( $nextPage ),
 				new HtmlArmor( $next_page_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' ) )
@@ -500,14 +477,8 @@ class LoopTemplate extends BaseTemplate {
 		$next_chapter_button .= '><span class="ic ic-chapter-next"></span></button>';
 		
 		if( isset( $nextChapterItem->article ) && $user->isAllowed('read') ) {
-			$nextChapterItemTitle = Title::newFromId( $nextChapterItem->tocText );
-			if ( $nextChapterItemTitle ) {
-			} else {
-				$nextChapterItemTitle = Title::newFromText( $nextChapterItem->tocText );
-			}
-
 			echo $this->linkRenderer->makelink(
-				$nextChapterItemTitle,
+				Title::newFromID( $nextChapterItem->article ),
 				new HtmlArmor( $next_chapter_button ),
 				array('class' => 'nav-btn',
 				'title' => $this->getSkin()->msg( 'loop-navigation-label-next-chapter' ) ),
@@ -535,7 +506,6 @@ class LoopTemplate extends BaseTemplate {
 			// Previous Page
 			if ( $lsi ) {
 				$previousPage = $lsi->previousArticle;
-				$previousPageItem = LoopStructureItem::newFromIds($previousPage);
 			}
 			
 			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn mr-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
@@ -546,15 +516,8 @@ class LoopTemplate extends BaseTemplate {
 			
 			$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
 			if( isset( $previousPage ) && $previousPage > 0 && $user->isAllowed('read')) {
-				
-				$previousPageItemTitle = Title::newFromId( $previousPageItem->tocText );
-				if ( $previousPageItemTitle ) {
-				} else {
-					$previousPageItemTitle = Title::newFromText( $previousPageItem->tocText );
-				}
-
 				$bottomNav .= $this->linkRenderer->makelink(
-					$previousPageItemTitle,
+					Title::newFromID( $previousPage ),
 					new HtmlArmor( $previous_page_button ),
 					array('class' => 'nav-btn',
 					'title' => $this->getSkin()->msg( 'loop-navigation-label-previous-page' ) )
@@ -566,7 +529,6 @@ class LoopTemplate extends BaseTemplate {
 			// next button
 			if ( $lsi ) {
 				$nextPage = $lsi->nextArticle;
-				$nextPageItem = LoopStructureItem::newFromIds( $nextPage );
 			}
 			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 			
@@ -576,15 +538,8 @@ class LoopTemplate extends BaseTemplate {
 			$next_page_button .= '><span class="ic ic-page-next"></span></button>';
 		
 			if( isset( $nextPage ) && $nextPage > 0 && $user->isAllowed('read') ) {
-				
-				$nextPageItemTitle = Title::newFromId( $nextPageItem->tocText );
-				if ( $nextPageItemTitle ) {
-				} else {
-					$nextPageItemTitle = Title::newFromText( $nextPageItem->tocText );
-				}
-
 				$bottomNav .= $this->linkRenderer->makelink(
-					$nextPageItemTitle,
+					Title::newFromID( $nextPage ),
 					new HtmlArmor( $next_page_button ),
 					array( 'class' => 'nav-btn',
 					'title' => $this->getSkin()->msg( 'loop-navigation-label-next-page' )  )
@@ -669,14 +624,8 @@ class LoopTemplate extends BaseTemplate {
 					$currentPageTitle = $this->title;
 					$tmpChapter = $lsi->tocNumber;
 					$tmpTitle = Title::newFromID( $lsi->article );
-
-					if ( $tmpTitle ) {
-						$tmpText = $tmpTitle->getText();
-					} else {
-						$tmpTitle = Title::newFromText( $lsi->tocText );
-						$tmpText = $lsi->tocText;
-					}
-
+					$tmpURL = $tmpTitle->getFullURL();
+					$tmpText = $tmpTitle->getText();
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
 
