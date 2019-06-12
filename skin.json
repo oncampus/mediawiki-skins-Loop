@@ -41,9 +41,6 @@
 		"SkinEditSectionLinks": [
 			"LoopSkinHooks::onSkinEditSectionLinks"
 		],
-		"ParserMakeImageParams":[
-			"LoopSkinHooks::onParserMakeImageParams"
-		],
 		"HtmlPageLinkRendererEnd":[
 			"LoopSkinHooks::onHtmlPageLinkRendererEnd"
 		]

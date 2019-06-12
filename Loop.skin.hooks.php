@@ -31,34 +31,6 @@ class LoopSkinHooks {
 	}
 	
 	/**
-	 * Add class to images to make them responsive
-	 * Remove link frame in editmode=false
-	 *
-	 * This is attached to the MediaWiki 'ParserMakeImageParams' hook.
-	 *
-	 * @param Title $title
-	 * @param File $file
-	 * @param array $params
-	 * @param Parser $parser
-	 * @return bool true
-	 */
-	public static function onParserMakeImageParams( $title, $file, &$params, $parser ) {
-		
-		$loopeditmode = $parser->getUser()->getOption( 'LoopEditMode', false, true );
-		$parser->getOptions()->optionUsed( 'LoopEditMode' );
-		
-		$params['frame']['class'] = 'responsive-image';
-		
-		if ( $loopeditmode ) {
-			$params['frame']['no-link'] = false;
-		} else {
-			$params['frame']['no-link'] = true;
-		}
-		
-		return true;
-	}	
-
-	/**
 	 * Change internal links in offline mode to local paths
 	 *
 	 * This is attached to the MediaWiki 'HtmlPageLinkRendererEnd' hook.
