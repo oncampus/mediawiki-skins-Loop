@@ -14,6 +14,7 @@
 #toc-nav a {
 	color: inherit;
 }
+
 .toc-node {
 	width: 10px;
 	height: 24px;
@@ -23,59 +24,74 @@
 	vertical-align: middle;
 	display: inline-block;
 }
+
 .openNode > .toc-caret {
 	background-position: @open;
 }
+
 .openNode ~ .toc-caret:last-child {
 	background-position: @open;
 }
+
 .toc-nocaret {
 	background-position: @corner;
 }
+
 .toc-caret {
 	cursor:pointer;
 }
+
 .toc-tree ul {
 	margin: 0;
 	padding: 0;
     line-height: 20px;
 	overflow: hidden;
 }
+
 .toc-tree ul, #toc-specialpages ul {
 	list-style-type: none;
 }
+
 .toc-tree li {
 	margin-left: 8px;
 	padding: 0;
 	list-style-type: none;
     white-space: nowrap;
 }
+
 .toc-tree ul li  {
 	background-image: url(@tree-url);
 	background-position: @line;
 	background-repeat: repeat-y;
 }
+
 .toc-tree ul li:last-child  {
 	background-position: @line-last;
 	background-repeat: no-repeat;
 }
+
 .aToc {
 	white-space: nowrap;
 	font-size: 15.5px;
 }
+
 .aToc:hover {
 	text-decoration: none;
 }
+
 .nestedNode {
 	display: none;
 }
+
 .activeToc {
 	font-weight: bold;
 }
+
 .openNode > ul.nestedNode,
 .openNode ~ .nestedNode {
 	display: block !important;
 }
+
 .toc-tree li a:after {
 	content: "";
 	height: 24px;
@@ -89,6 +105,7 @@
 	background: -o-linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 	background: linear-gradient( right, @sidebar-background, fade(@sidebar-background, 10%) );
 }
+
 li.toc-main {
 	background: none !important;
 }
