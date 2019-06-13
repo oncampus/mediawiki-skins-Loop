@@ -1,0 +1,127 @@
+/** *** *** *** *** *** *** *** *** **/
+/** ***    L O O P   A R E A    *** **/
+/** *** *** *** *** *** *** *** *** **/
+
+.looparea {
+    width: calc(~"100% + 131px"); // magic number
+    left: -100px;
+	clear: both;
+}
+
+.looparea-left {
+    min-width: 85px;
+    max-width: 85px;
+    text-align: center;
+    border-right: 3px solid @looparea-color;
+    font-size: 0.8rem;
+}
+
+.looparea-right {
+    background: @looparea-background;
+    width: 100%;
+    margin-right: 15px; /* class m-3 is missing 1-2 pixels */
+}
+
+.looparea-left span.ic {
+    font-size: 2rem;
+    color: @looparea-color;
+}
+
+.looparea-left-type {
+    color: @looparea-color;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 9px;
+}
+
+.looparea .ownicon {
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    margin: 0 auto;
+}
+
+/* Loop Area States */
+
+.looparea.rendericon .looparea-right {
+    background: none;
+}
+
+.looparea.rendericon .looparea-left {
+    border-right: none;
+}
+
+@media(max-width: 991px) {
+
+    .looparea-container {
+		margin-left: -16px;
+    	margin-right: -16px;
+    }
+
+    .looparea [class^="ic-"], .looparea [class*=" ic-"] {
+        float: left;
+    }
+
+    .looparea-left-type {
+        float: left;
+        margin: 10px 0 0 10px;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .looparea {
+        width: inherit;
+        left: inherit;
+    }
+
+    .looparea-left {
+        display: flex;
+        min-width: inherit;
+        max-width: inherit;
+        border-left: 3px solid @looparea-color;
+        border-right: 0;
+        background: #f7f7f7;
+        padding-left: 15px !important; /* temporär wegen Bootstrap-CSS-Klassen*/
+	}
+	
+	.rendericon .looparea-left {
+		background: none;
+	}
+
+    .looparea-right {
+        border-left: 3px solid @looparea-color;
+        padding-top: 10px; 
+    }
+
+    .looparea .ownicon {
+        margin: inherit;
+	}
+
+	.looparea-right p:last-of-type {
+		margin-bottom: 0.5rem !important;
+	}
+}
+
+@media(max-width: 767px) {
+
+	.looparea-container {
+		margin-left: -8px;
+		margin-right: -8px;
+	}
+	
+}
+
+/* fix conflicting font touching border */
+@media (max-width:1100px) and (min-width:991px) {
+
+	.looparea-left-type {
+		letter-spacing: 0;
+    }
+    
+	.looparea-left {
+		margin-left: 5px;
+		min-width: 80px;
+    }
+    
+}
