@@ -1,17 +1,5 @@
 /* mostly contains Mediawiki overwrites */
 
-/** *** ** *** **/
-/** WIKIEDITOR **/
-/** *** ** *** **/
-
-.editButtons {
-	padding-bottom: 15px;
-}
-#msupload-dropzone#msupload-dropzone {
-	height: auto !important;
-	margin-bottom: 3px !important;
-}
-
 /** *** *** ** *** *** **/
 /** MEDIAWIKI GENERAL  **/
 /** *** *** ** *** *** **/
@@ -67,13 +55,8 @@ code {
 	display: none;
 }
 
-.mw-editsection, #editpagelink, #edittoclink {
+.mw-editsection, #editpagelink, #editTocLink {
 	font-size: 17px;
-	vertical-align: middle;
-}
-
-#edittoclink {
-	font-size: 20px;
 	vertical-align: middle;
 }
 
@@ -84,38 +67,6 @@ code {
 /* #mw-content-text :last-child > * {
 	 margin-bottom: 0 !important;
 } */
-
-#loopsettings-form label {
-	display: inline;
-}
-
-/* FlaggedRevs */
-.flaggedrevs_reviewform {
-	background: none;
-	font-size: 15.5px;
-}
-
-#loop-fr-panel .flaggedrevs_reviewform p {
-	margin-bottom: 0 !important;
-}
-
-#loop-fr-panel .ic {
-	margin-left: -1rem;
-}
-
-.loop-fr-status {
-	font-size: 15.5px;
-	line-height: 19px;
-}
-
-#loop-fr-panel p > #mw-fr-reviewing-status,
-label[for=mw-fr-commentbox] {
-	display: none;
-}
-
-.fr-diff-patrollink, .patrollink { 
-	display:none; 
-}
 
 /** *** *** *** *** *** *** *** *** *** *** **/
 /** MEDIAWIKI-UI and OO-UI INPUT CHANGES **/
@@ -189,28 +140,4 @@ label[for=mw-fr-commentbox] {
 	background-color: darken(@mw-ui-highlighted-button-bg, 5%);
 	border-color: darken(@mw-ui-highlighted-button-bg, 5%);
 	box-shadow: inset 0 0 0 1px darken(@mw-ui-highlighted-button-bg, 5%);
-}
-
-@media all and (max-width: 767px) and (min-width: 576px), all and (max-width: 1210px) and (min-width: 1995px){
-	.container {
-		max-width: 100% !important;
-	}
-}
-
-@media all and (min-width: 768px) and (max-width: 991px) {
-	.container {
-		max-width: 865px;
-	}
-}
-
-@media all and (min-width: 992px) and (max-width: 1200px) {
-	.container {
-		max-width: 1090px;
-	}
-}
-
-@media all and (min-width: 1100px) {
-	.container {
-		max-width: 1160px;
-	}
 }

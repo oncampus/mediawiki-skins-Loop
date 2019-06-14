@@ -1,0 +1,37 @@
+.table-hover tr:hover {
+	background-color: @content-outter-background !important;
+}
+
+.btn {
+	border: 1px solid #ccc;
+	color: @icon-color;
+}
+
+.btn:focus,
+.btn:active{
+	box-shadow:none !important;
+	outline:0px !important;
+}
+.page-nav-btn{
+	border-radius: 2px;
+	padding: 0;
+}
+
+.page-nav-btn span,
+.page-btm-nav-btn span {
+	font-size: 19px; /* sizing loop icons */
+}
+
+.btn.disabled span, 
+.btn[disabled] span, 
+fieldset[disabled] .btn {
+	color: lighten(@icon-color, 50%);
+}
+
+.btn-light.disabled, 
+.btn-light[disabled], 
+fieldset[disabled] .btn-light {
+	background-color: darken(@nav-button-background, 3%) !important;
+	opacity: 1;
+	border: 1px solid #ccc;
+}
