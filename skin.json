@@ -85,7 +85,7 @@
 			"class": "ResourceLoaderSkinModule",
 			"position": "top",
 			"styles": {
-				"resources/styles/loop-common/loop-common.less": {
+				"resources/styles/less/skins/loop-common/loop-common.less": {
 					"media": "all"
 				}
 			}
@@ -94,7 +94,7 @@
 			"class": "ResourceLoaderSkinModule",
 			"position": "top",
 			"styles": {
-				"resources/styles/loop-oncampus/loop-oncampus.less": {
+				"resources/styles/less/skins/loop-oncampus/loop-oncampus.less": {
 					"media": "all"
 				}
 			}

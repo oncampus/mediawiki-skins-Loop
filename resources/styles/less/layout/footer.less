@@ -1,0 +1,32 @@
+/* mostly contains content of <footer> */
+
+footer {
+	display: none;
+	height: 80px;
+}
+#main-footer {
+	background-color: @second-footer-background;
+	min-height: 80px;
+	color: @second-footer-text;
+}
+#main-footer a {
+	color: @second-footer-text;
+}
+#footer-right .ic {
+	font-size: 1.5em;
+}
+#extra-footer {
+	background-color: @first-footer-background;
+}
+#extra-footer-content p {
+	margin-bottom: 0 !important;
+}
+#extra-footer-content img {
+	margin-bottom: 0.5rem;
+}
+
+@media all and (max-width: 575px){
+	#footer-right .ic {
+		font-size: 2em;
+	}
+}

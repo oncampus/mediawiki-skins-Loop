@@ -1,0 +1,108 @@
+/* mostly contains content of #banner-wrapper */
+
+#banner-wrapper {
+	background: @banner-background;
+	background-size: @banner-background-size;
+	background-position: @banner-background-position;
+}
+#title-container a, #title-container a:hover  {
+	text-decoration: none !important;
+	padding-top: 20px;
+}
+h1#loop-title, h1#loop-title:hover {
+	color: @loop-title-color;
+	padding-top: @title-padding !important;
+}
+#banner-logo-container {
+	background: @loop-title-color;	
+	min-height: 50px;
+}
+#logo {
+	background-image: url(@logo-url);
+	background-repeat: no-repeat;
+	height: 42px;
+	width: auto;	
+	background-size: auto 100%;
+	background-position: 0 center;
+}
+
+#page-navigation-wrapper {
+	background-color: @navigation-bar-background;
+	height: 50px;
+}
+#page-navigation-col .btn-group.float-right {
+	margin-right: 1px;	
+}
+
+.page-nav-btn {
+	min-height: 50px;
+	max-width: 60px;
+	min-width: 33px; 
+	width: 10.8vw;
+	margin-right: -1px;
+}
+#admin-btn:after {
+	margin-left: -2px;
+}
+.dropdown-menu a.new {
+	color: inherit
+}
+#page-searchbar-md input,
+#page-searchbar-lg-xl input {
+    margin-top: 5px;
+    height: 40px;
+}
+
+/* SECOND SECTION WITH BREADCRUMB, AUDIO BUTTON AND MOBILE SEARCH BAR */
+
+ol.breadcrumb {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	background: transparent;
+}
+
+.breadcrumb li~li:before {
+	content: "/";
+	padding: 0.5em;
+}
+
+.breadcrumb a {
+	color: @breadcrumb-link;
+}
+
+#t2s-button {
+	cursor: pointer;
+	width: 16px;
+	color: @icon-color;
+}
+
+#t2s-button {
+	display: block;
+}
+
+@keyframes rotating {
+    from {
+    transform: rotate(0deg);
+    }
+    to {
+    transform: rotate(360deg);
+    }
+}
+
+#t2s-audio.rotating { 
+	animation: rotating 5s infinite;
+	-webkit-animation: rotating 5s infinite;
+}
+
+.rotating {
+    animation: rotating 2s linear infinite;
+}
+
+@media all and (max-width: 767px) and (min-width: 576px), all and (max-width: 1210px) and (min-width: 1995px){
+	#page-navigation-container {
+		max-width: 100% !important;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
