@@ -79,5 +79,25 @@
 
 /* if loop area is inside loop spoiler*/
 .loopspoiler_content_wrapper .looparea {
-    margin: 0 1rem;
+    
+    margin-left: 6rem;
+    width: 100%;
 }
+
+@media(max-width: 991px) {
+    .loopspoiler_content_wrapper .looparea {
+        margin: 0 1rem;
+        width: ~"calc(100% - 2rem)";
+    }
+}
+
+
+@media(max-width: 767px) {
+
+	.looparea-container {
+        margin-left: -16px;
+        margin-right: -16px;
+	}
+	
+}
+
