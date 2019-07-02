@@ -46,10 +46,20 @@
 
 .looparea.rendericon .looparea-right {
     background: none;
+    border-left: none;
 }
 
 .looparea.rendericon .looparea-left {
+    border-left: none;
     border-right: none;
+}
+
+@media(min-width: 991px) {
+
+    .looparea.rendericon .looparea-left {
+        margin-top: 15px; /* da Hintergrund und Rahmen fehlt, Iconposition optisch nachvollziehbarer machen*/
+    }
+
 }
 
 @media(max-width: 991px) {
@@ -100,7 +110,8 @@
 
 	.looparea-right p:last-of-type {
 		margin-bottom: 0.5rem !important;
-	}
+    }
+    
 }
 
 @media(max-width: 767px) {
