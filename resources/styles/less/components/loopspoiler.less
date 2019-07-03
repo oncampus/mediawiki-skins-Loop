@@ -1,0 +1,97 @@
+/** *** *** *** *** *** *** ** *** *** **/
+/** ***  L O O P   S P O I L E R   *** **/
+/** *** *** *** *** *** *** ** *** *** **/
+
+.loopspoilercontainer_default,
+.loopspoilercontainer_transparent {
+    display: block;
+}
+
+.btn.loopspoiler {
+    border: 2px solid @loopspoiler-btn;
+}
+
+.btn.loopspoiler_type_default,
+.btn.loopspoiler_type_transparent {
+    margin-top: 10px;
+}
+
+.btn.loopspoiler_type_default,
+.btn.loopspoiler_type_in_text {
+    background-color: @loopspoiler-btn;
+    color: #fff;
+}
+
+.btn.loopspoiler_type_transparent,
+.btn.loopspoiler_type_in_text_transparent {
+	background-color: transparent;
+	color: @loopspoiler-btn;
+}
+
+.loopspoiler_content_wrapper {
+	background: #fff;
+    display: none;
+    padding: 0.75rem 0.75rem;
+    border: 2px solid @loopspoiler-btn;
+}
+
+.btn.loopspoiler_type_default .loopspoiler_content_wrapper,
+.btn.loopspoiler_type_transparent .loopspoiler_content_wrapper {
+    margin-bottom: 10px;
+}
+
+.btn.loopspoiler_type_in_text,
+.btn.loopspoiler_type_in_text_transparent {
+	padding: 0px 5px;
+}
+
+.btn.spoileractive {
+ border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+}
+
+.btn.loopspoiler_type_in_text_transparent,
+.btn.loopspoiler_type_transparent {
+    transition: none;
+}
+
+.btn.spoileractive.loopspoiler_type_in_text_transparent {
+    margin-top: -2px;
+}
+
+.btn.spoileractive.loopspoiler_type_in_text_transparent,
+.btn.spoileractive.loopspoiler_type_transparent,
+.btn.spoileractive.loopspoiler_type_in_text_transparent:active,
+.btn.spoileractive.loopspoiler_type_transparent:active {
+    border-bottom-color: #fff;
+    transition: none;
+    box-shadow: 0px 4px 0px -2px #fff !important; // forcing because bootstrap is forcing too
+    border-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.loopspoiler_type_in_text.loopspoiler_content_wrapper + p,
+.loopspoiler_type_in_text_transparent.loopspoiler_content_wrapper + p {
+    display: inline;
+}
+
+/* if loop area is inside loop spoiler*/
+.loopspoiler_content_wrapper .looparea {
+    margin-left: 6rem;
+    width: 100%;
+}
+
+@media(max-width: 991px) {
+    .loopspoiler_content_wrapper .looparea {
+        margin: 0 1rem;
+        width: ~"calc(100% - 2rem)";
+    }
+}
+
+@media(max-width: 767px) {
+	.loopspoiler_content_wrapper .looparea-container {
+        margin-left: -16px;
+        margin-right: -16px;
+	}
+}

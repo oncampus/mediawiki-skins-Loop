@@ -139,4 +139,6 @@ $( document ).ready( function () {
 			resizeTables( false )
 		}
 	}
+
+	$("p:has(.loopspoiler)").addClass("d-inline");
 });
