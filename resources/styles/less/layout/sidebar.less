@@ -4,7 +4,7 @@
 /** *** T O C T R E E *** **/
 /** *** *** *** *** *** * **/
 
-@tree-url: "../../img/tree.png";
+@tree-url: "../../../../img/tree.png";
 @open: -44px -6px;
 @closed:  -12px -6px;
 @corner: -74px -6px;
@@ -110,19 +110,6 @@ li.toc-main {
 	background: none !important;
 }
 
-@media all and (max-width: 991px) {
-	#sidebar-wrapper {
-		background-color: fade(black, 30%);
-    }
-    
-    /* reverting mobile sidebar TOC if screen width increases */
-	.mobile-sidebar#sidebar-wrapper { 
-		position: relative !important;
-		right: auto !important;
-		z-index: auto !important;
-	}
-}
-
 #toc-nav {
 	-webkit-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
 	-moz-box-shadow: 0px 5px 5px -4px rgba(204,204,204,1);
@@ -151,10 +138,10 @@ li.toc-main {
 	margin-bottom: 15px;
 }
 
-.mobile-sidebar#sidebar-wrapper{
-	position: absolute;
-	right: 0;
-	z-index: 10;
+.mobile-sidebar#sidebar-wrapper { 
+	position: relative !important;
+	right: auto !important;
+	z-index: auto !important;
 	max-width: 265px !important;
 }
 
@@ -181,6 +168,27 @@ li.toc-main {
 
 #editTocLink {
 	text-decoration: none !important;
-	//font-size: 20px;
-	//vertical-align: middle;
+}
+
+@media (max-width: 991px) {
+
+	    /* reverting mobile sidebar TOC if screen width increases */
+		.mobile-sidebar#sidebar-wrapper { 
+			position: absolute !important;
+			right: 0 !important;
+			z-index: 10;
+		}
+		
+		.toc-tree li a:after {
+			background: none;
+		}
+		
+}
+
+@media all and (max-width: 991px) {
+
+	#sidebar-wrapper {
+		background-color: fade(black, 30%);
+    }
+
 }
