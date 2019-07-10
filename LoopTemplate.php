@@ -195,24 +195,29 @@ class LoopTemplate extends BaseTemplate {
 			            					$lsi = LoopStructureItem::newFromIds($article_id); 
 			            					
 								            if ( $lsi ) {
-								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
-
-								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
-													echo $this->linkRenderer->makeLink(
-														$this->title,
-														new HtmlArmor('<i class="ic ic-edit"></i>'),
-														array( 
-															"id" => "editpagelink",
-															"class" => "ml-2"
-														),
-														array( "action" => "edit" )
-													);
-								            	}
-								            	echo '</h1>';
-								            }
+								            	$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+											} else {
+												$displayTitle = $this->title->mTextform;
+											}
 							            } else {
-							            	echo '<h1 id="title">'.$this->title.'</h1>';
+											$displayTitle = $this->title->mTextform;
 										}
+											
+											
+										echo '<h1 id="title">'.$this->title->mTextform;
+
+										if ( $this->editMode && $this->renderMode == 'default' ) { 
+											echo $this->linkRenderer->makeLink(
+												$this->title,
+												new HtmlArmor('<i class="ic ic-edit"></i>'),
+												array( 
+													"id" => "editpagelink",
+													"class" => "ml-2"
+												),
+												array( "action" => "edit" )
+											);
+										}
+										echo '</h1>';
 										?>
 				
 										<?php $this->html( 'bodytext' ); 
