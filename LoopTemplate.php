@@ -24,8 +24,8 @@ class LoopTemplate extends BaseTemplate {
 		$this->user = $this->getSkin()->getUser();
 		$this->title = $this->getSkin()->getTitle();
 
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
-		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
+		$this->renderMode = $this->user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
+		$this->editMode = $this->user->getOption( 'LoopEditMode', false, true );
 
 		//dd($this->title->flaggedRevsArticle);
 		$this->html( 'headelement' );
@@ -206,7 +206,7 @@ class LoopTemplate extends BaseTemplate {
 											
 										echo '<h1 id="title">'.$this->title->mTextform;
 
-										if ( $this->editMode && $this->renderMode == 'default' ) { 
+										if ( $this->editMode && $this->renderMode == 'default' && ( $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) ) { 
 											echo $this->linkRenderer->makeLink(
 												$this->title,
 												new HtmlArmor('<i class="ic ic-edit"></i>'),
@@ -1026,7 +1026,6 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$showGlossary = LoopGlossary::getShowGlossary();
 			if ( $showGlossary ) {
-
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
