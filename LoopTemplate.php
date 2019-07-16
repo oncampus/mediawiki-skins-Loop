@@ -1019,6 +1019,15 @@ class LoopTemplate extends BaseTemplate {
 					$outputSpecialPages = true;
 				}
 			}
+			$showLiterature = LoopLiterature::getShowLiterature();
+			if ( $showLiterature ) {
+				$outputSpecialPages = true;
+				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
+					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopliterature" )->text() ),
+					new HtmlArmor( $this->getSkin()->msg( "loopliterature" )->text() ),
+					array("class"=>"aToc")
+				) . '</li>';
+			}
 			$showGlossary = LoopGlossary::getShowGlossary();
 			if ( $showGlossary ) {
 
