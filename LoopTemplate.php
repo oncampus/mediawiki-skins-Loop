@@ -24,8 +24,8 @@ class LoopTemplate extends BaseTemplate {
 		$this->user = $this->getSkin()->getUser();
 		$this->title = $this->getSkin()->getTitle();
 
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
-		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
+		$this->renderMode = $this->user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
+		$this->editMode = $this->user->getOption( 'LoopEditMode', false, true );
 
 		//dd($this->title->flaggedRevsArticle);
 		$this->html( 'headelement' );
@@ -195,24 +195,29 @@ class LoopTemplate extends BaseTemplate {
 			            					$lsi = LoopStructureItem::newFromIds($article_id); 
 			            					
 								            if ( $lsi ) {
-								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
-
-								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
-													echo $this->linkRenderer->makeLink(
-														$this->title,
-														new HtmlArmor('<i class="ic ic-edit"></i>'),
-														array( 
-															"id" => "editpagelink",
-															"class" => "ml-2"
-														),
-														array( "action" => "edit" )
-													);
-								            	}
-								            	echo '</h1>';
-								            }
+								            	$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+											} else {
+												$displayTitle = $this->title->mTextform;
+											}
 							            } else {
-							            	echo '<h1 id="title">'.$this->title.'</h1>';
+											$displayTitle = $this->title->mTextform;
 										}
+											
+											
+										echo '<h1 id="title">'.$this->title->mTextform;
+
+										if ( $this->editMode && $this->renderMode == 'default' && ( $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) ) { 
+											echo $this->linkRenderer->makeLink(
+												$this->title,
+												new HtmlArmor('<i class="ic ic-edit"></i>'),
+												array( 
+													"id" => "editpagelink",
+													"class" => "ml-2"
+												),
+												array( "action" => "edit" )
+											);
+										}
+										echo '</h1>';
 										?>
 				
 										<?php $this->html( 'bodytext' ); 
@@ -866,15 +871,15 @@ class LoopTemplate extends BaseTemplate {
 		$content_navigation_icon['actions']['unwatch'] = 'unwatch';
 		$content_navigation_icon['actions']['watch'] = 'watch';
 
-		echo '
-		<div class="dropdown float-right" id="admin-dropdown">
+		unset($this->data['content_navigation']['namespaces']); # removes talk pages from menu
+
+		echo '<div class="dropdown float-right" id="admin-dropdown">
 			<button  id="admin-btn" class="btn btn-light dropdown-toggle page-nav-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="'.$this->getSkin()->msg("loop-page-edit-menu").'" title="'.$this->getSkin()->msg("loop-page-edit-menu").'">
 				<span class="ic ic-preferences"></span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
 		
 		if( $this->renderMode != "offline" ) {
-			
 			foreach($this->data['content_navigation'] as $content_navigation_category => $content_navigation_entries) {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
@@ -929,50 +934,6 @@ class LoopTemplate extends BaseTemplate {
 				array( "loopeditmode" => $loopEditmodeButtonValue )
 			);
 				
-		}
-		
-		// Loop Render Modes
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
-		if ( $user->isAllowed( 'loop-rendermode' ) && $nameSpace == NS_MAIN ) {
-			
-			echo '<div class="dropdown-divider"></div>';
-			
-			// Offline Mode
-			if ( $this->renderMode != "offline") {
-				$loopOfflinemodeButtonValue = "offline";
-				$loopOfflinemodeMsg = $this->getSkin()->msg( 'loop-offlinemode-preview' );
-			 			
-				echo $this->linkRenderer->makelink(
-					$this->getSkin()->getRelevantTitle(),
-					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $loopOfflinemodeMsg ),
-					array(
-						"class" => "dropdown-item",
-						"aria-label" => $loopOfflinemodeMsg,
-						"title" => $loopOfflinemodeMsg,
-						"target" => "_blank",
-						"onclick" => "setTimeout(function(){location.reload()}, 200)" # TODO 
-					),
-					array( "looprendermode" => $loopOfflinemodeButtonValue )
-				);
-			}
-			// EPub Mode
-			if ( $this->renderMode != "epub") {
-				$loopEpubModeButtonValue = "epub";
-				$loopEpubModeMsg = $this->getSkin()->msg( 'loop-epubmode-preview' );
-						
-				echo $this->linkRenderer->makelink(
-					$this->getSkin()->getRelevantTitle(),
-					new HtmlArmor( '<span class="ic ic-file-epub"></span> ' . $loopEpubModeMsg ),
-					array(
-						"class" => "dropdown-item",
-						"aria-label" => $loopEpubModeMsg,
-						"title" => $loopEpubModeMsg,
-						"target" => "_blank",
-						"onclick" => "setTimeout(function(){location.reload()}, 200)" # TODO
-					),
-					array( "looprendermode" => $loopEpubModeButtonValue )
-				);
-			} 	
 		}
 
 		// Link to Special Pages
@@ -1046,11 +1007,11 @@ class LoopTemplate extends BaseTemplate {
 			
 			$objects_array = array (
 				'loop_figure' => 'LoopFigures',
-				'loop_task' => 'LoopTasks',
+				'loop_table' => 'LoopTables',
+				'loop_media' => 'LoopMedia',
 				'loop_formula' => 'LoopFormulas',
 				'loop_listing' => 'LoopListings',
-				'loop_media' => 'LoopMedia',
-				'loop_table' => 'LoopTables'
+				'loop_task' => 'LoopTasks'
 			);
 			foreach ( $objects_array as $object => $type ) { 
 				#dd($type);
@@ -1063,7 +1024,15 @@ class LoopTemplate extends BaseTemplate {
 					$outputSpecialPages = true;
 				}
 			}
-			
+			$showGlossary = LoopGlossary::getShowGlossary();
+			if ( $showGlossary ) {
+				$outputSpecialPages = true;
+				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
+					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
+					new HtmlArmor( $this->getSkin()->msg( "loop-glossary-namespace" ) ),
+					array("class"=>"aToc")
+				) . '</li>';
+			}
 		$html .= '</ul>
 		</div>';
 		if ( $outputSpecialPages ) {
