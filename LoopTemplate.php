@@ -24,8 +24,8 @@ class LoopTemplate extends BaseTemplate {
 		$this->user = $this->getSkin()->getUser();
 		$this->title = $this->getSkin()->getTitle();
 
-		$this->renderMode = $this->getSkin()->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
-		$this->editMode = $this->getSkin()->getUser()->getOption( 'LoopEditMode', false, true );
+		$this->renderMode = $this->user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
+		$this->editMode = $this->user->getOption( 'LoopEditMode', false, true );
 
 		//dd($this->title->flaggedRevsArticle);
 		$this->html( 'headelement' );
@@ -195,24 +195,29 @@ class LoopTemplate extends BaseTemplate {
 			            					$lsi = LoopStructureItem::newFromIds($article_id); 
 			            					
 								            if ( $lsi ) {
-								            	echo '<h1 id="title">'.$lsi->tocNumber.' '.$lsi->tocText;
-
-								            	if ( $this->editMode && $this->renderMode == 'default' ) { 
-													echo $this->linkRenderer->makeLink(
-														$this->title,
-														new HtmlArmor('<i class="ic ic-edit"></i>'),
-														array( 
-															"id" => "editpagelink",
-															"class" => "ml-2"
-														),
-														array( "action" => "edit" )
-													);
-								            	}
-								            	echo '</h1>';
-								            }
+								            	$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+											} else {
+												$displayTitle = $this->title->mTextform;
+											}
 							            } else {
-							            	echo '<h1 id="title">'.$this->title.'</h1>';
+											$displayTitle = $this->title->mTextform;
 										}
+											
+											
+										echo '<h1 id="title">'.$this->title->mTextform;
+
+										if ( $this->editMode && $this->renderMode == 'default' && ( $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) ) { 
+											echo $this->linkRenderer->makeLink(
+												$this->title,
+												new HtmlArmor('<i class="ic ic-edit"></i>'),
+												array( 
+													"id" => "editpagelink",
+													"class" => "ml-2"
+												),
+												array( "action" => "edit" )
+											);
+										}
+										echo '</h1>';
 										?>
 				
 										<?php $this->html( 'bodytext' ); 
@@ -1030,7 +1035,6 @@ class LoopTemplate extends BaseTemplate {
 			}
 			$showGlossary = LoopGlossary::getShowGlossary();
 			if ( $showGlossary ) {
-
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
