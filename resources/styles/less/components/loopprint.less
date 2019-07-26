@@ -1,16 +1,17 @@
 .loopprint-container {
-    margin-left: -16px;
-    margin-right: -16px;
+    margin: 0 -16px 1rem -16px;
 }
 
 .loopprint-content {
-    border: #213c72 dashed 2px;
+    border: #ccc solid 1px;
     padding: 0.5rem 1rem 0 1rem;
+    margin-top: 2px;
 }
 
 .loopprint-tag {
-    background: #213c72;
-    color: #fff;
+    border: 1px solid #ccc;
+    background: #f8f9fa;
+    color: #4c4c4c;
     padding: 4px 7px 4px 7px;
     text-align: center;
     margin: 0 auto;
@@ -22,8 +23,24 @@
     letter-spacing: 0.8px;
 }
 
-.loopprint-tag .ic-print-area {
+.loopprint-tag.printbuttonactive .ic-print-area {
     padding-right: 6px;
+}
+
+/* if button="true" */
+.loopprint-button .loopprint-tag {
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.loopprint-tag.printbuttonactive {
+    border-radius: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.loopprint-button .loopprint-content{
+    display: none;
 }
 
 @media(max-width: 767px) {
