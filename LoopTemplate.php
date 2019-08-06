@@ -18,6 +18,7 @@ class LoopTemplate extends BaseTemplate {
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		$this->linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$this->linkRenderer->setForceArticlePath(true); #required for readable links
 		
 		$this->loopSettings = new LoopSettings();
 		$this->loopSettings->loadSettings();
@@ -203,21 +204,23 @@ class LoopTemplate extends BaseTemplate {
 											$displayTitle = $this->title->mTextform;
 										}
 											
-											
-										echo '<h1 id="title">'.$this->title->mTextform;
-
-										if ( $this->editMode && $this->renderMode == 'default' && ( $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) ) { 
-											echo $this->linkRenderer->makeLink(
-												$this->title,
-												new HtmlArmor('<i class="ic ic-edit"></i>'),
-												array( 
-													"id" => "editpagelink",
-													"class" => "ml-2"
-												),
-												array( "action" => "edit" )
-											);
+										if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
+										    
+    										echo '<h1 id="title">'.$this->title->mTextform;
+    
+    										if ( $this->editMode && $this->renderMode == 'default' ) { 
+    											echo $this->linkRenderer->makeLink(
+    												$this->title,
+    												new HtmlArmor('<i class="ic ic-edit"></i>'),
+    												array( 
+    													"id" => "editpagelink",
+    													"class" => "ml-2"
+    												),
+    												array( "action" => "edit" )
+    											);
+    										}
+    										echo '</h1>';
 										}
-										echo '</h1>';
 										?>
 				
 										<?php $this->html( 'bodytext' ); 
@@ -1019,7 +1022,7 @@ class LoopTemplate extends BaseTemplate {
 					$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 						new TitleValue( NS_SPECIAL, $type ),
 						new HtmlArmor( $this->getSkin()->msg( strtolower( $type ) ) ),
-						array("class"=>"aToc")
+						array("class"=>"aToc", "id" => $type)
 					) . '</li>';
 					$outputSpecialPages = true;
 				}
@@ -1030,7 +1033,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopliterature" )->text() ),
 					new HtmlArmor( $this->getSkin()->msg( "loopliterature" )->text() ),
-					array("class"=>"aToc")
+				    array("class"=>"aToc", "id" => "LoopLiterature")
 				) . '</li>';
 			}
 			$showGlossary = LoopGlossary::getShowGlossary();
@@ -1039,7 +1042,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
 					new HtmlArmor( $this->getSkin()->msg( "loop-glossary-namespace" ) ),
-					array("class"=>"aToc")
+				    array("class"=>"aToc", "id" => "LoopGlossary")
 				) . '</li>';
 			}
 		$html .= '</ul>
