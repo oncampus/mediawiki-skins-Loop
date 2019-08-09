@@ -18,6 +18,7 @@ class LoopTemplate extends BaseTemplate {
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		$this->linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$this->linkRenderer->setForceArticlePath(true); #required for readable links
 		
 		$this->loopSettings = new LoopSettings();
 		$this->loopSettings->loadSettings();
@@ -50,12 +51,14 @@ class LoopTemplate extends BaseTemplate {
 													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
 													array('id' => 'loop-logo')
 												);
-											} else {
+											} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 												echo $this->linkRenderer->makelink(
 													Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ), 
 													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
 													array('id' => 'loop-logo')
 												);
+											} else {
+												echo '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>';
 											}
 										?>
 									</div>
@@ -75,12 +78,15 @@ class LoopTemplate extends BaseTemplate {
 										$title,
 										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
 									);
-								} else {
+								} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 									global $wgSitename;
 									echo $this->linkRenderer->makelink(
 										Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
 										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>' )
 									);
+								} else {
+									global $wgSitename;
+									echo '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>';
 								}
 							?>
 						</div>	
@@ -203,21 +209,23 @@ class LoopTemplate extends BaseTemplate {
 											$displayTitle = $this->title->mTextform;
 										}
 											
-											
-										echo '<h1 id="title">'.$this->title->mTextform;
-
-										if ( $this->editMode && $this->renderMode == 'default' && ( $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) ) { 
-											echo $this->linkRenderer->makeLink(
-												$this->title,
-												new HtmlArmor('<i class="ic ic-edit"></i>'),
-												array( 
-													"id" => "editpagelink",
-													"class" => "ml-2"
-												),
-												array( "action" => "edit" )
-											);
+										if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
+										    
+    										echo '<h1 id="title">'.$this->title->mTextform;
+    
+    										if ( $this->editMode && $this->renderMode == 'default' ) { 
+    											echo $this->linkRenderer->makeLink(
+    												$this->title,
+    												new HtmlArmor('<i class="ic ic-edit"></i>'),
+    												array( 
+    													"id" => "editpagelink",
+    													"class" => "ml-2"
+    												),
+    												array( "action" => "edit" )
+    											);
+    										}
+    										echo '</h1>';
 										}
-										echo '</h1>';
 										?>
 				
 										<?php $this->html( 'bodytext' ); 
@@ -354,23 +362,25 @@ class LoopTemplate extends BaseTemplate {
 		$article_id = $this->title->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
+		$disabled = ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) || $mainPage ) ? "" : "disabled";
+		$home_button = '<button type="button" class="btn btn-light page-nav-btn" '.$disabled.' aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
 		
-		$home_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
-		
-		if( $mainPage ) {
+		if ( $mainPage ) {
 			echo $this->linkRenderer->makelink(
 				Title::newFromID($mainPage), 
 				new HtmlArmor( $home_button ),
 				array('class' => 'nav-btn',
 					'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
 				);
-		} else {
+		} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 			global $wgSitename;
 			echo $this->linkRenderer->makelink(
 				Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
 				new HtmlArmor( $home_button ),
 				array()
 			);
+		} else {
+			echo $home_button;
 		}
 		
 		// Previous Chapter
@@ -1019,10 +1029,19 @@ class LoopTemplate extends BaseTemplate {
 					$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 						new TitleValue( NS_SPECIAL, $type ),
 						new HtmlArmor( $this->getSkin()->msg( strtolower( $type ) ) ),
-						array("class"=>"aToc")
+						array("class"=>"aToc", "id" => $type)
 					) . '</li>';
 					$outputSpecialPages = true;
 				}
+			}
+			$showLiterature = LoopLiterature::getShowLiterature();
+			if ( $showLiterature ) {
+				$outputSpecialPages = true;
+				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
+					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopliterature" )->text() ),
+					new HtmlArmor( $this->getSkin()->msg( "loopliterature" )->text() ),
+				    array("class"=>"aToc", "id" => "LoopLiterature")
+				) . '</li>';
 			}
 			$showGlossary = LoopGlossary::getShowGlossary();
 			if ( $showGlossary ) {
@@ -1030,7 +1049,7 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
 					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
 					new HtmlArmor( $this->getSkin()->msg( "loop-glossary-namespace" ) ),
-					array("class"=>"aToc")
+				    array("class"=>"aToc", "id" => "LoopGlossary")
 				) . '</li>';
 			}
 		$html .= '</ul>
