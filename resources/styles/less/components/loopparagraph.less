@@ -1,0 +1,55 @@
+/** *** *** *** *** *** *** *** *** *** *** **/
+/** ***   L O O P   P A R A G R A P H   *** **/
+/** *** *** *** *** *** *** *** *** *** *** **/
+
+.loopparagraph {
+    border-top: 3px solid #213c72;
+    border-bottom: 3px solid #213c72;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.loopparagraph_left {
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.loopparagraph .ic-citation {
+    font-size: 1.5rem;
+    color: @looparea-color;
+
+}
+
+.loopparagraph_copyright {
+    float: right;
+    font-style: italic;
+}
+
+@media(min-width: 767px) {
+
+    .loopparagraph {
+        display: flex;
+        flex-wrap: wrap;
+        border: none;
+    }
+
+    .loopparagraph_left {
+        padding: 0 10px 0 0;
+        margin-top: 6px; /* magic number: aligning with text*/
+    }
+
+    .loopparagraph_right {
+        flex: 1;
+    }
+
+    .loopparagraph_copyright {
+        text-align: right;
+        flex: 100%;
+    }
+
+    .loopparagraph_right p:last-of-type {
+        margin-bottom: 0.5rem;
+    }
+	
+}
