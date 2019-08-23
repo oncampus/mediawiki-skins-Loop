@@ -1,0 +1,35 @@
+.loopsidenote p {
+    font-size: .9rem;
+    border-left: 3px solid @accent-color;
+    padding: 0 0 0 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+.loopsidenote_keyword {
+    font-weight: bold;
+    color: @loopsidenote-color;
+}
+
+.loopsidenote_marginalnote {
+    font-style: italic;
+}
+
+@media(min-width: 1180px) {
+    .loopsidenote {
+        left: -85px;
+        display: inline-block;
+        position: absolute;
+        width: 85px;
+        margin-top: 5px;
+        padding: 0 5px;
+    }
+
+    .loopsidenote p {
+        font-size: .6rem;
+        border: none;
+        padding: 0;
+        text-align: center;
+    }
+}
