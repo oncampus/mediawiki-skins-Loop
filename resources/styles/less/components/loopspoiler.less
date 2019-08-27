@@ -2,37 +2,36 @@
 /** ***  L O O P   S P O I L E R   *** **/
 /** *** *** *** *** *** *** ** *** *** **/
 
+.loopspoiler-container {
+    margin-bottom: 1rem;
+}
+
 .loopspoilercontainer_default,
 .loopspoilercontainer_transparent {
     display: block;
 }
 
 .btn.loopspoiler {
-    border: 2px solid @loopspoiler-btn;
-}
-
-.btn.loopspoiler_type_default,
-.btn.loopspoiler_type_transparent {
-    margin-top: 10px;
+    border: 2px solid @components-color;
 }
 
 .btn.loopspoiler_type_default,
 .btn.loopspoiler_type_in_text {
-    background-color: @loopspoiler-btn;
+    background-color: @components-color;
     color: #fff;
 }
 
 .btn.loopspoiler_type_transparent,
 .btn.loopspoiler_type_in_text_transparent {
 	background-color: transparent;
-	color: @loopspoiler-btn;
+	color: @components-color;
 }
 
 .loopspoiler_content_wrapper {
 	background: #fff;
     display: none;
     padding: 0.75rem 0.75rem;
-    border: 2px solid @loopspoiler-btn;
+    border: 2px solid @components-color;
 }
 
 .btn.loopspoiler_type_default .loopspoiler_content_wrapper,

@@ -1,0 +1,37 @@
+.mw-special-LoopStructure h1 .ic {
+    font-size: 1em;
+}
+
+.mw-special-LoopStructure h2 {
+    font-size: 1em;
+    margin: 10px 0 6px 0;
+}
+
+.loopstructure-listitem a {
+    color: @components-color;
+    font-weight: 500;
+}
+
+.loopstructure-listitem {
+    border-bottom: 1px dashed @components-color-light;
+    padding: 1px 0 3px 0;
+}
+
+.loopstructure-listitem:first-of-type {
+    border-top: 1px dashed @components-color-light;
+}
+
+.loopstructure-listitem:last-of-type {
+    border-bottom: none;
+}
+
+.loopstructure-number {
+    font-weight: normal;
+    color: @page-symbols-color;
+}
+
+@media(min-width: 767px) {
+    .loopstructure-listitem {
+        white-space: pre;
+    }
+}
