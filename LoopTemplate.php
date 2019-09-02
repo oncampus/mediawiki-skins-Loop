@@ -888,11 +888,12 @@ class LoopTemplate extends BaseTemplate {
 				<span class="ic ic-preferences"></span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
-		
+		$entries = false;
 		if( $this->renderMode != "offline" ) {
 			foreach($this->data['content_navigation'] as $content_navigation_category => $content_navigation_entries) {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
+						$entries = true;
 						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '">';
 						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
 							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
@@ -903,7 +904,7 @@ class LoopTemplate extends BaseTemplate {
 			}
 		
 		}
-		// Link for editing TOC
+		// Link for editing TOC (only on Special:LoopStructure)
 		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
 			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
 				echo $this->linkRenderer->makelink( 
@@ -914,15 +915,31 @@ class LoopTemplate extends BaseTemplate {
 					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ) ), 
 					array('class' => 'dropdown-item')  
 				);
+				
+				$entries = true;
 			}	
 		}
+		// Link for adding Literature (only on Special:LoopLiterature)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliterature' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$entries = true;
+			}	
+		}
+
 		// Loop Edit Mode
-			
 		$nameSpace = $this->title->getNameSpace();
-		
 		if ( $user->isAllowed( 'edit' ) ) {
-			
-			echo '<div class="dropdown-divider"></div>';
+			if ( $entries ) {
+				echo '<div class="dropdown-divider"></div>';
+			}
 				
 			if ( $this->editMode ) {
 				$loopEditmodeButtonValue = 0;
