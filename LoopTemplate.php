@@ -919,7 +919,7 @@ class LoopTemplate extends BaseTemplate {
 				$entries = true;
 			}	
 		}
-		// Link for adding Literature (only on Special:LoopLiterature)
+		// Link for Literature (only on Special:LoopLiterature)
 		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliterature' ) ) ) ) {
 			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
 				echo $this->linkRenderer->makelink( 
@@ -927,7 +927,83 @@ class LoopTemplate extends BaseTemplate {
 						NS_SPECIAL, 
 						'LoopLiteratureEdit' 
 					), 
-					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureImport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureExport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-export" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$entries = true;
+			}	
+		}
+
+		// Links for Literature (only on Special:LoopLiteratureEdit)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliteratureedit' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureImport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$entries = true;
+			}	
+		}
+		// Link for Literature (only on Special:LoopLiteratureImport)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliteratureimport' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureExport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-export" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$entries = true;
+			}	
+		}
+		
+		// Link for adding Literature (only on Special:LoopLiteratureExport)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliteratureexport' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureImport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
 					array('class' => 'dropdown-item')  
 				);
 				$entries = true;
@@ -935,7 +1011,6 @@ class LoopTemplate extends BaseTemplate {
 		}
 
 		// Loop Edit Mode
-		$nameSpace = $this->title->getNameSpace();
 		if ( $user->isAllowed( 'edit' ) ) {
 			if ( $entries ) {
 				echo '<div class="dropdown-divider"></div>';
