@@ -888,12 +888,13 @@ class LoopTemplate extends BaseTemplate {
 				<span class="ic ic-preferences"></span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
-		$entries = false;
+		$divider_1 = false;
+		$divider_2 = false;
 		if( $this->renderMode != "offline" ) {
 			foreach($this->data['content_navigation'] as $content_navigation_category => $content_navigation_entries) {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
-						$entries = true;
+						$divider_1 = true;
 						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '">';
 						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
 							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
@@ -916,7 +917,7 @@ class LoopTemplate extends BaseTemplate {
 					array('class' => 'dropdown-item')  
 				);
 				
-				$entries = true;
+				$divider_1 = true;
 			}	
 		}
 		// Link for Literature (only on Special:LoopLiterature)
@@ -946,7 +947,7 @@ class LoopTemplate extends BaseTemplate {
 					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-export" ) ), 
 					array('class' => 'dropdown-item')  
 				);
-				$entries = true;
+				$divider_1 = true;
 			}	
 		}
 
@@ -961,7 +962,7 @@ class LoopTemplate extends BaseTemplate {
 					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
 					array('class' => 'dropdown-item')  
 				);
-				$entries = true;
+				$divider_1 = true;
 			}	
 		}
 		// Link for Literature (only on Special:LoopLiteratureImport)
@@ -983,7 +984,7 @@ class LoopTemplate extends BaseTemplate {
 					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-export" ) ), 
 					array('class' => 'dropdown-item')  
 				);
-				$entries = true;
+				$divider_1 = true;
 			}	
 		}
 		
@@ -1006,42 +1007,70 @@ class LoopTemplate extends BaseTemplate {
 					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
 					array('class' => 'dropdown-item')  
 				);
-				$entries = true;
+				$divider_1 = true;
 			}	
 		}
 
 		// Loop Edit Mode
 		if ( $user->isAllowed( 'edit' ) ) {
-			if ( $entries ) {
+			$renderEditModeButton = false;
+
+			if ( $divider_1 ) {
 				echo '<div class="dropdown-divider"></div>';
 			}
+			$ns = $this->title->getNameSpace();
 				
-			if ( $this->editMode ) {
-				$loopEditmodeButtonValue = 0;
-				$loopEditmodeClass = "nav-loop-editmode-on";
-				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' );
-			} else {
-				$loopEditmodeButtonValue = 1;
-				$loopEditmodeClass = "nav-loop-editmode-off";
-				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
-			}					
-			echo $this->linkRenderer->makelink(
-				$this->getSkin()->getRelevantTitle(),
-				new HtmlArmor( '<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg ),
-				array(
-					"class" => $loopEditmodeClass . " dropdown-item",
-					"aria-label" => $loopEditmodeMsg,
-					"title" => $loopEditmodeMsg
-				),
-				array( "loopeditmode" => $loopEditmodeButtonValue )
-			);
+			if ( $ns == NS_SPECIAL ) {
+				$pages = MediaWikiServices::getInstance()->getSpecialPageFactory()->getUsablePages( $user );
+				$groups = array();
+				foreach ( $pages as $page ) {
+					if ( $page->isListed() ) {
+						if ( $page->getFinalGroupName() == "loop" ) {
+							$groups[] = $page->getPageTitle()->mTextform;
+						}
+					}
+				}
+				$renderEditModeButton = false;
+				foreach ( $groups as $specialPage ) {
+					if ( $this->title->mTextform == $specialPage ) {
+						$renderEditModeButton = true;
+					}
+				}
+			} elseif ( $ns == NS_MAIN || $ns == NS_GLOSSARY ) {
+				$renderEditModeButton = true;
+			}
+
+			if ( $renderEditModeButton ) {
+				if ( $this->editMode ) {
+					$loopEditmodeButtonValue = 0;
+					$loopEditmodeClass = "nav-loop-editmode-on";
+					$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' );
+				} else {
+					$loopEditmodeButtonValue = 1;
+					$loopEditmodeClass = "nav-loop-editmode-off";
+					$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
+				}					
+				echo $this->linkRenderer->makelink(
+					$this->getSkin()->getRelevantTitle(),
+					new HtmlArmor( '<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg ),
+					array(
+						"class" => $loopEditmodeClass . " dropdown-item",
+						"aria-label" => $loopEditmodeMsg,
+						"title" => $loopEditmodeMsg
+					),
+					array( "loopeditmode" => $loopEditmodeButtonValue )
+				);
+				$divider_2 = true;
+			}
 				
 		}
 
 		// Link to Special Pages
 		
-		echo '<div class="dropdown-divider"></div>';
-		
+		if ( $divider_2 ) {
+			echo '<div class="dropdown-divider"></div>';
+		}
+
 		if ( $user->isAllowed( "loop-settings-edit" ) ) {
 			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'LoopSettings' ), new HtmlArmor( '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ) ),
 					array('class' => 'dropdown-item') );
