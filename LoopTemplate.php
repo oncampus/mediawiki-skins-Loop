@@ -195,36 +195,41 @@ class LoopTemplate extends BaseTemplate {
 									
 	           							<?php 
 										} // end of excluding rendermode-epub 
-		            					if ( isset( $loopStructure->mainPage ) ) {
-		            	
-			            					$article_id = $this->title->getArticleID();
-			            					$lsi = LoopStructureItem::newFromIds($article_id); 
-			            					
-								            if ( $lsi ) {
-								            	$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+										
+										global $wgLoopLegacyShowTitles;
+										if ( $wgLoopLegacyShowTitles ) {
+											
+											if ( isset( $loopStructure->mainPage ) ) {
+							
+												$article_id = $this->title->getArticleID();
+												$lsi = LoopStructureItem::newFromIds($article_id); 
+												
+												if ( $lsi ) {
+													$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+												} else {
+													$displayTitle = $this->title->mTextform;
+												}
 											} else {
 												$displayTitle = $this->title->mTextform;
 											}
-							            } else {
-											$displayTitle = $this->title->mTextform;
-										}
-											
-										if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
-										    
-    										echo '<h1 id="title">'.$this->title->mTextform;
-    
-    										if ( $this->editMode && $this->renderMode == 'default' ) { 
-    											echo $this->linkRenderer->makeLink(
-    												$this->title,
-    												new HtmlArmor('<i class="ic ic-edit"></i>'),
-    												array( 
-    													"id" => "editpagelink",
-    													"class" => "ml-2"
-    												),
-    												array( "action" => "edit" )
-    											);
-    										}
-    										echo '</h1>';
+												
+											if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
+												
+												echo '<h1 id="title">'.$this->title->mTextform;
+		
+												if ( $this->editMode && $this->renderMode == 'default' ) { 
+													echo $this->linkRenderer->makeLink(
+														$this->title,
+														new HtmlArmor('<i class="ic ic-edit"></i>'),
+														array( 
+															"id" => "editpagelink",
+															"class" => "ml-2"
+														),
+														array( "action" => "edit" )
+													);
+												}
+												echo '</h1>';
+											}
 										}
 										?>
 				
@@ -888,11 +893,13 @@ class LoopTemplate extends BaseTemplate {
 				<span class="ic ic-preferences"></span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
-		
+		$divider_1 = false;
+		$divider_2 = false;
 		if( $this->renderMode != "offline" ) {
 			foreach($this->data['content_navigation'] as $content_navigation_category => $content_navigation_entries) {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
+						$divider_1 = true;
 						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '">';
 						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
 							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
@@ -903,7 +910,7 @@ class LoopTemplate extends BaseTemplate {
 			}
 		
 		}
-		// Link for editing TOC
+		// Link for editing TOC (only on Special:LoopStructure)
 		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopstructure-specialpage-title' ) ) ) ) {
 			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
 				echo $this->linkRenderer->makelink( 
@@ -914,42 +921,161 @@ class LoopTemplate extends BaseTemplate {
 					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ) ), 
 					array('class' => 'dropdown-item')  
 				);
+				
+				$divider_1 = true;
 			}	
 		}
-		// Loop Edit Mode
-			
-		$nameSpace = $this->title->getNameSpace();
+		// Link for Literature (only on Special:LoopLiterature)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliterature' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureImport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureExport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-export" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$divider_1 = true;
+			}	
+		}
+
+		// Links for Literature (only on Special:LoopLiteratureEdit)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliteratureedit' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureImport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$divider_1 = true;
+			}	
+		}
+		// Link for Literature (only on Special:LoopLiteratureImport)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliteratureimport' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureExport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-export" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$divider_1 = true;
+			}	
+		}
 		
+		// Link for adding Literature (only on Special:LoopLiteratureExport)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopliteratureexport' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-edit-literature' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopLiteratureImport' 
+					), 
+					new HtmlArmor( '<span class="ic ic-books"></span> ' . $this->getSkin()->msg ( "loopliterature-label-import" ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				$divider_1 = true;
+			}	
+		}
+
+		// Loop Edit Mode
 		if ( $user->isAllowed( 'edit' ) ) {
-			
-			echo '<div class="dropdown-divider"></div>';
+			$renderEditModeButton = false;
+
+			if ( $divider_1 ) {
+				echo '<div class="dropdown-divider"></div>';
+			}
+			$ns = $this->title->getNameSpace();
 				
-			if ( $this->editMode ) {
-				$loopEditmodeButtonValue = 0;
-				$loopEditmodeClass = "nav-loop-editmode-on";
-				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' );
-			} else {
-				$loopEditmodeButtonValue = 1;
-				$loopEditmodeClass = "nav-loop-editmode-off";
-				$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
-			}					
-			echo $this->linkRenderer->makelink(
-				$this->getSkin()->getRelevantTitle(),
-				new HtmlArmor( '<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg ),
-				array(
-					"class" => $loopEditmodeClass . " dropdown-item",
-					"aria-label" => $loopEditmodeMsg,
-					"title" => $loopEditmodeMsg
-				),
-				array( "loopeditmode" => $loopEditmodeButtonValue )
-			);
+			if ( $ns == NS_SPECIAL ) {
+				$pages = MediaWikiServices::getInstance()->getSpecialPageFactory()->getUsablePages( $user );
+				$groups = array();
+				foreach ( $pages as $page ) {
+					if ( $page->isListed() ) {
+						if ( $page->getFinalGroupName() == "loop" ) {
+							$groups[] = $page->getPageTitle()->mTextform;
+						}
+					}
+				}
+				$renderEditModeButton = false;
+				foreach ( $groups as $specialPage ) {
+					if ( $this->title->mTextform == $specialPage ) {
+						$renderEditModeButton = true;
+					}
+				}
+			} elseif ( $ns == NS_MAIN || $ns == NS_GLOSSARY ) {
+				$renderEditModeButton = true;
+			}
+
+			if ( $renderEditModeButton ) {
+				if ( $this->editMode ) {
+					$loopEditmodeButtonValue = 0;
+					$loopEditmodeClass = "nav-loop-editmode-on";
+					$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-off' );
+				} else {
+					$loopEditmodeButtonValue = 1;
+					$loopEditmodeClass = "nav-loop-editmode-off";
+					$loopEditmodeMsg = $this->getSkin()->msg( 'loop-editmode-toogle-on' );
+				}					
+				echo $this->linkRenderer->makelink(
+					$this->getSkin()->getRelevantTitle(),
+					new HtmlArmor( '<span class="ic ic-editmode"></span> ' . $loopEditmodeMsg ),
+					array(
+						"class" => $loopEditmodeClass . " dropdown-item",
+						"aria-label" => $loopEditmodeMsg,
+						"title" => $loopEditmodeMsg
+					),
+					array( "loopeditmode" => $loopEditmodeButtonValue )
+				);
+				$divider_2 = true;
+			}
 				
 		}
 
 		// Link to Special Pages
 		
-		echo '<div class="dropdown-divider"></div>';
-		
+		if ( $divider_2 ) {
+			echo '<div class="dropdown-divider"></div>';
+		}
+
 		if ( $user->isAllowed( "loop-settings-edit" ) ) {
 			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'LoopSettings' ), new HtmlArmor( '<span class="ic ic-preferences"></span> ' . $this->getSkin()->msg ( 'loopsettings' ) ),
 					array('class' => 'dropdown-item') );
