@@ -71,6 +71,12 @@
 					"loop-audio-unavailable"
 			]
 		},	
+		"skins.loop.resizer.js": {
+			"position": "bottom",
+			"scripts": [
+					"resources/js/iframeresizer.js"
+				]
+		},	
 		"skins.loop-bootstrap.js": {
 			"position": "bottom",
 			"scripts": [
