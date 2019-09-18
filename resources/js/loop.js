@@ -99,36 +99,30 @@ $( document ).ready( function () {
 	$(window).on( "resize", function() { resizeTables( false ) } )
 	$(document).ready( resizeTables( true ) )
 
-	var window_width
-	var available_width
-	var table_width = new Array;
-	var table_height = new Array;
-	var table_ratio = new Array
+	var available_width;
+	var table_width;
+	var table_height;
+	var table_ratio;
 
 	function resizeTables( repeat ) {
 		available_width = $("#mw-content-text").width()
 		$(".wikitable").each(
 			function() {
-				window_width = $(window).width()
 				table_width = $(this).width()
 				table_height = $(this).height()
 				table_ratio = available_width / table_width;
 
-				if (available_width < table_width) {
+				if (available_width < table_width && table_ratio < 1 ) {
 					if ( ! $(this).parent().hasClass("viewport") ) {
 						$(this).wrap("<div class='viewport'></div>");
 					}
 					$(this).parent().css(
 						{ 	"transform" : "scale(" + table_ratio + ")",
-							"-ms-transform" : "scale(" + table_ratio + ")",
-							"-webkit-transform" : "scale(" + table_ratio + ")",
 							"height" : table_height * table_ratio
 					})
 				} else {
 					$(this).parent(".viewport").css( {
 						"transform": "none",
-						"-ms-transform": "none",
-						"-webkit-transform": "none",
 						"height" : "auto"
 					})
 				}
