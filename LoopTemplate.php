@@ -1178,6 +1178,15 @@ class LoopTemplate extends BaseTemplate {
 				    array("class"=>"aToc", "id" => "LoopGlossary")
 				) . '</li>';
 			}
+			$showIndex = LoopIndex::getShowIndex();
+			if ( $showIndex ) {
+				$outputSpecialPages = true;
+				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
+					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopindex" )->text() ),
+					new HtmlArmor( $this->getSkin()->msg( "loopindex" )->text() ),
+				    array("class"=>"aToc", "id" => "LoopIndex")
+				) . '</li>';
+			}
 		$html .= '</ul>
 		</div>';
 		if ( $outputSpecialPages ) {
