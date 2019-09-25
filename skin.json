@@ -70,6 +70,18 @@
 			"messages": [
 					"loop-audio-unavailable"
 			]
+		},
+		"skins.loop-resizer.js": {
+			"position": "bottom",
+			"scripts": [
+					"resources/js/iframeresizer.js"
+				]
+		},
+		"skins.loop-h5p-resizer.js": {
+			"position": "bottom",
+			"scripts": [
+					"resources/js/h5presizer.js"
+				]
 		},	
 		"skins.loop-bootstrap.js": {
 			"position": "bottom",
