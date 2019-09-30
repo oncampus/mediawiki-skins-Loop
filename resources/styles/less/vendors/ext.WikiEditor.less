@@ -1,7 +1,185 @@
 /** *** ** *** **/
 /** WIKIEDITOR **/
 /** *** ** *** **/
+#wikiEditor-section-references .pages div div span { /* elements in 'booklet'-type content of references tab */
+	min-width: 95%;
+	font-family: inherit;
+	font-size: initial;
+	height: auto;
+	white-space: nowrap;
+}
+.wikiEditor-ui .options { /* for MsUpload compatibility of dropdowns */
+	z-index: 100 !important;
+}
+#wikiEditor-section-help .index {
+	width: 160px;
+}
+.wikiEditor-ui-toolbar {
+	background-image: none !important;
+	background: lighten(@content-outter-background, 5%) !important;
+}
+.wikiEditor-ui-toolbar .sections .section {
+	background: @content-outter-background !important;
+}
+.wikiEditor-ui-toolbar .booklet .index div {
+	color: @link-color !important;
+}
+.wikiEditor-ui-toolbar .tabs span.tab a, .wikiEditor-ui-toolbar .tabs span.tab a:visited {
+	color: @link-color !important;
+}
+.wikiEditor-ui-toolbar .group .tool-select {
+	height: 25px !important;
+}
 
-.editButtons {
-	padding-bottom: 15px;
+
+/* Loop Areas */    
+a.option:before {
+	font-family: "loopfont";
+	padding-right: 5px;
+   }
+a.option[rel~="looparea-annotation"]:before {
+	content: @ic-annotation;
+}
+a.option[rel~="looparea-custom"]:before {
+	content: @ic-edit;
+}
+a.option[rel~="looparea-arrangement"]:before {
+    content: @ic-arrangement;
+}
+a.option[rel~="looparea-citation"]:before {
+    content: @ic-citation;
+}
+a.option[rel~="looparea-definition"]:before {
+    content: @ic-definition;
+}
+a.option[rel~="looparea-example"]:before {
+    content: @ic-example;
+}
+a.option[rel~="looparea-exercise"]:before {
+    content: @ic-exercise;
+}
+a.option[rel~="looparea-experiment"]:before {
+    content: @ic-experiment;
+}
+a.option[rel~="looparea-formula"]:before {
+    content: @ic-formula;
+}
+a.option[rel~="looparea-important"]:before {
+    content: @ic-important;
+}
+a.option[rel~="looparea-indentation"]:before {
+    content: @ic-indentation;
+}
+a.option[rel~="looparea-law"]:before {
+    content: @ic-law;
+}
+a.option[rel~="looparea-learningobjectives"]:before {
+    content: @ic-learningobjectives;
+}
+a.option[rel~="looparea-markedsentence"]:before {
+    content: @ic-markedsentence;
+}
+a.option[rel~="looparea-norm"]:before {
+    content: @ic-norm;
+}
+a.option[rel~="looparea-notice"]:before {
+    content: @ic-notice;
+}
+a.option[rel~="looparea-practice"]:before {
+    content: @ic-practice;
+}
+a.option[rel~="looparea-question"]:before {
+    content: @ic-question;
+}
+a.option[rel~="looparea-reflection"]:before {
+	content: @ic-reflection;
+}
+a.option[rel~="looparea-sourcecode"]:before {
+	content: @ic-sourcecode;
+}
+a.option[rel~="looparea-summary"]:before {
+	content: @ic-summary;
+}
+a.option[rel~="looparea-task"]:before {
+	content: @ic-task;
+}
+a.option[rel~="looparea-timerequirement"]:before {
+	content: @ic-timerequirement;
+}
+a.option[rel~="looparea-websource"]:before {
+	content: @ic-link-external;
+}
+
+/* Loop Objects */
+a.option[rel~="loop-figure"]:before {
+	content: @ic-figure;
+}
+a.option[rel~="loop-table"]:before {
+	content: @ic-table;
+}
+a.option[rel~="loop-formula"]:before {
+	content: @ic-formula;
+}
+a.option[rel~="loop-listing"]:before {
+	content: @ic-we-list;
+}
+a.option[rel~="loop-media"]:before {
+	content: @ic-media;
+}
+a.option[rel~="loop-task"]:before {
+	content: @ic-task;
+}
+
+a.option[rel~="loop-rollover"]:before {
+	content: @ic-rollover;
+}
+a.option[rel~="loop-mvideo"]:before {
+	content: @ic-video;
+}
+a.option[rel~="loop-interaction"]:before {
+	content: @ic-click;
+}
+a.option[rel~="loop-maudio"]:before {
+	content: @ic-audio;
+}
+a.option[rel~="loop-animation"]:before {
+	content: @ic-animation;
+}
+a.option[rel~="loop-click"]:before {
+	content: @ic-click;
+}
+a.option[rel~="loop-dragdrop"]:before {
+	content: @ic-dragdrop;
+}
+a.option[rel~="loop-simulation"]:before {
+	content: @ic-simulation;
+}
+
+
+a.option[rel~="loopsnippets-author"]:before {
+	content: @ic-personal-urls;
+}
+a.option[rel~="loopsnippets-zip"]:before {
+	content: @ic-file-zip;
+}
+a.option[rel~="loopsnippets-spoiler"]:before {
+	content: @ic-indentation;
+}
+a.option[rel~="loopsnippets-paragraph"]:before {
+	content: @ic-citation;
+}
+a.option[rel~="loopsnippets-toc"]:before {
+	content: @ic-arrangement;
+}
+a.option[rel~="loopsnippets-literature"]:before {
+	content: @ic-books;
+}
+a.option[rel~="loopsnippets-math"]:before {
+	content: @ic-formula;
+}
+a.option[rel~="loopsnippets-print"]:before {
+	content: @ic-print-area;
+}
+a.option[rel~="loopsnippets-noprint"]:before {
+	content: @ic-print-area;
 }
