@@ -10,6 +10,8 @@
 }
 .wikiEditor-ui .options { /* for MsUpload compatibility of dropdowns */
 	z-index: 100 !important;
+	max-height: 500px;
+	overflow: auto;
 }
 #wikiEditor-section-help .index {
 	width: 160px;
@@ -129,7 +131,6 @@ a.option[rel~="loop-media"]:before {
 a.option[rel~="loop-task"]:before {
 	content: @ic-task;
 }
-
 a.option[rel~="loop-rollover"]:before {
 	content: @ic-rollover;
 }
@@ -156,6 +157,33 @@ a.option[rel~="loop-simulation"]:before {
 }
 
 
+/* Loop Contents */
+a.option[rel~="loopmedia-video"]:before {
+	content: @ic-video;
+}
+a.option[rel~="loopmedia-youtube"]:before {
+	content: @ic-social-youtube;
+}
+a.option[rel~="loopmedia-h5p"]:before {
+	content: @ic-h5p;
+}
+a.option[rel~="loopmedia-learningapps"]:before {
+	content: @ic-learningapp;
+}
+a.option[rel~="loopmedia-padlet"]:before {
+	content: @ic-padlet;
+}
+a.option[rel~="loopmedia-prezi"]:before {
+	content: @ic-prezi;
+}
+a.option[rel~="loopmedia-slideshare"]:before {
+	content: @ic-slideshare;
+}
+a.option[rel~="loopmedia-quizlet"]:before {
+	content: @ic-quizlet;
+}
+
+/* Loop Snippets */
 a.option[rel~="loopsnippets-author"]:before {
 	content: @ic-personal-urls;
 }
@@ -173,6 +201,9 @@ a.option[rel~="loopsnippets-toc"]:before {
 }
 a.option[rel~="loopsnippets-literature"]:before {
 	content: @ic-books;
+}
+a.option[rel~="loopsnippets-sidenote"]:before {
+	content: @ic-we-shift;
 }
 a.option[rel~="loopsnippets-math"]:before {
 	content: @ic-formula;
