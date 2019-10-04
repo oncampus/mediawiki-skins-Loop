@@ -1279,9 +1279,9 @@ class LoopTemplate extends BaseTemplate {
 			$html .=  '</div></div>';
 		}
 
-		$html .= '<div class="col-12 pl-0 pr-0" id="main-footer">
+		$html .= '<div class="row mr-0 ml-0" id="main-footer">
 				<div class="container p-0">
-					<div id="footer-right" class="pl-0 pr-0 text-center text-sm-right float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-0">';
+					<div id="footer-right" class="pl-0 pr-sm-2 pr-md-3 float-sm-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-0"><p class="text-center text-sm-right">';
 					
 					$socialIcons = array( 
 						'Facebook' => array( 'icon' => $this->loopSettings->facebookIcon, 'link' => $this->loopSettings->facebookLink ),
@@ -1296,6 +1296,7 @@ class LoopTemplate extends BaseTemplate {
 						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 					}
 				}
+				$html .= '</p>';
 				if ( filter_var( htmlspecialchars_decode( $this->loopSettings->imprintLink ), FILTER_VALIDATE_URL ) ) {
 					$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $this->loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
 				} else {
@@ -1325,18 +1326,20 @@ class LoopTemplate extends BaseTemplate {
 				}
 
 				$html .= '</div>
-				<div id="footer-center" class="text-center float-right col-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
+				<div id="footer-center" class="text-center float-right col-xs-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
 					 '. $imprintElement .' | '. $privacyElement;
 					if ( ! empty( $this->loopSettings->oncampusLink ) ) {
 						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
 					}
 				$html .= '</div>
-				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-sm-0">';
+				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-sm-0">';
 				if ( ! empty ( $this->loopSettings->rightsType ) ) {
-					$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
+					$html .= "<p id='rightsText' class='m-0 pb-2 text-xs-center ml-0 ml-sm-2 ml-md-3 mb-3 mb-sm-0'>";
+					$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 text-xs-center">' . $wgRightsIcon . '</a>' . htmlspecialchars_decode( $wgRightsText ) . '</p>';
+				} else {
+					$html .= "<p id='rightsText' class='m-0 pb-2 text-xs-center ml-0 ml-sm-2 ml-md-3 mb-3 mb-sm-0'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>';
 				}
-				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>
-				</div></div></div></div>';
+				$html .= '</div></div></div></div>';
 		
 		echo $html;
 	}
