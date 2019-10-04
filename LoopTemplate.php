@@ -1263,6 +1263,7 @@ class LoopTemplate extends BaseTemplate {
 		global $wgRightsText, $wgRightsIcon, $wgRightsUrl;
 		
 		$html = ""; 
+		$html .= '<div class="container-fluid pl-0 pr-0" id="footer">';
 		
 		if ( $this->loopSettings->extraFooter == "useExtraFooter" ) {
 			$html .= '<div class="col-12 text-center" id="extra-footer">
@@ -1277,9 +1278,8 @@ class LoopTemplate extends BaseTemplate {
 			
 			$html .=  '</div></div>';
 		}
-		$html .= '<div class="container-fluid">
-		<div class="row">
-			<div class="col-12" id="main-footer">
+
+		$html .= '<div class="col-12 pl-0 pr-0" id="main-footer">
 				<div class="container p-0">
 					<div id="footer-right" class="pl-0 pr-0 text-center text-sm-right float-right col-12 col-sm-3 col-md-4 col-lg-3  pt-4 pb-0">';
 					
@@ -1336,7 +1336,7 @@ class LoopTemplate extends BaseTemplate {
 					$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 float-left"><img src="' . $wgRightsIcon . '"></a>';
 				}
 				$html .= "<p id='rightsText' class='m-0 pb-2 float-left'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>
-				</div></div></div></div></div>';
+				</div></div></div></div>';
 		
 		echo $html;
 	}
