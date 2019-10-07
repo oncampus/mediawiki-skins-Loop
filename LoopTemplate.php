@@ -253,13 +253,17 @@ class LoopTemplate extends BaseTemplate {
 								<div class="panel-wrapper">
 									<?php 	$this->outputToc( $loopStructure ); 
 									
-									if( isset( $loopStructure->mainPage ) ) { 
+									if ( isset( $loopStructure->mainPage ) ) { 
 										$this->outputSpecialPages( $loopStructure );
 									} ?>
 								</div>
-								<?php if( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
-									$this->outputExportPanel( ); 
-								}
+								<?php 
+									if ( $wgOut->isArticle() ) { 
+										$this->outputCustomSidebar(); 
+									}
+									if ( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
+										$this->outputExportPanel( ); 
+									}
 								?>
 						</div>	
 						<?php } ?>
@@ -1256,6 +1260,54 @@ class LoopTemplate extends BaseTemplate {
 			
 			echo $html;
 		}
+	}
+	private function outputCustomSidebar() {
+
+		global $wgParserConf, $wgParserOptions;
+		$html = "";
+		$matches = array();
+		$parserOptions = ParserOptions::newFromUser( $this->user );
+		$parser = new Parser( );
+		$parser->Options( $wgParserOptions );
+		$contentText = $this->getSkin()->getContext()->getWikiPage()->getContent()->getNativeData();
+		$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
+
+		foreach ($matches as $match) {
+			if($match[0] == 'loop_sidebar') {
+				if ( isset( $match[2][ 'title' ]) ) {
+					$sidebarHeadline = $match[2][ 'title' ];
+				} else {
+					$sidebarHeadline = '';
+				}
+				if ( isset( $match[2][ 'page' ] ) ) {
+					$sidebarPage = $match[2][ 'page' ];
+				} else {
+					$sidebarPage = false;
+				}
+
+				if ( $sidebarPage ) {
+					$sidebarTitle = Title::newFromText( $sidebarPage );
+
+					$sidebarWP = new WikiPage( $sidebarTitle );
+
+					$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
+					if ( isset ($sidebarParserOutput->mText) ) {
+						$sidebarContentOutput = $sidebarParserOutput->mText;
+					} else {
+						$sidebarContentOutput = $this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage );
+					}
+						
+					$html .= '<div class="panel-wrapper custom-panel">';
+					$html .= '<div class="panel-heading"><h5 class="panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</h5></div>';
+					$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+					$html .= $sidebarContentOutput;
+					$html .= '</div>';
+					$html .= '</div>';			
+				}
+			}
+		}
+
+		echo $html;
 	}
 
 	private function outputFooter ( ) {
