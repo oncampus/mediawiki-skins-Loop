@@ -12,8 +12,8 @@ $( document ).ready( function () {
 	 * Set position of footer for short pages to bottom of the window.
 	 */	
 	
-	$('#page-wrapper').css( 'min-height', $( window ).height() - $("footer").height() );
-	$('footer').fadeIn(200);
+	$('#page-wrapper').css( 'min-height', $( window ).height() - $("#footer").height() );
+	$('footer').animate({"opacity": "1"}, 200);
 	
 	/**
 	 * Toggle visibility of mobile toc menu.
