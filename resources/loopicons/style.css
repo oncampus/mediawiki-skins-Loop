@@ -1,12 +1,13 @@
 @font-face {
   font-family: 'loopfont';
-  src:  url('fonts/loopfont.eot?w0rtyz');
-  src:  url('fonts/loopfont.eot?w0rtyz#iefix') format('embedded-opentype'),
-    url('fonts/loopfont.ttf?w0rtyz') format('truetype'),
-    url('fonts/loopfont.woff?w0rtyz') format('woff'),
-    url('fonts/loopfont.svg?w0rtyz#loopfont') format('svg');
+  src:  url('fonts/loopfont.eot?ylab1e');
+  src:  url('fonts/loopfont.eot?ylab1e#iefix') format('embedded-opentype'),
+    url('fonts/loopfont.ttf?ylab1e') format('truetype'),
+    url('fonts/loopfont.woff?ylab1e') format('woff'),
+    url('fonts/loopfont.svg?ylab1e#loopfont') format('svg');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
 
 [class^="ic-"], [class*=" ic-"] {
@@ -24,6 +25,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-cc-by:before {
+  content: "\e96e";
+}
+.ic-cc:before {
+  content: "\e972";
+}
+.ic-cc-nc:before {
+  content: "\e973";
+}
+.ic-cc-nd:before {
+  content: "\e974";
+}
+.ic-cc-pd:before {
+  content: "\e977";
+}
+.ic-cc-sa:before {
+  content: "\e975";
+}
+.ic-cc-zero:before {
+  content: "\e976";
+}
 .ic-buffering:before {
   content: "\e964";
 }
