@@ -245,7 +245,7 @@ class LoopTemplate extends BaseTemplate {
 								</div>
 							</div> <!--End of row-->
 						</div>
-						<?php if( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
+						<?php if ( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
 							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
 							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
 									$this->outputFlaggedRevsPanel();
@@ -258,9 +258,9 @@ class LoopTemplate extends BaseTemplate {
 									} ?>
 								</div>
 								<?php 
-									if ( $wgOut->isArticle() ) { 
+									if ( $this->title->getNamespace() == NS_MAIN ) { 
 										$this->outputCustomSidebar(); 
-									}
+									} 
 									if ( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
 										$this->outputExportPanel( ); 
 									}
@@ -1261,8 +1261,7 @@ class LoopTemplate extends BaseTemplate {
 			echo $html;
 		}
 	}
-	private function outputCustomSidebar() {
-
+	public function outputCustomSidebar() {
 		global $wgParserConf, $wgParserOptions;
 		$html = "";
 		$matches = array();
@@ -1271,9 +1270,8 @@ class LoopTemplate extends BaseTemplate {
 		$parser->Options( $wgParserOptions );
 		$contentText = $this->getSkin()->getContext()->getWikiPage()->getContent()->getNativeData();
 		$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
-
 		foreach ($matches as $match) {
-			if($match[0] == 'loop_sidebar') {
+			if( $match[0] == 'loop_sidebar' ) {
 				if ( isset( $match[2][ 'title' ]) ) {
 					$sidebarHeadline = $match[2][ 'title' ];
 				} else {

@@ -188,19 +188,22 @@ li.toc-main {
 	margin-right: 0 !important;
 	background: none;
 }
+.custom-panel > *, .custom-panel iframe.scale-frame {
+	max-width: 100% !important;
+}
 
 @media (max-width: 991px) {
 
-	    /* reverting mobile sidebar TOC if screen width increases */
-		.mobile-sidebar#sidebar-wrapper { 
-			position: absolute !important;
-			right: 0 !important;
-			z-index: 10;
-		}
-		
-		.toc-tree li a:after {
-			background: none;
-		}
+	/* reverting mobile sidebar TOC if screen width increases */
+	.mobile-sidebar#sidebar-wrapper { 
+		position: absolute !important;
+		right: 0 !important;
+		z-index: 10;
+	}
+	
+	.toc-tree li a:after {
+		background: none;
+	}
 		
 }
 
