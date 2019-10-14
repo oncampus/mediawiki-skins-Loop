@@ -1268,7 +1268,12 @@ class LoopTemplate extends BaseTemplate {
 		$parserOptions = ParserOptions::newFromUser( $this->user );
 		$parser = new Parser( );
 		$parser->Options( $wgParserOptions );
-		$contentText = $this->getSkin()->getContext()->getWikiPage()->getContent()->getNativeData();
+		$wp =  $this->getSkin()->getContext()->getWikiPage();
+		$contentText = '';
+		if ( $wp->getLatest() != 0 ) {
+			$contentText = $wp->getContent()->getNativeData();
+		}
+		
 		$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
 		foreach ($matches as $match) {
 			if( $match[0] == 'loop_sidebar' ) {
