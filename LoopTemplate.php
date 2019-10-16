@@ -1268,6 +1268,18 @@ class LoopTemplate extends BaseTemplate {
 		$parserOptions = ParserOptions::newFromUser( $this->user );
 		$parser = new Parser( );
 		$parser->Options( $wgParserOptions );
+
+		if ( $this->loopSettings->extraSidebar == "useExtraSidebar" ) {
+			$tmpTitle = Title::newFromText( 'NO TITLE' );
+			$parserOutput = $parser->parse( "{{MediaWiki:ExtraSidebar}}", $tmpTitle, new ParserOptions() );
+			$html .= '<div class="panel-wrapper custom-panel">';
+			$html .= '<div class="panel-heading"></div>';
+			$html .= '<div class="panel-body pl-3 pr-3 pb-3 pt-2">';
+			$html .= $parserOutput->mText;
+			$html .= '</div>';
+			$html .= '</div>';		
+		}
+
 		$wp =  $this->getSkin()->getContext()->getWikiPage();
 		$contentText = '';
 		if ( $wp->getLatest() != 0 ) {
@@ -1277,6 +1289,7 @@ class LoopTemplate extends BaseTemplate {
 		$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
 		foreach ($matches as $match) {
 			if( $match[0] == 'loop_sidebar' ) {
+				$showPanel = true;
 				if ( isset( $match[2][ 'title' ]) ) {
 					$sidebarHeadline = $match[2][ 'title' ];
 				} else {
@@ -1297,15 +1310,20 @@ class LoopTemplate extends BaseTemplate {
 					if ( isset ($sidebarParserOutput->mText) ) {
 						$sidebarContentOutput = $sidebarParserOutput->mText;
 					} else {
-						$sidebarContentOutput = $this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage );
+						$sidebarContentOutput = "<div class='errorbox mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
+						$showPanel = false;
 					}
-						
-					$html .= '<div class="panel-wrapper custom-panel">';
-					$html .= '<div class="panel-heading"><h5 class="panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</h5></div>';
-					$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
-					$html .= $sidebarContentOutput;
-					$html .= '</div>';
-					$html .= '</div>';			
+					if ( $this->editMode ) { 
+						$showPanel = true; 
+					}
+					if ( $showPanel ) {
+						$html .= '<div class="panel-wrapper custom-panel">';
+						$html .= '<div class="panel-heading mb-2"><h5 class="panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</h5></div>';
+						$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+						$html .= $sidebarContentOutput;
+						$html .= '</div>';
+						$html .= '</div>';	
+					}		
 				}
 			}
 		}
