@@ -258,9 +258,8 @@ class LoopTemplate extends BaseTemplate {
 									} ?>
 								</div>
 								<?php 
-									if ( $this->title->getNamespace() == NS_MAIN ) { 
-										$this->outputCustomSidebar(); 
-									} 
+									$this->outputCustomSidebar(); 
+									
 									if ( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
 										$this->outputExportPanel( ); 
 									}
@@ -1279,51 +1278,53 @@ class LoopTemplate extends BaseTemplate {
 			$html .= '</div>';
 			$html .= '</div>';		
 		}
+		if ( $this->title->getNamespace() == NS_MAIN ) { 
 
-		$wp =  $this->getSkin()->getContext()->getWikiPage();
-		$contentText = '';
-		if ( $wp->getLatest() != 0 ) {
-			$contentText = $wp->getContent()->getNativeData();
-		}
-		
-		$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
-		foreach ($matches as $match) {
-			if( $match[0] == 'loop_sidebar' ) {
-				$showPanel = true;
-				if ( isset( $match[2][ 'title' ]) ) {
-					$sidebarHeadline = $match[2][ 'title' ];
-				} else {
-					$sidebarHeadline = '';
-				}
-				if ( isset( $match[2][ 'page' ] ) ) {
-					$sidebarPage = $match[2][ 'page' ];
-				} else {
-					$sidebarPage = false;
-				}
-
-				if ( $sidebarPage ) {
-					$sidebarTitle = Title::newFromText( $sidebarPage );
-
-					$sidebarWP = new WikiPage( $sidebarTitle );
-
-					$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
-					if ( isset ($sidebarParserOutput->mText) ) {
-						$sidebarContentOutput = $sidebarParserOutput->mText;
+			$wp =  $this->getSkin()->getContext()->getWikiPage();
+			$contentText = '';
+			if ( $wp->getLatest() != 0 ) {
+				$contentText = $wp->getContent()->getNativeData();
+			}
+			
+			$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
+			foreach ($matches as $match) {
+				if( $match[0] == 'loop_sidebar' ) {
+					$showPanel = true;
+					if ( isset( $match[2][ 'title' ]) ) {
+						$sidebarHeadline = $match[2][ 'title' ];
 					} else {
-						$sidebarContentOutput = "<div class='errorbox mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
-						$showPanel = false;
+						$sidebarHeadline = '';
 					}
-					if ( $this->editMode ) { 
-						$showPanel = true; 
+					if ( isset( $match[2][ 'page' ] ) ) {
+						$sidebarPage = $match[2][ 'page' ];
+					} else {
+						$sidebarPage = false;
 					}
-					if ( $showPanel ) {
-						$html .= '<div class="panel-wrapper custom-panel">';
-						$html .= '<div class="panel-heading mb-2"><h5 class="panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</h5></div>';
-						$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
-						$html .= $sidebarContentOutput;
-						$html .= '</div>';
-						$html .= '</div>';	
-					}		
+
+					if ( $sidebarPage ) {
+						$sidebarTitle = Title::newFromText( $sidebarPage );
+
+						$sidebarWP = new WikiPage( $sidebarTitle );
+
+						$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
+						if ( isset ($sidebarParserOutput->mText) ) {
+							$sidebarContentOutput = $sidebarParserOutput->mText;
+						} else {
+							$sidebarContentOutput = "<div class='errorbox mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
+							$showPanel = false;
+						}
+						if ( $this->editMode ) { 
+							$showPanel = true; 
+						}
+						if ( $showPanel ) {
+							$html .= '<div class="panel-wrapper custom-panel">';
+							$html .= '<div class="panel-heading mb-2"><h5 class="panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</h5></div>';
+							$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+							$html .= $sidebarContentOutput;
+							$html .= '</div>';
+							$html .= '</div>';	
+						}		
+					}
 				}
 			}
 		}
