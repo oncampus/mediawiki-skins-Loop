@@ -43,12 +43,12 @@ class LoopSkinHooks {
 	 */
 	public static function onHtmlPageLinkRendererEnd( $linkRenderer, $target, $isKnown, &$text, &$attribs, &$ret ) {
 
-		global $wgOut, $wgServer;
+		global $wgOut, $wgCanonicalServer;
 
 		$looprendermode = $wgOut->getUser()->getOption( 'LoopRenderMode', false, true );
-
+		
+		if (strpos($target, "cite") != false) {dd($target);}
 		if ( $looprendermode == "offline" ) {
-
 			$loopHtml = new LoopHtml();
 
 			if ( isset( $target->mArticleID ) ) { # don't pick special page links
@@ -70,7 +70,7 @@ class LoopSkinHooks {
 				    $attribs['href'] = $newHref;
 				    $attribs["class"] = $attribs["class"] . " local-link";
 				} else { # internal pages that are not in structure
-					$attribs['href'] = $wgServer . $attribs['href'];
+					$attribs['href'] = $wgCanonicalServer . $attribs['href'];
 				}
 
 			} elseif ( isset ($attribs['id']) && $attribs['id'] == "toc-button" ) { # TOC button link

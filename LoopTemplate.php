@@ -1018,6 +1018,21 @@ class LoopTemplate extends BaseTemplate {
 				$divider_1 = true;
 			}	
 		}
+		// Link for editing terminology (only on Special:LoopTerminology)
+		if ( $this->title == strval(Title::newFromText( 'Special:' . $this->getSkin()->msg( 'loopterminology' ) ) ) ) {
+			if ( $user->isAllowed( 'loop-toc-edit' ) ) {
+				echo $this->linkRenderer->makelink( 
+					new TitleValue( 
+						NS_SPECIAL, 
+						'LoopTerminologyEdit' 
+					), 
+					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'loopterminologyedit' ) ), 
+					array('class' => 'dropdown-item')  
+				);
+				
+				$divider_1 = true;
+			}	
+		}
 
 		// Loop Edit Mode
 		if ( $user->isAllowed( 'edit' ) ) {
@@ -1162,6 +1177,15 @@ class LoopTemplate extends BaseTemplate {
 					) . '</li>';
 					$outputSpecialPages = true;
 				}
+			}
+			$showTerminology = LoopTerminology::getShowTerminology();
+			if ( $showTerminology ) {
+				$outputSpecialPages = true;
+				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
+					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopterminology" )->text() ),
+					new HtmlArmor( $this->getSkin()->msg( "loopterminology" )->text() ),
+				    array("class"=>"aToc", "id" => "LoopTerminology")
+				) . '</li>';
 			}
 			$showLiterature = LoopLiterature::getShowLiterature();
 			if ( $showLiterature ) {
