@@ -297,15 +297,15 @@ class LoopTemplate extends BaseTemplate {
 					</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 			
-			if ( isset ( $personTools ['userpage'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '" alt="'.$personTools ['userpage'] ['links'] [0] ['text'].'"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
-			}
+			#if ( isset ( $personTools ['userpage'] ) ) {
+			#	echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '" alt="'.$personTools ['userpage'] ['links'] [0] ['text'].'"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
+			#}
 
 			if ( isset ( $personTools ['watchlist'] ) ) {
 				echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '" alt="'.$personTools ['watchlist'] ['links'] [0] ['text'].'"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
 			}
 
-			if ( isset ( $personTools ['preferences'] ) ) {
+			if ( isset ( $personTools ['preferences'] ) && ! in_array( "shared", $user->getGroups() ) ) {
 				echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '" alt="'.$personTools ['preferences'] ['links'] [0] ['text'].'"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
 			}
 
