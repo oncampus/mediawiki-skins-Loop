@@ -9,7 +9,9 @@
 	text-decoration: none !important;
 	padding-top: 20px;
 }
-h1#loop-title, h1#loop-title:hover {
+header#loop-title, header#loop-title:hover {
+	display: block;
+	font-size: 2em;
 	color: @loop-title-color;
 	padding-top: @title-padding !important;
 }
@@ -21,7 +23,7 @@ h1#loop-title, h1#loop-title:hover {
 	background-image: url(@logo-url);
 	background-repeat: no-repeat;
 	height: 42px;
-	width: auto;	
+	width: auto;
 	background-size: auto 100%;
 	background-position: 0 center;
 }
@@ -75,10 +77,10 @@ ol.breadcrumb {
 	cursor: pointer;
 	width: 16px;
 	color: @icon-color;
-}
-
-#t2s-button {
+	border: none;
+    background: none;
 	display: block;
+	padding: 0;
 }
 
 @keyframes rotating {
