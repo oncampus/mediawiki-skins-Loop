@@ -76,7 +76,7 @@ class LoopTemplate extends BaseTemplate {
 									$title = Title::newFromID( $loopStructure->mainPage );
 									echo $this->linkRenderer->makelink(
 										$title,
-										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $title . '</h1>' )
+										new HtmlArmor( '<header class="h1 p-1" id="loop-title">'. $title . '</header>' )
 									);
 								} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 									global $wgSitename;
@@ -292,7 +292,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			echo '<div id="usermenu" class="">
 				<div class="dropdown float-right mt-2">
-					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
+					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" aria-label="' . $this->getSkin()->msg("loop-toggle-usermenu") . '">
 						<span class="ic ic-personal-urls float-left pr-1 pt-1"></span><span class="d-none d-sm-block float-left">' . $userName . '</span>
 					</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
@@ -680,7 +680,7 @@ class LoopTemplate extends BaseTemplate {
 				}
 				
 				$html = '<div class="panel-heading">
-							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</h5>
+							<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</header>
 						</div>
 						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul>';
 								
@@ -815,7 +815,7 @@ class LoopTemplate extends BaseTemplate {
 				}
 
 				$html = '<div class="panel-heading">
-					<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) .$editButton.'</h5>
+					<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) .$editButton.'</header>
 					</div>
 					<div id="toc-placeholder" class="panel-body p-1 pb-2 pl-3 pr-3 pt-2">'.$editMsg.'</div>';
 			}
@@ -857,9 +857,9 @@ class LoopTemplate extends BaseTemplate {
 			);
 
 			$wgOut->addModules("skins.loop-plyr.js");
-			$html = '<div class="col-1 mt-1 mb-1 p-0 text-right float-right" id="audio-wrapper" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'" title="'.$this->getSkin()->msg("loop-audiobutton").'">
+			$html = '<div class="col-1 mt-1 mb-1 p-0 text-right float-right" id="audio-wrapper" title="'.$this->getSkin()->msg("loop-audiobutton").'">
 					'.$mp3ExportLink.'
-					<span id="t2s-button" class="ic ic-audio pr-sm-3 mb-1 mt-2 mr-3 float-right"></span>
+					<button id="t2s-button" class="ic ic-audio pr-sm-3 mb-1 mt-2 mr-3 float-right" aria-label="'.$this->getSkin()->msg("loop-audiobutton").'"></button>
 					<audio id="t2s-audio"><source src="" type="audio/mp3"></source></audio>
 				</div>';
 			
@@ -1148,7 +1148,7 @@ class LoopTemplate extends BaseTemplate {
 			$html .= '<span class="page-symbol align-middle ic ic-info pr-0" id="page-info" title="' . $this->data['lastmod']. '"></span>';
 
 		}
-		$html .= '	<span class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></span>
+		$html .= '	<button class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'" aria-label="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></button>
 				</div>';
 		echo $html;
 	}
@@ -1228,7 +1228,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $user->isAllowedAny( 'loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3' ) ) { # TODO other export formats
 			$html = '<div class="panel-wrapper">
 						<div class="panel-heading">
-							<h5 class="panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</h5>
+							<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</header>
 						</div>
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
@@ -1342,7 +1342,7 @@ class LoopTemplate extends BaseTemplate {
 						}
 						if ( $showPanel ) {
 							$html .= '<div class="panel-wrapper custom-panel">';
-							$html .= '<div class="panel-heading mb-2"><h5 class="panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</h5></div>';
+							$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">'.$sidebarHeadline.'</header></div>';
 							$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
 							$html .= $sidebarContentOutput;
 							$html .= '</div>';
@@ -1500,7 +1500,7 @@ class LoopTemplate extends BaseTemplate {
 			
 			$html = '<div class="panel-wrapper">
 				<div class="panel-heading">
-					<h5 class="panel-title mb-0 pl-3 pr-3 pt-2 pb-2">'.$this->getSkin()->msg("loop-fr-panel-title")->text().'</h5>
+					<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2 pb-2">'.$this->getSkin()->msg("loop-fr-panel-title")->text().'</header>
 				</div>
 				<div class="panel-body pl-3 pr-3 pb-3" id="loop-fr-panel">';
 				
