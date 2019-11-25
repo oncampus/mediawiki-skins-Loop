@@ -33,7 +33,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		if( $this->renderMode != "epub" ) { ?>
 		<div id="page-wrapper">
-			<section>
+			<header>
 				<div class="container p-0" id="banner-wrapper">
 					<div class="container p-0" id="banner-container">
 						<div class="w-100" id="banner-logo-container">
@@ -143,7 +143,7 @@ class LoopTemplate extends BaseTemplate {
 					</div>
 				</div>
 				</div>
-			</section>
+			</header>
 			
 			<!--BREADCRUMB SECTION -->
 			<section>
@@ -169,7 +169,7 @@ class LoopTemplate extends BaseTemplate {
 						</div> <!--End of row-->
 					</div> <!--End of container-->
 				</div>
-				<div class="container" id="breadcrumb-container">
+				<nav class="container" id="breadcrumb-container">
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 p-0" id="breadcrumb-wrapper">
 							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pr-2 pr-sm-0 float-left" id="breadcrumb-area">
@@ -181,7 +181,7 @@ class LoopTemplate extends BaseTemplate {
 							}?>
 						</div>
 					</div> <!--End of row-->
-				</div> 
+				</nav> 
 			</section> <!--End of Breadcrumb section-->
 			
 			<!-- CONTENT SECTION -->
@@ -349,7 +349,7 @@ class LoopTemplate extends BaseTemplate {
 				</div>';
 			} elseif ( isset ( $personTools ['login'] ) ) {
 				echo '<div class="float-right mt-2">
-				<a id="login-button" href="' . $personTools ['login'] ['links'] [0] ['href'] . '" alt="'.$personTools ['login'] ['links'] [0] ['text'].'">
+				<a id="login-button" href="' . $personTools ['login'] ['links'] [0] ['href'] . '">
 				<button class="btn btn-light btn-sm" type="button" id="user-menu-dropdown" aria-haspopup="true" aria-expanded="true">
 				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
 
@@ -892,7 +892,7 @@ class LoopTemplate extends BaseTemplate {
 		unset($this->data['content_navigation']['namespaces']); # removes talk pages from menu
 
 		echo '<div class="dropdown float-right" id="admin-dropdown">
-			<button  id="admin-btn" class="btn btn-light dropdown-toggle page-nav-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="'.$this->getSkin()->msg("loop-page-edit-menu").'" title="'.$this->getSkin()->msg("loop-page-edit-menu").'">
+			<button class="btn btn-light dropdown-toggle page-nav-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="'.$this->getSkin()->msg("loop-page-edit-menu").'" title="'.$this->getSkin()->msg("loop-page-edit-menu").'">
 				<span class="ic ic-preferences"></span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">';
