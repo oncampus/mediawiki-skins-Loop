@@ -36,7 +36,7 @@ $( document ).ready( function () {
 		}
 	});
 	// if focus is lost after last item
-	pageNavBtn.add(userNavBtn).next( '.dropdown-menu' ).children().last().focusout( function () {
+	pageNavBtn.add(userNavBtn).next( '.dropdown-menu' ).children('.dropdown-item').last().focusout( function () {
 		$(this).parent( '.dropdown-menu').removeClass( 'show' );
 		$(this).parent( '.dropdown' ).removeClass( 'show' );
 		$(this).attr( 'aria-expanded', 'false' );
