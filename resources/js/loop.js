@@ -5,6 +5,8 @@ $( document ).ready( function () {
 	var navMenu = $( '#sidebar-wrapper' ); 
 	var mobileSearchBtn = $( '#toggle-mobile-search-btn' );
 	var mobileSearchBar = $( '#mobile-searchbar' );
+	var pageNavBtn = $( '#dropdownMenuButton' );
+	var userNavBtn = $( '#user-menu-dropdown' );
 	var tocNav = $('#toc-nav');
 	var tocSpecialNav = $('#toc-specialpages');
 	
@@ -16,8 +18,36 @@ $( document ).ready( function () {
 	$('footer').animate({"opacity": "1"}, 200);
 	
 	/**
+	 * Accessibility workaround for page menu.
+	 * Simulates states to make the tab key trigger working on buttons
+	*/
+	pageNavBtn.add(userNavBtn).keydown(function(e) {
+		if (e.keyCode === 9) { //tab key
+			if(!$(this).parent( '.dropdown' ).hasClass( 'show' )) {
+				//.tab('show') not working as intended so manually:
+				$(this).next( '.dropdown-menu' ).addClass( 'show' );
+				$(this).parent( '.dropdown' ).addClass( 'show' );
+				$(this).attr( 'aria-expanded' , 'true' );
+			} else {
+				$(this).next( '.dropdown-menu').removeClass( 'show' );
+				$(this).parent( '.dropdown').removeClass( 'show' );
+				$(this).attr( 'aria-expanded', 'false' );
+			}
+		}
+	});
+	// if focus is lost after last item
+	pageNavBtn.add(userNavBtn).next( '.dropdown-menu' ).children().last().focusout( function () {
+		$(this).parent( '.dropdown-menu').removeClass( 'show' );
+		$(this).parent( '.dropdown' ).removeClass( 'show' );
+		$(this).attr( 'aria-expanded', 'false' );
+	});
+
+	/**
 	 * Toggle visibility of mobile toc menu.
 	 */
+
+	 // user-menu-dropdown
+
 	mobileNavBtn.click( function () {
 		navMenu.toggleClass( 'mobile-sidebar' );
 	    navMenu.toggleClass( 'd-none' );

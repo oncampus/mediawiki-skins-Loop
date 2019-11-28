@@ -18,7 +18,7 @@ class SkinLoop extends SkinTemplate {
 		global $wgStylePath, $wgFavicon;
 		$wgFavicon = "$wgStylePath/Loop/resources/img/favicon.ico";
 		
-		$out->addHeadItem('meta_ie_edge', '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">');
+		$out->addHeadItem('meta_ie_edge', '<meta http-equiv="X-UA-Compatible" content="IE=edge">');
 		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1.0' );
 		
 		$out->addModuleStyles( array(
