@@ -97,7 +97,7 @@ class LoopTemplate extends BaseTemplate {
 										<?php $this->outputNavigation( $loopStructure ); 
 											echo '<div class="btn-group float-right">'; 
 											if( $this->renderMode != "offline" && $this->user->isAllowed( 'read' ) ) { 
-												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" aria-label=""><span class="ic ic-search"></span></button>';
+												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" ><span class="ic ic-search"></span></button>';
 												$this->outputPageEditMenu( );
 											}
 											if ( isset( $loopStructure->mainPage ) && $this->user->isAllowed('read') ) {?>
@@ -371,7 +371,7 @@ class LoopTemplate extends BaseTemplate {
 		$lsi = LoopStructureItem::newFromIds( $article_id );
 			
 		$disabled = ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) || $mainPage ) ? "" : "disabled";
-		$home_button = '<button type="button" class="btn btn-light page-nav-btn" '.$disabled.' aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
+		$home_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" '.$disabled.' aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
 		
 		if ( $mainPage ) {
 			echo $this->linkRenderer->makelink(
@@ -396,7 +396,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 			$previousChapterItem = $lsi->getPreviousChapterItem();
 		}
-		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ).'" ';
+		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ).'" ';
 			
 		if ( ! isset( $previousChapterItem->article ) || ! $user->isAllowed('read') ) {
 			$previous_chapter_button .= 'disabled="disabled"';
@@ -428,7 +428,7 @@ class LoopTemplate extends BaseTemplate {
 			$previousPageItem = LoopStructureItem::newFromIds($previousPage);
 		}
 		
-		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
+		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 		
 		if ( ! isset( $previousPage ) || $previousPage == 0 || ! $user->isAllowed('read') ) {
 			$previous_page_button .= 'disabled="disabled"';
@@ -456,7 +456,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		
 		// TOC  button
-		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'"';
+		$toc_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" title="'. $this->getSkin()->msg('loop-navigation-label-toc'). '" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-toc' ).'"';
 		
 		if ( ! $user->isAllowed('read') ) {
 			$toc_button .= 'disabled="disabled"';
@@ -483,7 +483,7 @@ class LoopTemplate extends BaseTemplate {
 			$nextPage = $lsi->nextArticle;
 			$nextPageItem = LoopStructureItem::newFromIds($nextPage);
 		}
-		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
+		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 		
 		if ( ! isset( $nextPage ) || $nextPage == 0 || ! $user->isAllowed('read') ) {
 			$next_page_button .= 'disabled="disabled"';
@@ -514,7 +514,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $lsi ) {
 		 $nextChapterItem = $lsi->getNextChapterItem();
 		}
-		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-chapter' ).'" ';
+		$next_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-chapter' ).'" ';
 			
 		if ( ! isset( $nextChapterItem->article ) || ! $user->isAllowed('read') ) {
 			$next_chapter_button .= 'disabled="disabled"';
