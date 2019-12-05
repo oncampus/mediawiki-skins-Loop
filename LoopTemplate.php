@@ -13,7 +13,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgDefaultUserOptions, $wgOut, $wgLoopPageNumbering;
+		global $wgDefaultUserOptions, $wgOut, $wgLegacyPageNumbering;
 		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
@@ -196,7 +196,7 @@ class LoopTemplate extends BaseTemplate {
 	           							<?php 
 										} // end of excluding rendermode-epub 
 										
-										global $wgLoopLegacyShowTitles, $wgLoopPageNumbering;
+										global $wgLoopLegacyShowTitles, $wgLegacyPageNumbering;
 										
 										if ( $wgLoopLegacyShowTitles ) {
 											
@@ -208,7 +208,7 @@ class LoopTemplate extends BaseTemplate {
 												
 
 												if ( $lsi ) {
-													if( $wgLoopPageNumbering ) {
+													if( $wgLegacyPageNumbering ) {
 														$pageNumber = $lsi->tocNumber;
 													} else {
 														$pageNumber = '';
@@ -639,7 +639,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputToc( $loopStructure ) {
 			
-		global $wgDefaultUserOptions, $wgLoopPageNumbering; 
+		global $wgDefaultUserOptions, $wgLegacyPageNumbering; 
 		
 		$article_id = $this->title->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
@@ -795,7 +795,7 @@ class LoopTemplate extends BaseTemplate {
 					
 					// outputs the page in a tree
 					
-					if($wgLoopPageNumbering) {
+					if($wgLegacyPageNumbering) {
 						$pageNumbering = '<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>';
 					} else {
 						$pageNumbering = '';
