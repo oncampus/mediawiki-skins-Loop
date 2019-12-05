@@ -13,8 +13,8 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgDefaultUserOptions, $wgOut;
-		 
+		global $wgDefaultUserOptions, $wgOut, $wgLoopPageNumbering;
+		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		$this->linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
@@ -196,7 +196,8 @@ class LoopTemplate extends BaseTemplate {
 	           							<?php 
 										} // end of excluding rendermode-epub 
 										
-										global $wgLoopLegacyShowTitles;
+										global $wgLoopLegacyShowTitles, $wgLoopPageNumbering;
+										
 										if ( $wgLoopLegacyShowTitles ) {
 											
 											if ( isset( $loopStructure->mainPage ) ) {
@@ -204,8 +205,16 @@ class LoopTemplate extends BaseTemplate {
 												$article_id = $this->title->getArticleID();
 												$lsi = LoopStructureItem::newFromIds($article_id); 
 												
+												
+
 												if ( $lsi ) {
-													$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+													if( $wgLoopPageNumbering ) {
+														$pageNumber = $lsi->tocNumber;
+													} else {
+														$pageNumber = '';
+													}
+
+													$displayTitle = $pageNumber.' '.$lsi->tocText;
 												} else {
 													$displayTitle = $this->title->mTextform;
 												}
@@ -630,7 +639,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputToc( $loopStructure ) {
 			
-		global $wgDefaultUserOptions; 
+		global $wgDefaultUserOptions, $wgLoopPageNumbering; 
 		
 		$article_id = $this->title->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
@@ -732,7 +741,6 @@ class LoopTemplate extends BaseTemplate {
 					if( ! $rootNode ) {
 						
 						// outputs the first node (mainpage)
-						
 						$html .= '<li class="toc-main mb-1">' .
 							$this->linkRenderer->makelink(
 								$tmpTitle,
@@ -787,12 +795,18 @@ class LoopTemplate extends BaseTemplate {
 					
 					// outputs the page in a tree
 					
+					if($wgLoopPageNumbering) {
+						$pageNumbering = '<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>';
+					} else {
+						$pageNumbering = '';
+					}
+
 					$html .= '<li'.$nodeData.'  data-toc-level="'.$tmpTocLevel.'">' . $caret .
 					
 						$this->linkRenderer->makelink(
 							$tmpTitle,
 							new HtmlArmor( 
-								'<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>
+								$pageNumbering . '
 								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' ),
 							array(
 								'class' => 'aToc ml-1',
