@@ -208,7 +208,7 @@ class LoopTemplate extends BaseTemplate {
 												
 
 												if ( $lsi ) {
-													if( $wgLegacyPageNumbering ) {
+													if ( $wgLegacyPageNumbering ) {
 														$pageNumber = $lsi->tocNumber;
 													} else {
 														$pageNumber = '';
