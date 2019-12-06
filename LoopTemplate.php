@@ -256,7 +256,7 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 						<?php if ( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
 							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() ) {
+							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() && $this->renderMode != "offline" ) {
 									$this->outputFlaggedRevsPanel();
 								} ?>
 								<div class="panel-wrapper">
@@ -269,7 +269,7 @@ class LoopTemplate extends BaseTemplate {
 								<?php 
 									$this->outputCustomSidebar(); 
 									
-									if ( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
+									if ( isset( $loopStructure->mainPage ) ) { 
 										$this->outputExportPanel( ); 
 									}
 								?>
@@ -1238,27 +1238,30 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
-		
-		if ( $user->isAllowedAny( 'loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3' ) ) { # TODO other export formats
-			$html = '<div class="panel-wrapper">
-						<div class="panel-heading">
-							<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</header>
-						</div>
-						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
-							<div class="pb-2">';
-							
-			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken, $wgText2Speech, $wgText2SpeechServiceUrl;
+		$showExport = false;
 
-			if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
-				$pdfExportLink = $this->linkRenderer->makelink( 
-					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
-					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
-					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
-							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' )
-					) 
-				);
-				$html .= '<span>'.$pdfExportLink.'</span><br/>';
-			}			
+		$html = '<div class="panel-wrapper">
+					<div class="panel-heading">
+						<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</header>
+					</div>
+					<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
+						<div class="pb-2">';
+						
+		global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken, $wgText2Speech, $wgText2SpeechServiceUrl;
+
+		if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
+			$pdfExportLink = $this->linkRenderer->makelink( 
+				new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
+				new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
+				array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
+						"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
+						"id" => "loop-pdf-download"
+				) 
+			);
+			$html .= '<span>'.$pdfExportLink.'</span><br/>';
+			$showExport = true;
+		}			
+		if ( $this->renderMode != "offline" ) {
 			if ( $user->isAllowed( 'loop-export-xml' )) {
 				$xmlExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
@@ -1266,9 +1269,9 @@ class LoopTemplate extends BaseTemplate {
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-xml' )
 					) 
-				
 				);
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
+				$showExport = true;
 			}	
 			if ( $user->isAllowed( 'loop-export-html' )) {
 				$htmlExportLink = $this->linkRenderer->makelink( 
@@ -1277,9 +1280,9 @@ class LoopTemplate extends BaseTemplate {
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-html' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-html' )
 					) 
-				
 				);
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
+				$showExport = true;
 			}
 			if ( $user->isAllowed( 'loop-export-mp3' ) && $wgText2Speech && ! empty( $wgText2SpeechServiceUrl ) ) {
 				$mp3ExportLink = $this->linkRenderer->makelink( 
@@ -1288,13 +1291,16 @@ class LoopTemplate extends BaseTemplate {
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' )
 					) 
-				
 				);
 				$html .= '<span>'.$mp3ExportLink.'</span><br/>';
+				$showExport = true;
 			}
 			
-			$html.= '</div></div></div>';
+		}
+		
+		$html.= '</div></div></div>';
 			
+		if ( $showExport ) {
 			echo $html;
 		}
 	}
