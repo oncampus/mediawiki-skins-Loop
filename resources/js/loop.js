@@ -165,4 +165,16 @@ $( document ).ready( function () {
 	}
 
 	$("p:has(.loopspoiler)").addClass("d-inline");
+
+	$(".loopzoom").each(function() {
+		var zoom_id = $(this).attr('id');
+		//var image_html = $(this).find('img:first').get(0).outerHTML;
+		var image_html = $(this).get(0).innerHTML;
+		$('.' + zoom_id + '-modal .modal-content').append(image_html);
+	});
+
+	$(".loopzoom").children().click(function(e) {
+		e.preventDefault()
+   });
+
 });

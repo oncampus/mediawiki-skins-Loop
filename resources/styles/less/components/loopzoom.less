@@ -1,0 +1,60 @@
+.loopzoom {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    //border: 1px solid @components-color;
+}
+
+.loopzoom:before {
+    content: '';
+    background: fade(@components-color, 50%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.loopzoom:after {
+    content: '\e907';
+    font-family: 'loopfont' !important;
+    color: #fff;
+    position: absolute;
+    top: ~"calc(50% - 25px)";
+    left: ~"calc(50% - 25px)";
+    font-size: 50px;
+    line-height: 100%;
+}
+
+.loopzoom:hover {
+    cursor: pointer;
+}
+
+.loopzoom:hover:after{
+    transform: scale(1.2);
+    transition: .05s;
+}
+
+.loopzoom:hover:before{
+    background: fade(@components-color, 30%);
+    transition: .05s;
+}
+
+.loopzoom .noresize{
+    height: 100% !important;
+}
+
+.loopzoom img {
+    margin: 0 auto;
+    pointer-events: none;
+}
+
+.loopzoom .modal-content {
+    border: none;
+}
+
+@media (min-width: 992px) {
+    .loopzoom .modal-lg{
+        max-width: 1160px; // #page-container width
+    }
+}
