@@ -168,9 +168,9 @@ $( document ).ready( function () {
 
 	$(".loopzoom").each(function() {
 		var zoom_id = $(this).attr('id');
-		//var image_html = $(this).find('img:first').get(0).outerHTML;
-		var image_html = $(this).get(0).innerHTML;
-		$('.' + zoom_id + '-modal .modal-content').append(image_html);
+		var html = $(this).get(0).innerHTML;
+
+		$('.' + zoom_id + '-modal .modal-content').append(html);
 	});
 
 	$(".loopzoom").children().click(function(e) {
