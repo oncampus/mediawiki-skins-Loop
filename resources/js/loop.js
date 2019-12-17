@@ -172,9 +172,4 @@ $( document ).ready( function () {
 
 		$('.' + zoom_id + '-modal .modal-content').append(html);
 	});
-
-	$(".loopzoom").children().click(function(e) {
-		e.preventDefault()
-   });
-
 });
