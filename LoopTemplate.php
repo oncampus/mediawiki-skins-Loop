@@ -329,22 +329,29 @@ class LoopTemplate extends BaseTemplate {
 		} else {
 			
 			$loggedin = false;
+			if ( isset ( $personTools ['login'] ) ) {
+				$loginType = 'login';
+			} elseif ( isset ( $personTools ['login-private'] ) ) {
+				$loginType = 'login-private';
+			} else {
+				$loginType = false;
+			}
 
 			if ( isset ( $personTools ['createaccount'] ) ) {
 				echo '<div id="usermenu"><div class="dropdown float-right mt-2">
 				<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
 				
-				if ( isset ( $personTools ['login'] ) ) {
-					echo $personTools ['login'] ['links'] [0] ['text'];
+				if ( $loginType != false ) {
+					echo $personTools [$loginType] ['links'] [0] ['text'];
 				}
 				
 				echo '</span>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 	
-				if ( isset ( $personTools ['login'] ) ) {
-					echo '<a class="dropdown-item" href="' . $personTools ['login'] ['links'] [0] ['href'] . '" alt="'.$personTools ['login'] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools ['login'] ['links'] [0] ['text'] . '</a>';
+				if ( $loginType != false ) {
+					echo '<a class="dropdown-item" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '" alt="'.$personTools [$loginType] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools [$loginType] ['links'] [0] ['text'] . '</a>';
 					echo '<div class="dropdown-divider"></div>';
 				}
 
@@ -356,19 +363,20 @@ class LoopTemplate extends BaseTemplate {
 				echo '	</div>
 					</div>
 				</div>';
-			} elseif ( isset ( $personTools ['login'] ) ) {
+			} elseif ( $loginType != false ) {
+				
 				echo '<div class="float-right mt-2">
-				<a id="login-button" href="' . $personTools ['login'] ['links'] [0] ['href'] . '">
+				<a id="login-button" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '">
 				<button class="btn btn-light btn-sm" type="button" id="user-menu-dropdown" aria-haspopup="true" aria-expanded="true">
 				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
 
-				echo $personTools ['login'] ['links'] [0] ['text'];
+				echo $personTools [$loginType] ['links'] [0] ['text'];
 				echo '</span></button></a></div>';
 				
 			}
+			
 		}
 		
-
 	}
 	private function outputNavigation( $loopStructure ) {
 		echo '<div class="btn-group float-left">';
@@ -917,7 +925,11 @@ class LoopTemplate extends BaseTemplate {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
 						$divider_1 = true;
-						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '">';
+						$accesskey = "";
+						if ($content_navigation_entry_key == "edit") {
+							$accesskey = 'accesskey="e"';
+						}
+						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '" '. $accesskey .'>';
 						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
 							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
 						}
