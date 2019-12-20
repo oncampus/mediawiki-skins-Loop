@@ -926,7 +926,6 @@ class LoopTemplate extends BaseTemplate {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
 						$divider_1 = true;
 						$accesskey = "";
-						#dd($content_navigation_entry_key);
 						if ($content_navigation_entry_key == "edit") {
 							$accesskey = 'accesskey="e"';
 						}
