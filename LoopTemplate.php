@@ -1426,9 +1426,6 @@ class LoopTemplate extends BaseTemplate {
 				$html .= '</div>
 				<div id="footer-center" class="text-center float-right col-xs-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
 					 '. $imprintElement .' | '. $privacyElement;
-					if ( ! empty( $this->loopSettings->oncampusLink ) ) {
-						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
-					}
 				$html .= '</div>
 				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-sm-0">';
 				if ( ! empty ( $this->loopSettings->rightsType ) ) {
