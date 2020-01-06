@@ -37,6 +37,7 @@ class SkinLoop extends SkinTemplate {
 		$out->addModuleStyles( array(
 			'skins.'.$skinStyle,
 		));
+		
 	}
 
 	/**
