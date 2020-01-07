@@ -42,7 +42,7 @@ class LoopTemplate extends BaseTemplate {
 									<div class="col-9" id="logo-wrapper">
 										<?php 
 											$customLogo = '';
-											if( $this->loopSettings->customLogo == 'useCustomLogo' && ! empty( $this->loopSettings->customLogoFilePath ) ) {
+											if( $this->loopSettings->customLogo && ! empty( $this->loopSettings->customLogoFilePath ) ) {
 												$customLogo = ' style="background-image:url('.$this->loopSettings->customLogoFilePath.');"';
 											}
 											if( isset( $loopStructure->mainPage ) ) {
@@ -1232,10 +1232,8 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 						<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
 							<div class="pb-2">';
-							
-			global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken, $wgText2Speech, $wgText2SpeechServiceUrl;
 
-			if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
+			if ( $user->isAllowed( 'loop-export-pdf' ) && LoopExportPdf::isAvailable( $this->loopSettings ) ) {
 				$pdfExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
 					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
@@ -1267,7 +1265,7 @@ class LoopTemplate extends BaseTemplate {
 				);
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
 			}
-			if ( $user->isAllowed( 'loop-export-mp3' ) && $wgText2Speech && ! empty( $wgText2SpeechServiceUrl ) ) {
+			if ( $user->isAllowed( 'loop-export-mp3' ) && LoopExportMp3::isAvailable( $this->loopSettings ) ) {
 				$mp3ExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
 					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
