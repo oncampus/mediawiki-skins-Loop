@@ -121,7 +121,7 @@ class LoopSkinHooks {
 	
 		$loopSkinStyleRequestValue = 'style-' . $request->getText( 'skin' );
 		
-		if( in_array( $loopSkinStyleRequestValue, $wgUrlSkinStyles ) ) {
+		if( in_array( $loopSkinStyleRequestValue, $wgLoopUrlSkinStyles ) ) {
 			$user->setOption( 'LoopSkinStyle', $loopSkinStyleRequestValue );
 			$user->saveSettings();
 		}
