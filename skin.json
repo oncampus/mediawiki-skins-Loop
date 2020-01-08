@@ -37,14 +37,14 @@
 			],
 			"description": "Available skin styles"
 		},
-		"EditableSkinStyles": {
+		"LoopEditableSkinStyles": {
 			"value": [ 
 				"style-blue", 
 				"style-green"
 			],
 			"description": "Styles that allow a custom logo"
 		},
-		"UrlSkinStyles": {
+		"LoopUrlSkinStyles": {
 			"value": [ 
 				"style-blue", 
 				"style-green"

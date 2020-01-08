@@ -56,9 +56,9 @@ class SkinLoop extends SkinTemplate {
 	 */
 	public function isEditable( $skinstyle ) {
 		
-		global $wgEditableSkinStyles;
+		global $wgLoopEditableSkinStyles;
 
-		if ( in_array( $skinstyle, $wgEditableSkinStyles ) ) {
+		if ( in_array( $skinstyle, $wgLoopEditableSkinStyles ) ) {
 			return true;
 		}
 		return false;

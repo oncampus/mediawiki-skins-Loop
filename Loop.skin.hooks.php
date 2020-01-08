@@ -117,7 +117,7 @@ class LoopSkinHooks {
 	 */
 	public static function onMediaWikiPerformAction( $output, $article, $title, $user, $request, $wiki ) {
 
-		global $wgUrlSkinStyles;
+		global $wgLoopUrlSkinStyles;
 	
 		$loopSkinStyleRequestValue = 'style-' . $request->getText( 'skin' );
 		
