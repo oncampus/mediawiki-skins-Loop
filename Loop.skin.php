@@ -49,4 +49,19 @@ class SkinLoop extends SkinTemplate {
 		parent::setupSkinUserCss( $out );
 	}
 
+	/**
+	 * Returns whether to allow editing of the skin logo or not
+	 *
+	 * @param String $skinstyle
+	 */
+	public function isEditable( $skinstyle ) {
+		
+		global $wgEditableSkinStyles;
+
+		if ( in_array( $skinstyle, $wgEditableSkinStyles ) ) {
+			return true;
+		}
+		return false;
+	}
+
 }
