@@ -101,4 +101,33 @@ class LoopSkinHooks {
 		return true;
 
 	}
+
+	/**
+	 * Save skin style in user settings when set in WebRequest
+	 *
+	 * This is attached to the MediaWiki 'MediaWikiPerformAction' hook.
+	 *
+	 * @param OutputPage $output
+	 * @param Article $article
+	 * @param Title $title
+	 * @param User $user
+	 * @param WebRequest $request
+	 * @param MediaWiki $wiki
+	 * @return bool true
+	 */
+	public static function onMediaWikiPerformAction( $output, $article, $title, $user, $request, $wiki ) {
+
+		global $wgUrlSkinStyles;
+	
+		$loopSkinStyleRequestValue = 'style-' . $request->getText( 'skin' );
+		
+		if( in_array( $loopSkinStyleRequestValue, $wgUrlSkinStyles ) ) {
+			$user->setOption( 'LoopSkinStyle', $loopSkinStyleRequestValue );
+			$user->saveSettings();
+		}
+	
+		return true;
+	}	
+	
+
 }
