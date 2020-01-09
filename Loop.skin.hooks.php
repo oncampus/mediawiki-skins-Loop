@@ -47,7 +47,6 @@ class LoopSkinHooks {
 
 		$looprendermode = $wgOut->getUser()->getOption( 'LoopRenderMode', false, true );
 		
-		if (strpos($target, "cite") != false) {dd($target);}
 		if ( $looprendermode == "offline" ) {
 			$loopHtml = new LoopHtml();
 

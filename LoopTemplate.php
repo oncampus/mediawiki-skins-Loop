@@ -13,8 +13,8 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgDefaultUserOptions;
-		 
+		global $wgDefaultUserOptions, $wgLegacyPageNumbering;
+		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		$this->linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
@@ -195,7 +195,8 @@ class LoopTemplate extends BaseTemplate {
 	           							<?php 
 										} // end of excluding rendermode-epub 
 										
-										global $wgLoopLegacyShowTitles;
+										global $wgLoopLegacyShowTitles, $wgLegacyPageNumbering;
+										
 										if ( $wgLoopLegacyShowTitles ) {
 											
 											if ( isset( $loopStructure->mainPage ) ) {
@@ -203,8 +204,16 @@ class LoopTemplate extends BaseTemplate {
 												$article_id = $this->title->getArticleID();
 												$lsi = LoopStructureItem::newFromIds($article_id); 
 												
+												
+
 												if ( $lsi ) {
-													$displayTitle = $lsi->tocNumber.' '.$lsi->tocText;
+													if ( $wgLegacyPageNumbering ) {
+														$pageNumber = $lsi->tocNumber;
+													} else {
+														$pageNumber = '';
+													}
+
+													$displayTitle = $pageNumber.' '.$lsi->tocText;
 												} else {
 													$displayTitle = $this->title->mTextform;
 												}
@@ -246,7 +255,7 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 						<?php if ( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
 							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $this->data['isarticle'] ) {
+							<?php if ( $this->user->isAllowed( 'review' ) && $this->editMode && $this->data['isarticle'] && $this->renderMode != "offline" ) {
 									$this->outputFlaggedRevsPanel();
 								} ?>
 								<div class="panel-wrapper">
@@ -259,7 +268,7 @@ class LoopTemplate extends BaseTemplate {
 								<?php 
 									$this->outputCustomSidebar(); 
 									
-									if ( $this->renderMode != "offline" && isset( $loopStructure->mainPage ) ) { 
+									if ( isset( $loopStructure->mainPage ) ) { 
 										$this->outputExportPanel( ); 
 									}
 								?>
@@ -319,22 +328,29 @@ class LoopTemplate extends BaseTemplate {
 		} else {
 			
 			$loggedin = false;
+			if ( isset ( $personTools ['login'] ) ) {
+				$loginType = 'login';
+			} elseif ( isset ( $personTools ['login-private'] ) ) {
+				$loginType = 'login-private';
+			} else {
+				$loginType = false;
+			}
 
 			if ( isset ( $personTools ['createaccount'] ) ) {
 				echo '<div id="usermenu"><div class="dropdown float-right mt-2">
 				<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
 				
-				if ( isset ( $personTools ['login'] ) ) {
-					echo $personTools ['login'] ['links'] [0] ['text'];
+				if ( $loginType != false ) {
+					echo $personTools [$loginType] ['links'] [0] ['text'];
 				}
 				
 				echo '</span>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 	
-				if ( isset ( $personTools ['login'] ) ) {
-					echo '<a class="dropdown-item" href="' . $personTools ['login'] ['links'] [0] ['href'] . '" alt="'.$personTools ['login'] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools ['login'] ['links'] [0] ['text'] . '</a>';
+				if ( $loginType != false ) {
+					echo '<a class="dropdown-item" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '" alt="'.$personTools [$loginType] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools [$loginType] ['links'] [0] ['text'] . '</a>';
 					echo '<div class="dropdown-divider"></div>';
 				}
 
@@ -346,19 +362,20 @@ class LoopTemplate extends BaseTemplate {
 				echo '	</div>
 					</div>
 				</div>';
-			} elseif ( isset ( $personTools ['login'] ) ) {
+			} elseif ( $loginType != false ) {
+				
 				echo '<div class="float-right mt-2">
-				<a id="login-button" href="' . $personTools ['login'] ['links'] [0] ['href'] . '">
+				<a id="login-button" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '">
 				<button class="btn btn-light btn-sm" type="button" id="user-menu-dropdown" aria-haspopup="true" aria-expanded="true">
 				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
 
-				echo $personTools ['login'] ['links'] [0] ['text'];
+				echo $personTools [$loginType] ['links'] [0] ['text'];
 				echo '</span></button></a></div>';
 				
 			}
+			
 		}
 		
-
 	}
 	private function outputNavigation( $loopStructure ) {
 		echo '<div class="btn-group float-left">';
@@ -629,7 +646,7 @@ class LoopTemplate extends BaseTemplate {
 	
 	private function outputToc( $loopStructure ) {
 			
-		global $wgDefaultUserOptions; 
+		global $wgDefaultUserOptions, $wgLegacyPageNumbering; 
 		
 		$article_id = $this->title->getArticleID();
 		$lsi = LoopStructureItem::newFromIds( $article_id );
@@ -731,7 +748,6 @@ class LoopTemplate extends BaseTemplate {
 					if( ! $rootNode ) {
 						
 						// outputs the first node (mainpage)
-						
 						$html .= '<li class="toc-main mb-1">' .
 							$this->linkRenderer->makelink(
 								$tmpTitle,
@@ -786,12 +802,18 @@ class LoopTemplate extends BaseTemplate {
 					
 					// outputs the page in a tree
 					
+					if($wgLegacyPageNumbering) {
+						$pageNumbering = '<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>';
+					} else {
+						$pageNumbering = '';
+					}
+
 					$html .= '<li'.$nodeData.'  data-toc-level="'.$tmpTocLevel.'">' . $caret .
 					
 						$this->linkRenderer->makelink(
 							$tmpTitle,
 							new HtmlArmor( 
-								'<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>
+								$pageNumbering . '
 								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' ),
 							array(
 								'class' => 'aToc ml-1',
@@ -1255,7 +1277,6 @@ class LoopTemplate extends BaseTemplate {
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-xml' )
 					) 
-				
 				);
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
 				$showPanel = true;
@@ -1267,7 +1288,6 @@ class LoopTemplate extends BaseTemplate {
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-html' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-html' )
 					) 
-				
 				);
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
 				$showPanel = true;
@@ -1279,7 +1299,6 @@ class LoopTemplate extends BaseTemplate {
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
 							"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' )
 					) 
-				
 				);
 				$html .= '<span>'.$mp3ExportLink.'</span><br/>';
 				$showPanel = true;

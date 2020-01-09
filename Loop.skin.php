@@ -27,9 +27,9 @@ class SkinLoop extends SkinTemplate {
 		 	'skins.loop-plyr'
 		));
 		$out->addModules( array(
-			'skins.loop.js',
 			'skins.loop-plyr.js',
-			'skins.loop-bootstrap.js'
+			'skins.loop-bootstrap.js',
+			'skins.loop.js'
 		));
 		
 		$skinStyle = $out->getUser()->getOption( 'LoopSkinStyle' );
