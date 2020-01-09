@@ -902,7 +902,11 @@ class LoopTemplate extends BaseTemplate {
 				foreach ($content_navigation_entries as $content_navigation_entry_key => $content_navigation_entry) {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
 						$divider_1 = true;
-						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '">';
+						$accesskey = "";
+						if ( $content_navigation_entry_key == "edit" ) {
+							$accesskey = ' accesskey="e"';
+						}
+						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '"'.$accesskey.'>';
 						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
 							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
 						}
@@ -921,7 +925,7 @@ class LoopTemplate extends BaseTemplate {
 						'LoopStructureEdit' 
 					), 
 					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ) ), 
-					array('class' => 'dropdown-item')  
+					array('class' => 'dropdown-item', 'accesskey' => 'e')  
 				);
 				
 				$divider_1 = true;
@@ -936,7 +940,7 @@ class LoopTemplate extends BaseTemplate {
 						'LoopLiteratureEdit' 
 					), 
 					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
-					array('class' => 'dropdown-item')  
+					array('class' => 'dropdown-item', 'accesskey' => 'e')  
 				);
 				echo $this->linkRenderer->makelink( 
 					new TitleValue( 
@@ -1026,7 +1030,7 @@ class LoopTemplate extends BaseTemplate {
 						'LoopTerminologyEdit' 
 					), 
 					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'loopterminologyedit' ) ), 
-					array('class' => 'dropdown-item')  
+					array('class' => 'dropdown-item', 'accesskey' => 'e')  
 				);
 				
 				$divider_1 = true;
