@@ -13,22 +13,20 @@ class LoopTemplate extends BaseTemplate {
 	
 	public function execute() {
 		
-		global $wgDefaultUserOptions, $wgOut, $wgLegacyPageNumbering;
+		global $wgDefaultUserOptions, $wgLegacyPageNumbering;
 		
 		$loopStructure = new LoopStructure();
 		$loopStructure->loadStructureItems();
 		$this->linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$this->linkRenderer->setForceArticlePath(true); #required for readable links
-		
 		$this->loopSettings = new LoopSettings();
 		$this->loopSettings->loadSettings();
 		$this->user = $this->getSkin()->getUser();
 		$this->title = $this->getSkin()->getTitle();
-
 		$this->renderMode = $this->user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->user->getOption( 'LoopEditMode', false, true );
-
-		//dd($this->title->flaggedRevsArticle);
+		$this->skinStyle = $this->user->getOption( 'LoopSkinStyle', false, true );
+	
 		$this->html( 'headelement' );
 		
 		if( $this->renderMode != "epub" ) { ?>
@@ -41,9 +39,10 @@ class LoopTemplate extends BaseTemplate {
 								<div class="row">
 									<div class="col-9" id="logo-wrapper">
 										<?php 
+										global $wgLoopCustomLogo;
 											$customLogo = '';
-											if( $this->loopSettings->customLogo == 'useCustomLogo' && ! empty( $this->loopSettings->customLogoFilePath ) ) {
-												$customLogo = ' style="background-image:url('.$this->loopSettings->customLogoFilePath.');"';
+											if( $wgLoopCustomLogo["useCustomLogo"] && ! empty( $wgLoopCustomLogo["customFilePath"] ) && $this->getSkin()->isEditable( $this->skinStyle ) ) {
+												$customLogo = ' style="background-image:url('.$wgLoopCustomLogo["customFilePath"].');"';
 											}
 											if( isset( $loopStructure->mainPage ) ) {
 												echo $this->linkRenderer->makelink(
@@ -175,7 +174,7 @@ class LoopTemplate extends BaseTemplate {
 							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pr-2 pr-sm-0 float-left" id="breadcrumb-area">
 								<?php $this->outputBreadcrumb ( $loopStructure ) ?>
 							</div>
-							<?php if( $this->renderMode != "offline" && $this->user->isAllowed('read') && $wgOut->isArticle() ) { 
+							<?php if( $this->renderMode != "offline" && $this->user->isAllowed('read') && $this->data['isarticle'] ) { 
 								            	
 								$this->outputAudioButton();
 							}?>
@@ -256,7 +255,7 @@ class LoopTemplate extends BaseTemplate {
 						</div>
 						<?php if ( $this->user->isAllowed( 'read' ) && isset( $loopStructure->mainPage ) || $this->user->isAllowed( 'loop-toc-edit' ) ) { ?>
 							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if( $this->user->isAllowed( 'review' ) && $this->editMode && $wgOut->isArticle() && $this->renderMode != "offline" ) {
+							<?php if ( $this->user->isAllowed( 'review' ) && $this->editMode && $this->data['isarticle'] && $this->renderMode != "offline" ) {
 									$this->outputFlaggedRevsPanel();
 								} ?>
 								<div class="panel-wrapper">
@@ -861,12 +860,12 @@ class LoopTemplate extends BaseTemplate {
 	}
 	
 	private function outputAudioButton( ) {
-		global $wgText2Speech, $wgText2SpeechServiceUrl;
+		
 		$article_id = $this->title->getArticleID();
 		
-		if ( $wgText2Speech && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) && ! empty( $wgText2SpeechServiceUrl ) ) {
+		if ( LoopExportPageMp3::isAvailable( $this->loopSettings ) && $this->data['isarticle'] && $article_id > 0 && $this->user->isAllowedAll( 'loop-pageaudio', 'read' ) ) {
 			
-			global $wgOut, $wgLanguageCode;
+			global $wgOut;
 
 			$mp3ExportLink = $this->linkRenderer->makelink( 
 				new TitleValue( NS_SPECIAL, 'LoopExport/pageaudio' ), 
@@ -926,10 +925,10 @@ class LoopTemplate extends BaseTemplate {
 					if (!isset($content_navigation_skip[$content_navigation_category][$content_navigation_entry_key])) {
 						$divider_1 = true;
 						$accesskey = "";
-						if ($content_navigation_entry_key == "edit") {
-							$accesskey = 'accesskey="e"';
+						if ( $content_navigation_entry_key == "edit" ) {
+							$accesskey = ' accesskey="e"';
 						}
-						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '" '. $accesskey .'>';
+						echo '<a class="dropdown-item" href="' . $content_navigation_entry ['href'] . '"'.$accesskey.'>';
 						 if (isset($content_navigation_icon[$content_navigation_category][$content_navigation_entry_key])) {
 							echo '<span class="ic ic-'.$content_navigation_icon[$content_navigation_category][$content_navigation_entry_key].'"></span>';
 						}
@@ -948,7 +947,7 @@ class LoopTemplate extends BaseTemplate {
 						'LoopStructureEdit' 
 					), 
 					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'edit' ) ), 
-					array('class' => 'dropdown-item')  
+					array('class' => 'dropdown-item', 'accesskey' => 'e')  
 				);
 				
 				$divider_1 = true;
@@ -963,7 +962,7 @@ class LoopTemplate extends BaseTemplate {
 						'LoopLiteratureEdit' 
 					), 
 					new HtmlArmor( '<span class="ic ic-book"></span> ' . $this->getSkin()->msg ( "loopliterature-label-addentry" ) ), 
-					array('class' => 'dropdown-item')  
+					array('class' => 'dropdown-item', 'accesskey' => 'e')  
 				);
 				echo $this->linkRenderer->makelink( 
 					new TitleValue( 
@@ -1053,7 +1052,7 @@ class LoopTemplate extends BaseTemplate {
 						'LoopTerminologyEdit' 
 					), 
 					new HtmlArmor( '<span class="ic ic-edit"></span> ' . $this->getSkin()->msg ( 'loopterminologyedit' ) ), 
-					array('class' => 'dropdown-item')  
+					array('class' => 'dropdown-item', 'accesskey' => 'e')  
 				);
 				
 				$divider_1 = true;
@@ -1138,11 +1137,11 @@ class LoopTemplate extends BaseTemplate {
 		}
 	} // outputPageEditMenu
 	private function outputPageSymbols () {
-		global $wgOut;
+		
 		$user = $this->user;
 		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
 		
-		if( $wgOut->isArticle() ) {
+		if( $this->data['isarticle'] ) {
 			
 			$this->pageRevisionStatus = $this->getPageRevisionStatus();
 
@@ -1250,31 +1249,28 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputExportPanel () {
 		$user = $this->getSkin()->getUser();
-		$showExport = false;
+		$showPanel = false;
+		
+		if ( $user->isAllowedAny( 'loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3' ) ) { # TODO other export formats
+			$html = '<div class="panel-wrapper">';
+			$html .=		'<div class="panel-heading">';
+			$html .=			'<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</header>';
+			$html .=		'</div>';
+			$html .=		'<div id="export-panel" class="panel-body p-1 pb-2 pl-3">';
+			$html .=			'<div class="pb-2">';
 
-		$html = '<div class="panel-wrapper">
-					<div class="panel-heading">
-						<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</header>
-					</div>
-					<div id="export-panel" class="panel-body p-1 pb-2 pl-3">
-						<div class="pb-2">';
-						
-		global $wgXmlfo2PdfServiceUrl, $wgXmlfo2PdfServiceToken, $wgText2Speech, $wgText2SpeechServiceUrl;
-
-		if ( $user->isAllowed( 'loop-export-pdf' ) && ! empty( $wgXmlfo2PdfServiceUrl ) && ! empty( $wgXmlfo2PdfServiceToken ) ) {
-			$pdfExportLink = $this->linkRenderer->makelink( 
-				new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
-				new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
-				array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
-						"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
-						"id" => "loop-pdf-download"
-				) 
-			);
-			$html .= '<span>'.$pdfExportLink.'</span><br/>';
-			$showExport = true;
-		}			
-		if ( $this->renderMode != "offline" ) {
-			if ( $user->isAllowed( 'loop-export-xml' )) {
+			if ( $user->isAllowed( 'loop-export-pdf' ) && LoopExportPdf::isAvailable( $this->loopSettings ) ) {
+				$pdfExportLink = $this->linkRenderer->makelink( 
+					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
+					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
+					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' )
+					) 
+				);
+				$html .= '<span>'.$pdfExportLink.'</span><br/>';
+				$showPanel = true;
+			}			
+			if ( $user->isAllowed( 'loop-export-xml' ) && LoopExportXml::isAvailable( $this->loopSettings ) ) {
 				$xmlExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
 					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) ), 
@@ -1283,9 +1279,9 @@ class LoopTemplate extends BaseTemplate {
 					) 
 				);
 				$html .= '<span>'.$xmlExportLink.'</span><br/>';
-				$showExport = true;
+				$showPanel = true;
 			}	
-			if ( $user->isAllowed( 'loop-export-html' )) {
+			if ( $user->isAllowed( 'loop-export-html' ) && LoopExportHtml::isAvailable( $this->loopSettings ) ) {
 				$htmlExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/html' ), 
 					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-html' ) ), 
@@ -1294,9 +1290,9 @@ class LoopTemplate extends BaseTemplate {
 					) 
 				);
 				$html .= '<span>'.$htmlExportLink.'</span><br/>';
-				$showExport = true;
+				$showPanel = true;
 			}
-			if ( $user->isAllowed( 'loop-export-mp3' ) && $wgText2Speech && ! empty( $wgText2SpeechServiceUrl ) ) {
+			if ( $user->isAllowed( 'loop-export-mp3' ) && LoopExportMp3::isAvailable( $this->loopSettings ) ) {
 				$mp3ExportLink = $this->linkRenderer->makelink( 
 					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
 					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
@@ -1305,26 +1301,25 @@ class LoopTemplate extends BaseTemplate {
 					) 
 				);
 				$html .= '<span>'.$mp3ExportLink.'</span><br/>';
-				$showExport = true;
+				$showPanel = true;
 			}
 			
-		}
-		
-		$html.= '</div></div></div>';
+			$html .= '</div></div></div>';
 			
-		if ( $showExport ) {
-			echo $html;
+			if ( $showPanel ) {
+				echo $html;
+			}
 		}
 	}
 	public function outputCustomSidebar() {
-		global $wgParserConf, $wgParserOptions;
+		global $wgParserConf, $wgParserOptions, $wgLoopExtraSidebar;
 		$html = "";
 		$matches = array();
 		$parserOptions = ParserOptions::newFromUser( $this->user );
 		$parser = new Parser( );
 		$parser->Options( $wgParserOptions );
 
-		if ( $this->loopSettings->extraSidebar == "useExtraSidebar" ) {
+		if ( $wgLoopExtraSidebar ) {
 			$tmpTitle = Title::newFromText( 'NO TITLE' );
 			$parserOutput = $parser->parse( "{{MediaWiki:ExtraSidebar}}", $tmpTitle, new ParserOptions() );
 			$html .= '<div class="panel-wrapper custom-panel">';
@@ -1390,12 +1385,13 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputFooter ( ) {
 		
-		global $wgRightsText, $wgRightsIcon, $wgRightsUrl;
+		global $wgRightsText, $wgRightsIcon, $wgRightsUrl, $wgLoopExtraFooter, $wgLoopImprintLink, $wgLoopPrivacyLink, 
+		$wgLoopRightsType, $wgLoopSocialIcons;
 		
 		$html = ""; 
 		$html .= '<div class="container-fluid pl-0 pr-0" id="footer">';
 		
-		if ( $this->loopSettings->extraFooter == "useExtraFooter" ) {
+		if ( $wgLoopExtraFooter ) {
 			$html .= '<div class="col-12 text-center" id="extra-footer">
 					<div id="extra-footer-content" class="p-3">';
 			
@@ -1409,67 +1405,64 @@ class LoopTemplate extends BaseTemplate {
 			$html .=  '</div></div>';
 		}
 
-		$html .= '<div class="row mr-0 ml-0" id="main-footer">
-				<div class="container p-0">
-					<div id="footer-right" class="pl-0 pr-sm-2 pr-md-3 float-sm-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-0"><p class="text-center text-sm-right">';
+		$html .= '<div class="row mr-0 ml-0" id="main-footer">';
+		$html .= '<div class="container p-0">';
+		$html .= '<div id="footer-right" class="pl-0 pr-sm-2 pr-md-3 float-sm-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-0"><p class="text-center text-sm-right">';
 					
-					$socialIcons = array( 
-						'Facebook' => array( 'icon' => $this->loopSettings->facebookIcon, 'link' => $this->loopSettings->facebookLink ),
-						'Twitter' => array( 'icon' => $this->loopSettings->twitterIcon, 'link' => $this->loopSettings->twitterLink ),
-						'Youtube' => array( 'icon' => $this->loopSettings->youtubeIcon, 'link' => $this->loopSettings->youtubeLink ),
-						'Github' => array( 'icon' => $this->loopSettings->githubIcon, 'link' => $this->loopSettings->githubLink ), 
-						'Instagram' => array( 'icon' => $this->loopSettings->instagramIcon, 'link' => $this->loopSettings->instagramLink )
-					);
-				foreach( $socialIcons as $socialIcon ) {
+			$socialIcons = array( 
+				'Facebook' => array( 'icon' => $wgLoopSocialIcons['Facebook']['icon'], 'link' => $wgLoopSocialIcons['Facebook']['link'] ),
+				'Twitter' => array( 'icon' => $wgLoopSocialIcons['Twitter']['icon'], 'link' => $wgLoopSocialIcons['Twitter']['link'] ),
+				'Youtube' => array( 'icon' => $wgLoopSocialIcons['Youtube']['icon'], 'link' => $wgLoopSocialIcons['Youtube']['link'] ),
+				'Github' => array( 'icon' => $wgLoopSocialIcons['Github']['icon'], 'link' => $wgLoopSocialIcons['Github']['link'] ), 
+				'Instagram' => array( 'icon' => $wgLoopSocialIcons['Instagram']['icon'], 'link' => $wgLoopSocialIcons['Instagram']['link'] )
+			);
+			foreach( $socialIcons as $socialIcon ) {
 
-					if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'link' ] ) ) {
-						$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
-					}
+				if ( ! empty( $socialIcon[ 'icon' ] ) && ! empty( $socialIcon[ 'link' ] ) ) {
+					$html .= '<a class="ml-1" href="'. $socialIcon[ 'link' ] .'" target="_blank"><span class="ic ic-social-'. strtolower( $socialIcon[ 'icon' ] ) .'"></span></a>';
 				}
-				$html .= '</p>';
-				if ( filter_var( htmlspecialchars_decode( $this->loopSettings->imprintLink ), FILTER_VALIDATE_URL ) ) {
-					$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $this->loopSettings->imprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
-				} else {
-					$title = Title::newFromText( $this->loopSettings->imprintLink );
-					
-					if ( ! empty ($title->mTextform) ) {
-						$imprintElement = $this->linkRenderer->makeLink(
-							$title,
-							new HtmlArmor( $this->getSkin()->msg( 'imprint' ) ),
-							array( "id" => "imprintlink")
-						);
-					}
-				}
+			}
+			$html .= '</p>';
+			if ( filter_var( htmlspecialchars_decode( $wgLoopImprintLink ), FILTER_VALIDATE_URL ) ) {
+				$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $wgLoopImprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
+			} else {
+				$title = Title::newFromText( $wgLoopImprintLink );
 				
-				if ( filter_var( htmlspecialchars_decode( $this->loopSettings->privacyLink ), FILTER_VALIDATE_URL ) ) {
-					$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $this->loopSettings->privacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
-				} else {
-					$title = Title::newFromText( $this->loopSettings->privacyLink );
-					
-					if ( ! empty ($title->mTextform) ) {
-						$privacyElement = $this->linkRenderer->makeLink(
-							$title,
-							new HtmlArmor( $this->getSkin()->msg( 'privacy' ) ),
-							array( "id" => "privacylink")
-						);
-					}
+				if ( ! empty ($title->mTextform) ) {
+					$imprintElement = $this->linkRenderer->makeLink(
+						$title,
+						new HtmlArmor( $this->getSkin()->msg( 'imprint' ) ),
+						array( "id" => "imprintlink")
+					);
 				}
+			}
+			
+			if ( filter_var( htmlspecialchars_decode( $wgLoopPrivacyLink ), FILTER_VALIDATE_URL ) ) {
+				$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $wgLoopPrivacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
+			} else {
+				$title = Title::newFromText( $wgLoopPrivacyLink );
+				
+				if ( ! empty ($title->mTextform) ) {
+					$privacyElement = $this->linkRenderer->makeLink(
+						$title,
+						new HtmlArmor( $this->getSkin()->msg( 'privacy' ) ),
+						array( "id" => "privacylink")
+					);
+				}
+			}
+			$html .= '</div>';
 
-				$html .= '</div>
-				<div id="footer-center" class="text-center float-right col-xs-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">
-					 '. $imprintElement .' | '. $privacyElement;
-					if ( ! empty( $this->loopSettings->oncampusLink ) ) {
-						$html .= ' | <a target="_blank" href="https://www.oncampus.de">oncampus</a>';
-					}
-				$html .= '</div>
-				<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-sm-0">';
-				if ( ! empty ( $this->loopSettings->rightsType ) ) {
-					$html .= "<p id='rightsText' class='m-0 pb-2 text-xs-center ml-0 ml-sm-2 ml-md-3 mb-3 mb-sm-0'>";
-					$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 text-xs-center">' . $wgRightsIcon . '</a>' . htmlspecialchars_decode( $wgRightsText ) . '</p>';
-				} else {
-					$html .= "<p id='rightsText' class='m-0 pb-2 text-xs-center ml-0 ml-sm-2 ml-md-3 mb-3 mb-sm-0'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>';
-				}
-				$html .= '</div></div></div></div>';
+			$html .= '<div id="footer-center" class="text-center float-right col-xs-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">';
+			$html .= $imprintElement .' | '. $privacyElement;
+			$html .= '</div>';
+			$html .= '<div id="footer-left" class="p-0 text-center text-sm-left float-right col-12 col-sm-3 col-md-4 col-lg-3 pt-4 pb-sm-0">';
+			if ( ! empty ( $wgLoopRightsType ) ) {
+				$html .= "<p id='rightsText' class='m-0 pb-2 text-xs-center ml-0 ml-sm-2 ml-md-3 mb-3 mb-sm-0'>";
+				$html .=  '<a target="_blank" rel="license" href="' . htmlspecialchars_decode( $wgRightsUrl ) . '" class="cc-icon mr-2 text-xs-center">' . $wgRightsIcon . '</a>' . htmlspecialchars_decode( $wgRightsText ) . '</p>';
+			} else {
+				$html .= "<p id='rightsText' class='m-0 pb-2 text-xs-center ml-0 ml-sm-2 ml-md-3 mb-3 mb-sm-0'>" . htmlspecialchars_decode( $wgRightsText )  . '</p>';
+			}
+			$html .= '</div></div></div></div>';
 		
 		echo $html;
 	}

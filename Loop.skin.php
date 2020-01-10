@@ -37,6 +37,7 @@ class SkinLoop extends SkinTemplate {
 		$out->addModuleStyles( array(
 			'skins.'.$skinStyle,
 		));
+		
 	}
 
 	/**
@@ -46,6 +47,21 @@ class SkinLoop extends SkinTemplate {
 	 */
 	function setupSkinUserCss( OutputPage $out ) {
 		parent::setupSkinUserCss( $out );
+	}
+
+	/**
+	 * Returns whether to allow editing of the skin logo or not
+	 *
+	 * @param String $skinstyle
+	 */
+	public function isEditable( $skinstyle ) {
+		
+		global $wgLoopEditableSkinStyles;
+
+		if ( in_array( $skinstyle, $wgLoopEditableSkinStyles ) ) {
+			return true;
+		}
+		return false;
 	}
 
 }

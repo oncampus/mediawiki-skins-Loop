@@ -31,12 +31,29 @@
 			"description" : "Defines type of render mode. [ default | offline ]"
 		},
 		"LoopSkinStyles": {
-			"value": [ "loop-common", "loop-oncampus" ],
-			"description": "Sets skin style"
+			"value": [ 
+				"style-blue", 
+				"style-green"
+			],
+			"description": "Available skin styles"
+		},
+		"LoopEditableSkinStyles": {
+			"value": [ 
+				"style-blue", 
+				"style-green"
+			],
+			"description": "Styles that allow a custom logo"
+		},
+		"LoopUrlSkinStyles": {
+			"value": [ 
+				"style-blue", 
+				"style-green"
+			],
+			"description": "Styles that are allowed to be set from URL"
 		}
 	},
     "DefaultUserOptions": {
-		"LoopSkinStyle": "loop-common"
+		"LoopSkinStyle": "style-blue"
 	},
 	"Hooks": {
 		"SkinEditSectionLinks": [
@@ -44,19 +61,19 @@
 		],
 		"HtmlPageLinkRendererEnd":[
 			"LoopSkinHooks::onHtmlPageLinkRendererEnd"
+		],
+		"MediaWikiPerformAction": [
+			"LoopSkinHooks::onMediaWikiPerformAction"
 		]
 	},
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
-			"position": "top",
 			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
 		},	
 		"skins.loop-icons": {
-			"position": "top",
 			"styles": "resources/loopicons/style.css"
 		},
 		"skins.loop-plyr": {
-			"position": "top",
 			"styles": "node_modules/plyr/dist/plyr.css"
 		},
 		"skins.loop.js": {
@@ -94,20 +111,26 @@
 					"node_modules/plyr/dist/plyr.min.js"
 				]
 		},
-		"skins.loop-common": {
+		"skins.style-blue": {
 			"class": "ResourceLoaderSkinModule",
-			"position": "top",
 			"styles": {
-				"resources/styles/less/skins/loop-common/loop-common.less": {
+				"resources/styles/less/skins/common/loop-blue/loop-blue.less": {
 					"media": "all"
 				}
 			}
 		},
-		"skins.loop-oncampus": {
+		"skins.style-green": {
 			"class": "ResourceLoaderSkinModule",
-			"position": "top",
 			"styles": {
-				"resources/styles/less/skins/loop-oncampus/loop-oncampus.less": {
+				"resources/styles/less/skins/common/loop-green/loop-green.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-oncampus": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-oncampus/loop-oncampus.less": {
 					"media": "all"
 				}
 			}
