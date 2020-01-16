@@ -37,6 +37,10 @@
 			],
 			"description": "Available skin styles"
 		},
+		"LoopAvailableStyles": {
+			"value": [ ],
+			"description": "Skin styles available in LoopSettings"
+		},
 		"LoopEditableSkinStyles": {
 			"value": [ 
 				"style-blue", 
@@ -45,10 +49,7 @@
 			"description": "Styles that allow a custom logo"
 		},
 		"LoopUrlSkinStyles": {
-			"value": [ 
-				"style-blue", 
-				"style-green"
-			],
+			"value": [ ],
 			"description": "Styles that are allowed to be set from URL"
 		}
 	},

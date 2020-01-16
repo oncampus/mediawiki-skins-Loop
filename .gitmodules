@@ -1,0 +1,3 @@
+[submodule "resources/styles/less/skins/custom"]
+	path = resources/styles/less/skins/custom
+	url = https://github.com/oncampus/mediawiki-skins-loop-customstyles.git
