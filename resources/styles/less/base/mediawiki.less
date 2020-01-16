@@ -75,8 +75,16 @@ code {
 	text-decoration: none;
 }
 
-#content-inner-wrapper .mw-content-ltr ul, .mw-content-rtl .mw-content-ltr ul {
+#content-inner-wrapper ul /*, .mw-content-rtl .mw-content-ltr ul*/ {
 	margin: 0 0 1rem 1rem;
+}
+
+#content-inner-wrapper ol ul,
+#content-inner-wrapper ol dl,
+#content-inner-wrapper ol dl dd,
+#content-inner-wrapper ol ol {
+	margin-bottom: 0;
+	margin-top: 0;
 }
 
 /* #mw-content-text :last-child > * {
