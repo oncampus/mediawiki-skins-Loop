@@ -1220,7 +1220,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showTerminology ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopterminology" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopTerminology" ),
 					new HtmlArmor( $this->getSkin()->msg( "loopterminology" )->text() ),
 				    array("class"=>"aToc", "id" => "LoopTerminology")
 				) . '</li>';
@@ -1229,7 +1229,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showLiterature ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopliterature" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopLiterature" ),
 					new HtmlArmor( $this->getSkin()->msg( "loopliterature" )->text() ),
 				    array("class"=>"aToc", "id" => "LoopLiterature")
 				) . '</li>';
@@ -1238,7 +1238,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showGlossary ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopGlossary" ),
 					new HtmlArmor( $this->getSkin()->msg( "loop-glossary-namespace" ) ),
 				    array("class"=>"aToc", "id" => "LoopGlossary")
 				) . '</li>';
@@ -1247,7 +1247,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showIndex ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopindex" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopIndex" ),
 					new HtmlArmor( $this->getSkin()->msg( "loopindex" )->text() ),
 				    array("class"=>"aToc", "id" => "LoopIndex")
 				) . '</li>';
