@@ -1141,10 +1141,10 @@ class LoopTemplate extends BaseTemplate {
 		
 		$user = $this->user;
 		$html = '<div class="col-6 float-left p-0 pt-1 pb-2">';
-		if ( $this->user->isLoggedIn() && LoopTicket::isAvailable() != false && $this->renderMode != "offline" ) {
+		if ( $this->user->isLoggedIn() && LoopBugReport::isAvailable() != false && $this->renderMode != "offline" ) {
 			$html .= $this->linkRenderer->makeLink(
-				Title::newFromText( "Special:LoopTicket" ),
-				new HtmlArmor( $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				Title::newFromText( "Special:LoopBugReport" ),
+				new HtmlArmor( "Betatest " . $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array( "url" => urlencode( $_SERVER['SCRIPT_URL'] ), "page" => $this->title->mTextform )
 			);
