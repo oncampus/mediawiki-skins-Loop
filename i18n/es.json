@@ -1,0 +1,45 @@
+{
+	"@metadata": {
+		"authors": [
+            "Francisco Tahhan"
+            
+		]
+	},
+	"loop-skinname": "Diseño del LOOP",
+	"loopskin-desc": "Diseño de la plataforma en linea de objetos de aprendizaje",
+	"loopstructure-default-newpage-content": "Esta es una página nueva.",
+	"loop-navigation-label-home": "Página principal",
+	"loop-navigation-label-previous-chapter": "Capítulo anterior",
+	"loop-navigation-label-previous-page": "Página anterior",
+	"loop-navigation-label-toc": "Índice de contenidos",
+	"loop-navigation-label-next-page": "Página siguiente",
+	"loop-navigation-label-next-chapter": "Capítulo siguiente",
+	"full-text-search": "Búsqueda",
+	"loop-toc-headline": "Contenido",
+	"loop-export-headline": "Exportar",
+	"loop-offlinemode-preview": "Vista previa en modo offline",
+	"loop-epubmode-preview": "Previsualización ePub",
+	"loop-editmode-toogle-on": "Activar el modo de edición",
+	"loop-editmode-toogle-off": "Desactivar el modo de edición",
+	"loop-purge-cache": "Borrar caché",
+	"loop-page-icons-jumptotop": "Ir a inicio",
+	"loop-page-icons-reportbug": "Informe de errores",
+	"loop-page-edit-menu": "Ver menú lateral",
+	"loop-toggle-sidebar": "Ver barra lateral",
+	"loop-toggle-usermenu": "Ver menú de usuario",
+	"loop-audiobutton": "Activar leído de página",
+	"imprint": "Impronta",
+	"privacy-policy": "Política de protección de datos",
+	"loop-skin-style-blue": "Azul",
+	"loop-skin-style-green": "Verde",
+	"loop-skin-style-thl": "Logotipo Technische Hochschule Lübeck",
+	"loop-skin-style-oncampus": "Logotipo oncampus",
+	"loop-no-mainpage-warning": "Por favor, cree un índice de contenidos.",
+	"loop-audio-unavailable": "Esta función no se encuentra actualmente disponible.",
+	"loop-fr-panel-title": "Estado de la página",
+	"loop-fr-stable": "Versión aprobada de esta página.",
+	"loop-fr-olderthanlateststable": "Existe una nueva versión aprobada para esta página.",
+	"loop-fr-newerthanlateststable": "Esta página contiene cambios que no han sido aprovados.",
+	"loop-fr-neverstabilized": "Esta página no ha sido aprovada.",
+	"loop-fr-pendingchanges": "Existen cambios pendientes para esta página."
+}
