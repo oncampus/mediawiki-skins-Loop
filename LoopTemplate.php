@@ -244,7 +244,9 @@ class LoopTemplate extends BaseTemplate {
 										<?php $this->html( 'bodytext' ); 
 										if( $this->renderMode != "epub" ) {?>
 									</div>
+									<div class="col-12 col-lg-11 pl-0 pr-0 float-right">
 									<?php $this->outputPageSymbols(); ?>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -1138,7 +1140,18 @@ class LoopTemplate extends BaseTemplate {
 	private function outputPageSymbols () {
 		
 		$user = $this->user;
-		$html = '<div class="col-12 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
+		$html = '<div class="col-6 float-left p-0 pt-1 pb-2">';
+		if ( $this->user->isLoggedIn() && LoopBugReport::isAvailable() != false && $this->renderMode != "offline" ) {
+			$html .= $this->linkRenderer->makeLink(
+				Title::newFromText( "Special:LoopBugReport" ),
+				new HtmlArmor( "Betatest " . $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				array( "url" => urlencode( $_SERVER['SCRIPT_URL'] ), "page" => $this->title->mTextform )
+			);
+		}
+		$html .= '</div>';
+
+		$html .= '<div class="col-6 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
 		
 		if( $this->data['isarticle'] ) {
 			
@@ -1166,10 +1179,11 @@ class LoopTemplate extends BaseTemplate {
 			}
 
 			if( $this->renderMode != "offline" ) { 
-				$html .= '<span class="page-symbol align-middle ic ic-bug pr-1" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
+			#	$html .= '<span class="page-symbol align-middle ic ic-bug pr-1" id="page-bug" title="'.$this->getSkin()->msg( 'loop-page-icons-reportbug' ) .'"></span>';
 			} 
-			
-			$html .= '<span class="page-symbol align-middle ic ic-info pr-0" id="page-info" title="' . $this->data['lastmod']. '"></span>';
+			if ( !empty ( $this->data['lastmod'] ) ) {
+				$html .= '<span class="page-symbol align-middle ic ic-info pr-0" id="page-info" title="' . $this->data['lastmod'] . '"></span>';
+			}
 
 		}
 		$html .= '	<button class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'" aria-label="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></button>
@@ -1206,7 +1220,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showTerminology ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopterminology" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopTerminology" ),
 					new HtmlArmor( $this->getSkin()->msg( "loopterminology" )->text() ),
 				    array("class"=>"aToc", "id" => "LoopTerminology")
 				) . '</li>';
@@ -1215,7 +1229,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showLiterature ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopliterature" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopLiterature" ),
 					new HtmlArmor( $this->getSkin()->msg( "loopliterature" )->text() ),
 				    array("class"=>"aToc", "id" => "LoopLiterature")
 				) . '</li>';
@@ -1224,7 +1238,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showGlossary ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loop-glossary-namespace" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopGlossary" ),
 					new HtmlArmor( $this->getSkin()->msg( "loop-glossary-namespace" ) ),
 				    array("class"=>"aToc", "id" => "LoopGlossary")
 				) . '</li>';
@@ -1233,7 +1247,7 @@ class LoopTemplate extends BaseTemplate {
 			if ( $showIndex ) {
 				$outputSpecialPages = true;
 				$html .= '<li class="toc-nocaret"><div class="toc-node toc-nocaret"></div> ' .$this->linkRenderer->makeLink(
-					new TitleValue( NS_SPECIAL, $this->getSkin()->msg( "loopindex" )->text() ),
+					new TitleValue( NS_SPECIAL, "LoopIndex" ),
 					new HtmlArmor( $this->getSkin()->msg( "loopindex" )->text() ),
 				    array("class"=>"aToc", "id" => "LoopIndex")
 				) . '</li>';
