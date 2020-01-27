@@ -1,24 +1,29 @@
 .loopfeedback-bar-stars {
     width: 110px;
-    font-weight: bold;
 }
 .loopfeedback-bar .progress {
     width: 130px;
 }
-.lf_rating_wrapper > label {
+.lf-rating-wrapper > label {
     color: @feedback-star-idle;
 }
-.lf_rating_wrapper.rated > label {
+.lf-rating-wrapper.rated > label {
     color: @feedback-star-active;;
 }
-.lf_rating_wrapper input:checked ~ label {
+.lf-rating-wrapper input:checked ~ label {
     color: @feedback-star-idle;
 }
-.lf_rating_wrapper input:hover ~ label, .lf_rating_wrapper input:hover ~ label ~ label {
+.lf-rating-wrapper input:hover ~ label, .lf-rating-wrapper input:hover ~ label ~ label {
     color: @feedback-star-idle !important;
 }
-.lf_rating_wrapper:hover label {
+.lf-rating-wrapper:hover label {
     color: @feedback-star-hover !important;
+}
+.lf-colour-idle {
+    color: @feedback-star-idle;
+}
+.lf-colour-active {
+    color: @feedback-star-active;
 }
 #lf_comment {
     font-size: smaller;
@@ -30,6 +35,6 @@
     font-size: 1.3rem;
     margin-right: 2px;
 }
-.lf_rating_wrapper {
+.lf-rating-wrapper {
     width: 115px;
 }
