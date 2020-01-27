@@ -266,6 +266,7 @@ class LoopTemplate extends BaseTemplate {
 									} ?>
 								</div>
 								<?php 
+									$this->outputFeedbackSidebar(); 
 									$this->outputCustomSidebar(); 
 									
 									if ( isset( $loopStructure->mainPage ) ) { 
@@ -1310,6 +1311,25 @@ class LoopTemplate extends BaseTemplate {
 			}
 		}
 	}
+	
+	public function outputFeedbackSidebar() {
+
+		$html = "";
+		if ( LoopFeedback::getShowFeedback() ) {
+			
+			$html .= '<div class="panel-wrapper custom-panel">';
+			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">'.$this->getSkin()->msg ( 'loopfeedback-sidebar-headertext').'</header></div>';
+			$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+
+			$html .= LoopFeedback::renderFeedbackBox( $this->title, $this->user );
+
+			$html .= '</div>';
+			$html .= '</div>';	
+
+		}
+		echo $html;
+	}
+
 	public function outputCustomSidebar() {
 		global $wgParserConf, $wgParserOptions, $wgLoopExtraSidebar;
 		$html = "";

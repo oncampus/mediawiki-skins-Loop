@@ -1,10 +1,35 @@
-.loopfeedback-star {
-    opacity: 1;
-    display: inline-block;
+.loopfeedback-bar-stars {
+    width: 110px;
+    font-weight: bold;
 }
-.loopfeedback-star:before {
-    content: @ic-star;
-    font-family: 'loopfont' !important;
-    opacity: 1;
-    vertical-align: top;
+.loopfeedback-bar .progress {
+    width: 130px;
+}
+.lf_rating_wrapper > label {
+    color: @feedback-star-idle;
+}
+.lf_rating_wrapper.rated > label {
+    color: @feedback-star-active;;
+}
+.lf_rating_wrapper input:checked ~ label {
+    color: @feedback-star-idle;
+}
+.lf_rating_wrapper input:hover ~ label, .lf_rating_wrapper input:hover ~ label ~ label {
+    color: @feedback-star-idle !important;
+}
+.lf_rating_wrapper:hover label {
+    color: @feedback-star-hover !important;
+}
+#lf_comment {
+    font-size: smaller;
+    line-height: 1rem;
+    height: 4rem;
+    overflow-y: hidden;
+}
+.loopfeedback-star {
+    font-size: 1.3rem;
+    margin-right: 2px;
+}
+.lf_rating_wrapper {
+    width: 115px;
 }
