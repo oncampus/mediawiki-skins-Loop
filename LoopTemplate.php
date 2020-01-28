@@ -1142,12 +1142,22 @@ class LoopTemplate extends BaseTemplate {
 		
 		$user = $this->user;
 		$html = '<div class="col-6 float-left p-0 pt-1 pb-2">';
+		
+		if ( array_key_exists( 'SCRIPT_URL', $_SERVER ) ) {
+			$url = $_SERVER['SCRIPT_URL'];
+		} elseif ( array_key_exists( 'REQUEST_URL', $_SERVER ) ) {
+			global $wgCanonicalServer;
+			$url = $wgCanonicalServer . $_SERVER['REQUEST_URL'];
+		} else {
+			global $wgCanonicalServer;
+			$url = $wgCanonicalServer;
+		}
 		if ( $this->user->isLoggedIn() && LoopBugReport::isAvailable() != false && $this->renderMode != "offline" ) {
 			$html .= $this->linkRenderer->makeLink(
 				Title::newFromText( "Special:LoopBugReport" ),
 				new HtmlArmor( "Betatest " . $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
-				array( "url" => urlencode( $_SERVER['SCRIPT_URL'] ), "page" => $this->title->mTextform )
+				array( "url" => urlencode( $url ), "page" => $this->title->mTextform )
 			);
 		}
 		$html .= '</div>';
