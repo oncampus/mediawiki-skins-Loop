@@ -891,7 +891,7 @@ class LoopTemplate extends BaseTemplate {
 	}
 	private function outputPageEditMenu( ) {
 		
-		global $wgDefaultUserOptions;
+		global $wgDefaultUserOptions, $wgLoopFeedbackLevel;
 		
 		$user = $this->user;
 		
@@ -1126,12 +1126,17 @@ class LoopTemplate extends BaseTemplate {
 					array('class' => 'dropdown-item') );
 		}
 		
+		if ( $user->isAllowed( "loopfeedback-view-results" ) && $wgLoopFeedbackLevel != "none" ) {
+			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'LoopFeedback' ), new HtmlArmor( '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'loopfeedback' ) ),
+					array('class' => 'dropdown-item') );
+		}
+
 		if ( $user->isAllowed( "purgecache" ) ) {
 			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'PurgeCache' ), new HtmlArmor( '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ) ),
 					array('class' => 'dropdown-item') );
 		}
 		
-		echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'Specialpages' ), new HtmlArmor( '<span class="ic ic-star"></span> ' . $this->getSkin()->msg ( 'specialpages' ) ),
+		echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'Specialpages' ), new HtmlArmor( '<span class="ic ic-sidebar-menu"></span> ' . $this->getSkin()->msg ( 'specialpages' ) ),
 				array('class' => 'dropdown-item') );
 		
 		echo '</div></div>';
@@ -1345,7 +1350,7 @@ class LoopTemplate extends BaseTemplate {
 			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">'.$this->getSkin()->msg ( 'loopfeedback-sidebar-headertext').'</header></div>';
 			$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
 
-			$html .= LoopFeedback::renderFeedbackBox( $this->title, $this->user );
+			$html .= LoopFeedback::renderFeedbackBox();
 
 			$html .= '</div>';
 			$html .= '</div>';	
