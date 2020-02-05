@@ -300,6 +300,7 @@ class LoopTemplate extends BaseTemplate {
 				$userName = $user->getName ();
 			}
 			$loggedin = true;
+			$divide = false;
 			
 			echo '<div id="usermenu" class="">
 				<div class="dropdown float-right mt-2">
@@ -314,14 +315,16 @@ class LoopTemplate extends BaseTemplate {
 
 			if ( isset ( $personTools ['watchlist'] ) ) {
 				echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '" alt="'.$personTools ['watchlist'] ['links'] [0] ['text'].'"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
+				$divide = true;
 			}
 
 			if ( isset ( $personTools ['preferences'] ) && ! in_array( "shared", $user->getGroups() ) ) {
 				echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '" alt="'.$personTools ['preferences'] ['links'] [0] ['text'].'"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
+				$divide = true;
 			}
 
 			if ( isset ( $personTools ['logout'] )) {
-				echo '<div class="dropdown-divider"></div>';
+				echo $divide ? '<div class="dropdown-divider"></div>' : "";
 				echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
 			}
 			echo '	</div>
