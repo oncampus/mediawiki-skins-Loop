@@ -137,24 +137,21 @@ class LoopSkinHooks {
 		$loopStructure->loadStructureItems();
 
 		$currentId = $out->getTitle()->getArticleID();
-
-		foreach ( $loopStructure->structureItems as $lsItem ) {
-			if( $lsItem->article == $currentId ) {
-				if( $lsItem->previousArticle != '0' ) {
-					$link = $linkRenderer->makeLink( Title::newFromId( $lsItem->previousArticle ) );
-					$xml = simplexml_load_string( $link );
-					$list = $xml->xpath( "//@href" );
-					$prevArticle = parse_url( $list[0])['path'];
-					$out->addJsConfigVars( 'jsSwipePrev', $prevArticle );
-				}
-				if( $lsItem->nextArticle != '0') {
-					$link = $linkRenderer->makeLink( Title::newFromId( $lsItem->nextArticle ) );
-					$xml = simplexml_load_string( $link );
-					$list = $xml->xpath( "//@href" );
-					$nextArticle = parse_url( $list[0] )['path'];
-					$out->addJsConfigVars( 'jsSwipeNext', $nextArticle );
-				}
-			}
+		$lsItem = LoopStructureItem::newFromIds( $currentId );
+		
+		if( $lsItem->previousArticle != '0' ) {
+			$link = $linkRenderer->makeLink( Title::newFromId( $lsItem->previousArticle ) );
+			$xml = simplexml_load_string( $link );
+			$list = $xml->xpath( "//@href" );
+			$prevArticle = parse_url( $list[0])['path'];
+			$out->addJsConfigVars( 'jsSwipePrev', $prevArticle );
+		}
+		if( $lsItem->nextArticle != '0') {
+			$link = $linkRenderer->makeLink( Title::newFromId( $lsItem->nextArticle ) );
+			$xml = simplexml_load_string( $link );
+			$list = $xml->xpath( "//@href" );
+			$nextArticle = parse_url( $list[0] )['path'];
+			$out->addJsConfigVars( 'jsSwipeNext', $nextArticle );
 		}
 	}
 }
