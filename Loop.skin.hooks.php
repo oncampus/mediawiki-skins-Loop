@@ -133,9 +133,6 @@ class LoopSkinHooks {
 	
 	public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		$loopStructure = new LoopStructure();
-		$loopStructure->loadStructureItems();
-
 		$currentId = $out->getTitle()->getArticleID();
 		$lsItem = LoopStructureItem::newFromIds( $currentId );
 		
