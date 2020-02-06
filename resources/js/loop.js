@@ -172,4 +172,45 @@ $( document ).ready( function () {
 
 		$('.' + zoom_id + '-modal .modal-content').append(html);
 	});
+
+	/* Swipe Functionality - Adapted code, original by Philipp Guttmann */
+	var SwipeArea = document.querySelector("body");
+	var SwipeWidth = ((window.innerWidth)/2);
+	var SwipeWidthMax = 320;
+		
+	if (SwipeWidth > SwipeWidthMax) {
+		SwipeWidth = SwipeWidthMax;
+	}
+
+	var SwipeStartX = null;
+	var SwipeEndX = null;
+	var SwipeLengthX = null;
+		
+	var SwipeStartY = null;
+	var SwipeEndY = null;
+	var SwipeLengthY = null;
+
+	SwipeArea.addEventListener("touchstart", SwipeStart, false);
+	SwipeArea.addEventListener("touchend", SwipeEnd, false);
+
+	function SwipeStart(evt) {                                         
+		SwipeStartX = evt.changedTouches[0].clientX;
+		SwipeStartY = evt.changedTouches[0].clientY;
+	};
+
+	function SwipeEnd(evt) {
+		SwipeEndX = evt.changedTouches[0].clientX;
+		SwipeEndY = evt.changedTouches[0].clientY;
+		SwipeLengthX = SwipeStartX - SwipeEndX;
+		SwipeLengthY = SwipeStartY - SwipeEndY;
+			
+		if (Math.abs(SwipeLengthX) > Math.abs(SwipeLengthY)) {
+			if (SwipeLengthX > SwipeWidth && mw.config.exists( 'jsSwipeNext' )) {
+				window.location.href = mw.config.get('jsSwipeNext');
+			}
+			else if (SwipeLengthX < -SwipeWidth && mw.config.exists( 'jsSwipePrev' )) {
+				window.location.href = mw.config.get('jsSwipePrev');
+			}
+		}
+	};
 });

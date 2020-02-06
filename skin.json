@@ -65,7 +65,8 @@
 		],
 		"MediaWikiPerformAction": [
 			"LoopSkinHooks::onMediaWikiPerformAction"
-		]
+		],
+		"BeforePageDisplay": "LoopSkinHooks::onBeforePageDisplay"
 	},
 	"ResourceModules": {
 		"skins.loop-bootstrap": {

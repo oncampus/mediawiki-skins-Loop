@@ -1,4 +1,7 @@
 <?php 
+
+use MediaWiki\MediaWikiServices;
+
 class LoopSkinHooks {
 	
 	/**
@@ -128,5 +131,26 @@ class LoopSkinHooks {
 		return true;
 	}	
 	
-
+	public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$currentId = $out->getTitle()->getArticleID();
+		$lsItem = LoopStructureItem::newFromIds( $currentId );
+		
+		if(is_object($lsItem)) {
+			if( $lsItem->previousArticle !== '0' ) {
+				$link = $linkRenderer->makeLink( Title::newFromId( $lsItem->previousArticle ) );
+				$xml = simplexml_load_string( $link );
+				$list = $xml->xpath( "//@href" );
+				$prevArticle = parse_url( $list[0])['path'];
+				$out->addJsConfigVars( 'jsSwipePrev', $prevArticle );
+			}
+			if( $lsItem->nextArticle !== '0') {
+				$link = $linkRenderer->makeLink( Title::newFromId( $lsItem->nextArticle ) );
+				$xml = simplexml_load_string( $link );
+				$list = $xml->xpath( "//@href" );
+				$nextArticle = parse_url( $list[0] )['path'];
+				$out->addJsConfigVars( 'jsSwipeNext', $nextArticle );
+			}
+		}
+	}
 }

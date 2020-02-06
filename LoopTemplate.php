@@ -10,7 +10,7 @@ class LoopTemplate extends BaseTemplate {
 	/**
 	 * Outputs the entire contents of the page
 	 */
-	
+
 	public function execute() {
 		
 		global $wgDefaultUserOptions, $wgLoopLegacyPageNumbering;
@@ -26,6 +26,7 @@ class LoopTemplate extends BaseTemplate {
 		$this->renderMode = $this->user->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		$this->editMode = $this->user->getOption( 'LoopEditMode', false, true );
 		$this->skinStyle = $this->user->getOption( 'LoopSkinStyle', false, true );
+		
 	
 		$this->html( 'headelement' );
 		
@@ -1637,11 +1638,10 @@ class LoopTemplate extends BaseTemplate {
 					$html = str_replace("&nbsp;", "", $html);
 				}
 			}
-			
-			$html .= '</div></div>';
 
+			$html .= '</div></div>';
 			echo $html;
 		}
 	}
-
+	
 }
