@@ -90,6 +90,12 @@
 					"loop-audio-unavailable"
 			]
 		},
+		"skins.featherlight.js": {
+			"position": "bottom",
+			"scripts": [
+					"resources/js/featherlight.min.js"
+				]
+		},
 		"skins.loop-resizer.js": {
 			"position": "bottom",
 			"scripts": [
@@ -101,7 +107,7 @@
 			"scripts": [
 					"resources/js/h5presizer.js"
 				]
-		},	
+		},
 		"skins.loop-bootstrap.js": {
 			"position": "bottom",
 			"scripts": [
