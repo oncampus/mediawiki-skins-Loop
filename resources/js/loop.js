@@ -217,7 +217,7 @@ $( document ).ready( function () {
 	/* Featherlight */
 
 	$( '.responsive-image' ).each(function( index ) {
-		if( $( this ).attr( 'width' ) >= 750 ) { // if slightly bigger than #page-content (~ 736px)
+		if( $( this ).attr( 'width' ) >= 750 ) { // if slightly larger than #page-content (~ 736px)
 			let url = $( this ).attr( 'src' );
 		
 			$( this ).wrap( '<a href="' + url + '"></a>' );
