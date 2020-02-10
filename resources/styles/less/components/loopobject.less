@@ -7,6 +7,12 @@
     padding-bottom: 10px;
 }
 
+@media (max-width: 576px) {
+	.loop_object {
+		width: 100%;
+	}
+}
+
 .loop_object_content>p {
 	margin: 0px;
 }
@@ -23,10 +29,9 @@
 	margin: 0 1rem 1rem 0;
 }
 
-@media (max-width: 576px) {
-	.loop_object {
-		width: 100%;
-	}
+.loop_object.tright .loop_object_footer,
+.loop_object.tleft .loop_object_footer {
+	display: inline-block;
 }
 
 .loop_object_content .float-left, .loop_object_content .float-right {
