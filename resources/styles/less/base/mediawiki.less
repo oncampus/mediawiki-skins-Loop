@@ -38,6 +38,7 @@ pre {
     padding-left: 2px;
     padding-right: 2px;
 }
+
 .mw-highlight pre {
 	margin-bottom: 0;
 }
@@ -79,9 +80,32 @@ code {
 	margin: 0 0 1rem 1rem;
 }
 
+p img {
+	margin-top: 1rem; //adding some space if img is embedded in p
+}
+
 /* #mw-content-text :last-child > * {
 	 margin-bottom: 0 !important;
 } */
+
+// .thumb {
+// 	margin-bottom: 1rem;
+// }
+
+// right align
+.thumb.tright .thumbinner {
+	margin-left: 1rem
+}
+
+// left align
+.thumb.tleft .thumbinner {
+	margin-right: 1rem
+}
+
+// center align
+.center .thumb .thumbinner {
+	margin: 0 auto;
+}
 
 /** *** *** *** *** *** *** *** *** *** *** **/
 /** MEDIAWIKI-UI and OO-UI INPUT CHANGES **/
