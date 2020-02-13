@@ -15,12 +15,18 @@
 	margin-bottom:5px;
 }
 
-.loop_object.float-left {
-	margin-right:10px;
+.loop_object.tright {
+	margin: 0 0 1rem 1rem;
 }
 
-.loop_object.float-right {
-	margin-left:10px;
+.loop_object.tleft {
+	margin: 0 1rem 1rem 0;
+}
+
+@media (max-width: 576px) {
+	.loop_object {
+		width: 100%;
+	}
 }
 
 .loop_object_content .float-left, .loop_object_content .float-right {
