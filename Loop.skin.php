@@ -24,6 +24,7 @@ class SkinLoop extends SkinTemplate {
 		$out->addModuleStyles( array(
 			'skins.loop-icons',
 			'skins.loop-bootstrap',
+			'skins.featherlight',
 		 	'skins.loop-plyr'
 		));
 		$out->addModules( array(

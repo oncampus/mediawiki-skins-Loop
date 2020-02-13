@@ -75,6 +75,9 @@
 		"skins.loop-icons": {
 			"styles": "resources/loopicons/style.css"
 		},
+		"skins.featherlight": {
+			"styles": "node_modules/featherlight/release/featherlight.min.css"
+		},
 		"skins.loop-plyr": {
 			"styles": "node_modules/plyr/dist/plyr.css"
 		},
