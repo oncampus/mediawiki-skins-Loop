@@ -93,7 +93,7 @@
 		"skins.featherlight.js": {
 			"position": "bottom",
 			"scripts": [
-					"resources/js/featherlight.min.js"
+					"node_modules/featherlight/release/featherlight.min.js"
 				]
 		},
 		"skins.loop-resizer.js": {
