@@ -65,7 +65,8 @@
 		],
 		"MediaWikiPerformAction": [
 			"LoopSkinHooks::onMediaWikiPerformAction"
-		]
+		],
+		"BeforePageDisplay": "LoopSkinHooks::onBeforePageDisplay"
 	},
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
@@ -73,6 +74,9 @@
 		},	
 		"skins.loop-icons": {
 			"styles": "resources/loopicons/style.css"
+		},
+		"skins.featherlight": {
+			"styles": "node_modules/featherlight/release/featherlight.min.css"
 		},
 		"skins.loop-plyr": {
 			"styles": "node_modules/plyr/dist/plyr.css"
@@ -89,6 +93,12 @@
 					"loop-audio-unavailable"
 			]
 		},
+		"skins.featherlight.js": {
+			"position": "bottom",
+			"scripts": [
+					"node_modules/featherlight/release/featherlight.min.js"
+				]
+		},
 		"skins.loop-resizer.js": {
 			"position": "bottom",
 			"scripts": [
@@ -100,7 +110,7 @@
 			"scripts": [
 					"resources/js/h5presizer.js"
 				]
-		},	
+		},
 		"skins.loop-bootstrap.js": {
 			"position": "bottom",
 			"scripts": [
