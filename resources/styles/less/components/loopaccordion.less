@@ -1,0 +1,35 @@
+
+.accordion-row input { 
+    position: absolute;
+	opacity: 0;
+    z-index: -1;
+}
+.accordion-row label { 
+    position: relative;
+	background-color: @components-background;
+	line-height: 22px;
+	border: 1px solid @border-color;
+    border-bottom: none !important;
+}
+.accordion-content { 
+    max-height: 0;
+    overflow: hidden;
+	transition: max-height .35s;
+	border: 1px solid @border-color;
+	border-top: 0;
+    border-bottom: 1px solid @border-color;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.accordion-row input:checked ~ .accordion-content { 
+    max-height: 100em;
+}
+.accordion-row input[type=checkbox] + label::before { 
+    content: "\23F5";
+    padding-right: 10px;
+}
+.accordion-row input[type=checkbox]:checked + label::before { 
+    content: "\23F7";
+    padding-right: 10px;
+}

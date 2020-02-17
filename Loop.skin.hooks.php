@@ -25,7 +25,7 @@ class LoopSkinHooks {
 		$looprendermode = $skin->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 		
 		if ( $loopeditmode && $looprendermode == "default" ) {
-			$result[ 'editsection' ][ 'text' ] = '<span class="ic ic-edit"></span>';
+			$result[ 'editsection' ][ 'text' ] = new HtmlArmor('<span class="ic ic-edit"></span>');
 		} else {
 			$result[ 'editsection' ][ 'text' ] = '';
 		}

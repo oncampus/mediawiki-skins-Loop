@@ -296,86 +296,91 @@ class LoopTemplate extends BaseTemplate {
 		
 		$user = $this->user;
 		
-		if( $user->isLoggedIn ()) {
-			if ( ! $userName = $user->getRealName ()) {
-				$userName = $user->getName ();
-			}
-			$loggedin = true;
-			
-			echo '<div id="usermenu" class="">
-				<div class="dropdown float-right mt-2">
-					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" aria-label="' . $this->getSkin()->msg("loop-toggle-usermenu") . '">
-						<span class="ic ic-personal-urls float-left pr-1 pt-1"></span><span class="d-none d-sm-block float-left">' . $userName . '</span>
-					</button>
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
-			
-			#if ( isset ( $personTools ['userpage'] ) ) {
-			#	echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '" alt="'.$personTools ['userpage'] ['links'] [0] ['text'].'"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
-			#}
-
-			if ( isset ( $personTools ['watchlist'] ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '" alt="'.$personTools ['watchlist'] ['links'] [0] ['text'].'"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
-			}
-
-			if ( isset ( $personTools ['preferences'] ) && ! in_array( "shared", $user->getGroups() ) ) {
-				echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '" alt="'.$personTools ['preferences'] ['links'] [0] ['text'].'"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
-			}
-
-			if ( isset ( $personTools ['logout'] )) {
-				echo '<div class="dropdown-divider"></div>';
-				echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
-			}
-			echo '	</div>
-				</div>
-			</div>';
-			
-		} else {
-			
-			$loggedin = false;
-			if ( isset ( $personTools ['login'] ) ) {
-				$loginType = 'login';
-			} elseif ( isset ( $personTools ['login-private'] ) ) {
-				$loginType = 'login-private';
-			} else {
-				$loginType = false;
-			}
-
-			if ( isset ( $personTools ['createaccount'] ) ) {
-				echo '<div id="usermenu"><div class="dropdown float-right mt-2">
-				<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
+		if( !in_array( "shared", $user->getGroups() )) {
+			if( $user->isLoggedIn () ) {
+				if ( ! $userName = $user->getRealName ()) {
+					$userName = $user->getName ();
+				}
+				$loggedin = true;
+				$divide = false;
 				
-				if ( $loginType != false ) {
-					echo $personTools [$loginType] ['links'] [0] ['text'];
-				}
+				echo '<div id="usermenu" class="">
+					<div class="dropdown float-right mt-2">
+						<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" aria-label="' . $this->getSkin()->msg("loop-toggle-usermenu") . '">
+							<span class="ic ic-personal-urls float-left pr-1 pt-1"></span><span class="d-none d-sm-block float-left">' . $userName . '</span>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 				
-				echo '</span>
-				</button>
-				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
-	
-				if ( $loginType != false ) {
-					echo '<a class="dropdown-item" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '" alt="'.$personTools [$loginType] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools [$loginType] ['links'] [0] ['text'] . '</a>';
-					echo '<div class="dropdown-divider"></div>';
+				#if ( isset ( $personTools ['userpage'] ) ) {
+				#	echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '" alt="'.$personTools ['userpage'] ['links'] [0] ['text'].'"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
+				#}
+
+				if ( isset ( $personTools ['watchlist'] ) ) {
+					echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '" alt="'.$personTools ['watchlist'] ['links'] [0] ['text'].'"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
+					$divide = true;
 				}
 
-				if ( isset ( $personTools ['createaccount'] ) ) {
-					echo '<a class="dropdown-item" href="' . $personTools ['createaccount'] ['links'] [0] ['href'] . '" alt="'.$personTools ['createaccount'] ['links'] [0] ['text'].'"><span class="ic ic-createaccount pr-1"></span>  ' . $personTools ['createaccount'] ['links'] [0] ['text'] . '</a>';
-
+				if ( isset ( $personTools ['preferences'] ) && ! in_array( "shared", $user->getGroups() ) ) {
+					echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '" alt="'.$personTools ['preferences'] ['links'] [0] ['text'].'"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
+					$divide = true;
 				}
-	
+
+				if ( isset ( $personTools ['logout'] )) {
+					echo $divide ? '<div class="dropdown-divider"></div>' : "";
+					echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
+				}
 				echo '	</div>
 					</div>
 				</div>';
-			} elseif ( $loginType != false ) {
 				
-				echo '<div class="float-right mt-2">
-				<a id="login-button" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '">
-				<button class="btn btn-light btn-sm" type="button" id="user-menu-dropdown" aria-haspopup="true" aria-expanded="true">
-				<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
+			} else {
+				
+				$loggedin = false;
+				if ( isset ( $personTools ['login'] ) ) {
+					$loginType = 'login';
+				} elseif ( isset ( $personTools ['login-private'] ) ) {
+					$loginType = 'login-private';
+				} else {
+					$loginType = false;
+				}
 
-				echo $personTools [$loginType] ['links'] [0] ['text'];
-				echo '</span></button></a></div>';
-				
+				if ( isset ( $personTools ['createaccount'] ) ) {
+					echo '<div id="usermenu"><div class="dropdown float-right mt-2">
+					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
+					
+					if ( $loginType != false ) {
+						echo $personTools [$loginType] ['links'] [0] ['text'];
+					}
+					
+					echo '</span>
+					</button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
+		
+					if ( $loginType != false ) {
+						echo '<a class="dropdown-item" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '" alt="'.$personTools [$loginType] ['links'] [0] ['text'].'"><span class="ic ic-login pr-1"></span>  ' . $personTools [$loginType] ['links'] [0] ['text'] . '</a>';
+						echo '<div class="dropdown-divider"></div>';
+					}
+
+					if ( isset ( $personTools ['createaccount'] ) ) {
+						echo '<a class="dropdown-item" href="' . $personTools ['createaccount'] ['links'] [0] ['href'] . '" alt="'.$personTools ['createaccount'] ['links'] [0] ['text'].'"><span class="ic ic-createaccount pr-1"></span>  ' . $personTools ['createaccount'] ['links'] [0] ['text'] . '</a>';
+
+					}
+		
+					echo '	</div>
+						</div>
+					</div>';
+				} elseif ( $loginType != false ) {
+					
+					echo '<div class="float-right mt-2">
+					<a id="login-button" href="' . $personTools [$loginType] ['links'] [0] ['href'] . '">
+					<button class="btn btn-light btn-sm" type="button" id="user-menu-dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
+
+					echo $personTools [$loginType] ['links'] [0] ['text'];
+					echo '</span></button></a></div>';
+					
+				}
 			}
 			
 		}
