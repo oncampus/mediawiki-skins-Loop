@@ -80,6 +80,30 @@ code {
 	margin: 0 0 1rem 1rem;
 }
 
+.thumb.tright .thumbinner {
+	margin: 0 0 1rem 1rem;
+}
+
+.thumb.tleft .thumbinner {
+	margin: 0 1rem 1rem 0;
+}
+
+.thumb.tnone .thumbinner {
+	margin: 0 0 1rem 0;
+}
+
+.center .thumb.tnone .thumbinner {
+	margin: 0 auto;
+	margin-bottom: 1rem;
+}
+
+@media (max-width: 576px) {
+	.thumb.tleft .thumbinner,
+	.thumb.tright .thumbinner {
+		margin: 0 0 1rem 0;
+	}
+}
+
 /* #mw-content-text :last-child > * {
 	 margin-bottom: 0 !important;
 } */
