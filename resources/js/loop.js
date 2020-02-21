@@ -225,4 +225,21 @@ $( document ).ready( function () {
 		}
 	});
 
+	// $('.embedvideo').each(function( index ) {
+	// 	let iframe = $('iframe', this);
+	// 	let sanitized = iframe.attr('src').replace('youtube', 'youtube-nocookie');
+
+	// 	iframe.attr('src', sanitized);
+	// });
+
+	$('.loop_consent_agree').click(function() {
+		if(!document.cookie.match(/^(.*;)?\s*loopYtConsent\s*=\s*[^;]+(.*)?$/)) {
+			let date = new Date();
+			date.setTime(date.getTime() + ( 24 * 60 * 60 * 1000 * 365 ));
+			document.cookie = 'loopYtConsent=true; expires=' + date.toUTCString() + '; path=/';
+			location.reload();
+			//window.location = window.location.href + '?action=purge';
+		}
+	});
+
 });
