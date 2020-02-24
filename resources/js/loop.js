@@ -225,13 +225,6 @@ $( document ).ready( function () {
 		}
 	});
 
-	// $('.embedvideo').each(function( index ) {
-	// 	let iframe = $('iframe', this);
-	// 	let sanitized = iframe.attr('src').replace('youtube', 'youtube-nocookie');
-
-	// 	iframe.attr('src', sanitized);
-	// });
-
 	$('.loop_consent_agree').click(function() {
 		if(!document.cookie.match(/^(.*;)?\s*loopYtConsent\s*=\s*[^;]+(.*)?$/)) {
 			let date = new Date();
@@ -240,6 +233,23 @@ $( document ).ready( function () {
 			location.reload();
 			//window.location = window.location.href + '?action=purge';
 		}
+	});
+
+	function calcAspectRatio() {
+		$('.loop_consent').each(function() {
+			let width = $( this ).width();
+			
+			$( this ).height(Math.round((width/16)*9));
+			let height = $( this ).height();
+		});
+	}
+
+	$('.loop_consent').each(function() {
+		calcAspectRatio();
+	});
+
+	$( window ).resize(function() {
+		calcAspectRatio();
 	});
 
 });
