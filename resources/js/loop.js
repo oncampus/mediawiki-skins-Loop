@@ -226,10 +226,10 @@ $( document ).ready( function () {
 	});
 
 	$('.loop_consent_agree').click(function() {
-		if(!document.cookie.match(/^(.*;)?\s*loopYtConsent\s*=\s*[^;]+(.*)?$/)) {
+		if(!document.cookie.match(/^(.*;)?\s*LoopYtConsent\s*=\s*[^;]+(.*)?$/)) {
 			let date = new Date();
 			date.setTime(date.getTime() + ( 24 * 60 * 60 * 1000 * 365 ));
-			document.cookie = 'loopYtConsent=true; expires=' + date.toUTCString() + '; path=/';
+			document.cookie = 'LoopYtConsent=true; expires=' + date.toUTCString() + '; path=/';
 			location.reload();
 			//window.location = window.location.href + '?action=purge';
 		}
