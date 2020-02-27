@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/oncampus/mediawiki-skins-Loop#readme",
   "dependencies": {
-    "plyr": "^3.5.2"
+    "plyr": "^3.5.2",
+    "featherlight": "1.7.13"
   }
 }
