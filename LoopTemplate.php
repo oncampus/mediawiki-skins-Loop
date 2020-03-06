@@ -328,6 +328,19 @@ class LoopTemplate extends BaseTemplate {
 				if ( isset ( $personTools ['logout'] )) {
 					echo $divide ? '<div class="dropdown-divider"></div>' : "";
 					echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
+				} else {
+					global $wgRequest;
+					$sessionProvider = $wgRequest->getSession()->getProvider();
+					if ( get_class( $sessionProvider ) == "LoopSessionProvider" ) {
+						echo $divide ? '<div class="dropdown-divider"></div>' : "";
+						echo $this->linkRenderer->makelink(
+							new TitleValue( NS_SPECIAL, 'LoopLogout' ),
+							new HtmlArmor( '<span class="ic ic-logout pr-1"></span>' . $this->getSkin()->msg( 'logout' ) ." (Session)" ),
+							array('class' => 'dropdown-item',
+								'title' => $this->getSkin()->msg( 'logout' ),
+								'alt' => $this->getSkin()->msg( 'lgout' ) )
+							);
+					}
 				}
 				echo '	</div>
 					</div>
