@@ -1312,7 +1312,8 @@ class LoopTemplate extends BaseTemplate {
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
 					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
-							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' )
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf'),
+							"id" => "loop-pdf-download" 
 					) 
 				);
 				$html .= '<span>'.$pdfExportLink.'</span><br/>';
@@ -1346,7 +1347,8 @@ class LoopTemplate extends BaseTemplate {
 						new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
 						new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
 						array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
-								"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' )
+								"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
+								"id" => "loop-mp3-download" 
 						) 
 					);
 					$html .= '<span>'.$mp3ExportLink.'</span><br/>';
