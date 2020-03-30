@@ -38,7 +38,10 @@
 			"description": "Available skin styles"
 		},
 		"LoopAvailableSkinStyles": {
-			"value": [ ],
+			"value": [ 
+				"style-blue", 
+				"style-green"
+			],
 			"description": "Skin styles available in LoopSettings"
 		},
 		"LoopEditableSkinStyles": {
