@@ -37,7 +37,7 @@
 			],
 			"description": "Available skin styles"
 		},
-		"LoopAvailableStyles": {
+		"LoopAvailableSkinStyles": {
 			"value": [ ],
 			"description": "Skin styles available in LoopSettings"
 		},
@@ -142,6 +142,22 @@
 			"class": "ResourceLoaderSkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-oncampus/loop-oncampus.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-vfh": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-vfh/loop-vfh.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-thl": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-thl/loop-thl.less": {
 					"media": "all"
 				}
 			}
