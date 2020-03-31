@@ -91,13 +91,14 @@ class LoopSkinHooks {
 				if ( $attribs['id'] == "imprintlink" || $attribs['id'] == "privacylink" ) { 
 					$attribs["class"] = $attribs["class"] . "local-link";
 				} 
-			} else {
-				# Add id to loop_reference links
-				if ( isset( $attribs["data-target"])) {
-					$attribs["href"] .= "#". $attribs["data-target"];
-				}
-			}
+			} 
 		}
+		
+		# Add id to loop_reference links
+		if ( isset( $attribs["data-target"])) {
+			$attribs["href"] .= "#". $attribs["data-target"];
+		}
+
 		return true;
 
 	}
