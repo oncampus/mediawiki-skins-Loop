@@ -32,11 +32,9 @@ body {
 }
 
 pre {
-    background-color: #f8f9fa;
-    border: 1px solid #eaecf0;
-    border-radius: 2px;
     padding-left: 2px;
     padding-right: 2px;
+	margin-bottom: 0.5rem;
 }
 .mw-highlight pre {
 	margin-bottom: 0;
@@ -47,19 +45,18 @@ pre {
 }
 
 code {
-    background-color: #f8f9fa;
-    border: 1px solid #eaecf0;
-    border-radius: 2px;
     padding-left: 2px;
 	padding-right: 2px;
 	color: inherit;
 	display: grid;
 	white-space: pre;
 	overflow-x: auto;
+	margin-bottom: 0.5rem;
 }
 
 .mw-highlight {
 	display: grid;
+	margin-bottom: 0.5rem;
 }
 
 .mw-editsection-bracket, editsection {
@@ -78,6 +75,40 @@ code {
 
 #content-inner-wrapper .mw-content-ltr ul, .mw-content-rtl .mw-content-ltr ul {
 	margin: 0 0 1rem 1rem;
+}
+
+.thumb.tright .thumbinner {
+	margin: 0 0 1rem 1rem;
+}
+
+.thumb.tleft .thumbinner {
+	margin: 0 1rem 1rem 0;
+}
+
+.thumb.tnone .thumbinner {
+	margin: 0 0 1rem 0;
+}
+
+.center .thumb.tnone .thumbinner {
+	margin: 0 auto;
+	margin-bottom: 1rem;
+}
+
+@media (max-width: 576px) {
+	.thumb.tleft .thumbinner,
+	.thumb.tright .thumbinner {
+		margin: 0 0 1rem 0;
+	}
+}
+
+.warningbox p {
+	margin-bottom: 0;
+}
+
+// frame
+
+.framed {
+	border: 1px solid lighten( @bluegray, 20%);
 }
 
 /* #mw-content-text :last-child > * {

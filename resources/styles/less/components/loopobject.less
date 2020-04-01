@@ -12,28 +12,25 @@
 }
 
 .loop_object_content {
-	margin-bottom:5px;
+	//margin-bottom:5px;
+	display: inline-block;
 }
 
-.loop_object.tright {
-	margin: 0 0 1rem 1rem;
+.loop_object.float-right {
+	margin-left: 1rem;
 }
 
-.loop_object.tleft {
-	margin: 0 1rem 1rem 0;
+.loop_object.float-left {
+	margin-right: 1rem;
 }
 
-@media (max-width: 576px) {
-	.loop_object {
-		width: 100%;
-	}
-}
-
-.loop_object_content .float-left, .loop_object_content .float-right {
+.loop_object_content .float-left,
+.loop_object_content .float-right {
 	float:none;
 }
 
-.loop_object_name, .loop_object_number, .loop_object_title_seperator {
+.loop_object_name, .loop_object_number,
+.loop_object_title_seperator {
 	font-weight:bold;
 }
 
@@ -72,4 +69,18 @@
 
 .looparea-task .loop_task .loop_object_footer .loop_object_icon {
 	display: none;
-} 
+}
+
+@media (max-width: 576px) {
+
+	.loop_object {
+		width: 100%;
+		float: none;
+		display: grid;
+	}
+
+	.loop_object .thumb  {
+		float: left;
+	}
+
+}

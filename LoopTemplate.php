@@ -328,6 +328,19 @@ class LoopTemplate extends BaseTemplate {
 				if ( isset ( $personTools ['logout'] )) {
 					echo $divide ? '<div class="dropdown-divider"></div>' : "";
 					echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
+				} else {
+					global $wgRequest;
+					$sessionProvider = $wgRequest->getSession()->getProvider();
+					if ( get_class( $sessionProvider ) == "LoopSessionProvider" ) {
+						echo $divide ? '<div class="dropdown-divider"></div>' : "";
+						echo $this->linkRenderer->makelink(
+							new TitleValue( NS_SPECIAL, 'LoopLogout' ),
+							new HtmlArmor( '<span class="ic ic-logout pr-1"></span>' . $this->getSkin()->msg( 'logout' ) ." (Session)" ),
+							array('class' => 'dropdown-item',
+								'title' => $this->getSkin()->msg( 'logout' ),
+								'alt' => $this->getSkin()->msg( 'lgout' ) )
+							);
+					}
 				}
 				echo '	</div>
 					</div>
@@ -1477,33 +1490,19 @@ class LoopTemplate extends BaseTemplate {
 				}
 			}
 			$html .= '</p>';
-			if ( filter_var( htmlspecialchars_decode( $wgLoopImprintLink ), FILTER_VALIDATE_URL ) ) {
-				$imprintElement = '<a id="imprintlink" href="'. htmlspecialchars_decode( $wgLoopImprintLink ) .'">' . $this->getSkin()->msg( 'imprint' ) . '</a>';
-			} else {
-				$title = Title::newFromText( $wgLoopImprintLink );
-				
-				if ( ! empty ($title->mTextform) ) {
-					$imprintElement = $this->linkRenderer->makeLink(
-						$title,
-						new HtmlArmor( $this->getSkin()->msg( 'imprint' ) ),
-						array( "id" => "imprintlink")
-					);
-				}
-			}
 			
-			if ( filter_var( htmlspecialchars_decode( $wgLoopPrivacyLink ), FILTER_VALIDATE_URL ) ) {
-				$privacyElement = '<a id="privacylink" href="'. htmlspecialchars_decode( $wgLoopPrivacyLink ) .'">' . $this->getSkin()->msg( 'privacy' ) . '</a>';
-			} else {
-				$title = Title::newFromText( $wgLoopPrivacyLink );
-				
-				if ( ! empty ($title->mTextform) ) {
-					$privacyElement = $this->linkRenderer->makeLink(
-						$title,
-						new HtmlArmor( $this->getSkin()->msg( 'privacy' ) ),
-						array( "id" => "privacylink")
-					);
-				}
-			}
+			$imprintElement = $this->linkRenderer->makeLink(
+				new TitleValue( NS_SPECIAL, 'LoopImprint' ),
+				new HtmlArmor( $this->getSkin()->msg( 'imprint' ) ),
+				array( "id" => "imprintlink")
+			);
+			
+			$privacyElement = $this->linkRenderer->makeLink(
+				new TitleValue( NS_SPECIAL, 'LoopPrivacy' ),
+				new HtmlArmor( $this->getSkin()->msg( 'privacy' ) ),
+				array( "id" => "privacylink")
+			);
+
 			$html .= '</div>';
 
 			$html .= '<div id="footer-center" class="text-center float-right col-xs-12 col-sm-6 col-md-4 col-lg-6  pl-1 pr-1 pt-2 pt-sm-4">';
