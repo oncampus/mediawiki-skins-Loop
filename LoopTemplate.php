@@ -1179,7 +1179,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $this->user->isLoggedIn() && LoopBugReport::isAvailable() != false && $this->renderMode != "offline" ) {
 			$html .= $this->linkRenderer->makeLink(
 				Title::newFromText( "Special:LoopBugReport" ),
-				new HtmlArmor( "Betatest " . $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				new HtmlArmor( $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array( "url" => urlencode( $url ), "page" => $this->title->mTextform )
 			);
