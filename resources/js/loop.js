@@ -237,10 +237,8 @@ $( document ).ready( function () {
 
 	function calcAspectRatio() {
 		$('.loop_consent').each(function() {
-			let width = $( this ).width();
-			
+			let width = $( this ).width();			
 			$( this ).height(Math.round((width/16)*9));
-			let height = $( this ).height();
 		});
 	}
 
