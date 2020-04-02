@@ -61,43 +61,42 @@ class LoopSkinHooks {
 					$attribs['href'] = $newHref;
 					$attribs["class"] = $attribs["class"] . " local-link";
 
-				} elseif ( isset ($attribs['id'] ) ) { # privacy and imprint links
-					if ( $attribs['id'] == "imprintlink" || $attribs['id'] == "privacylink" ) { 
-						$newHref = $loopHtml->resolveUrl( $target->mUrlform, '.html');
-						$attribs['href'] = $newHref;
-						$attribs["class"] = $attribs["class"] . " local-link";
-					}
-				} elseif( $target->getNamespace() == NS_GLOSSARY ) { # pages in glossary
-				    $newHref = $loopHtml->resolveUrl( $target->prefixedText, '.html');
-				    $attribs['href'] = $newHref;
-				    $attribs["class"] = $attribs["class"] . " local-link";
+				}  elseif( $target->getNamespace() == NS_GLOSSARY ) { # pages in glossary
+					$newHref = $loopHtml->resolveUrl( $target->prefixedText, '.html');
+					$attribs['href'] = $newHref;
+					$attribs["class"] = $attribs["class"] . " local-link";
 				} else { # internal pages that are not in structure
 					$attribs['href'] = $wgCanonicalServer . $attribs['href'];
 				}
 
 			} elseif ( isset ($attribs['id']) && $attribs['id'] == "toc-button" ) { # TOC button link
-			    $newHref = wfMessage( "loopstructure" )->text(). '.html'; 
+				$newHref = wfMessage( "loopstructure" )->text(). '.html'; 
 				$attribs['href'] = $newHref;
 				$attribs["class"] = $attribs["class"] . " local-link";
 			} elseif ( !empty ( $attribs["class"] ) ) {
-			    $newHref = '#';
-			    if ( strpos( "aToc", $attribs["class"] ) !== false ) { # toc sidebar links
-			        $pageTitle = $attribs["id"];
-			        $newHref = wfMessage( strtolower($pageTitle) )->text() . '.html';
-			    } elseif ( strpos( "literature-link", $attribs["class"] ) !== false ) { # literature links in content
-			        $newHref =  wfMessage( "loopliterature" )->text() . '.html';
-			        if ( isset( $attribs["data-target"])) {
-			            $newHref .= "#". $attribs["data-target"];
-			        }
-			    }
-			    $attribs['href'] = $newHref;
-			    $attribs["class"] .= " local-link";
+				$newHref = '#';
+				if ( strpos( "aToc", $attribs["class"] ) !== false ) { # toc sidebar links
+					$pageTitle = $attribs["id"];
+					$newHref = wfMessage( strtolower($pageTitle) )->text() . '.html';
+				} elseif ( strpos( "literature-link", $attribs["class"] ) !== false ) { # literature links in content
+					$newHref =  wfMessage( "loopliterature" )->text() . '.html';
+					if ( isset( $attribs["data-target"])) {
+						$newHref .= "#". $attribs["data-target"];
+					}
+				}
+				$attribs['href'] = $newHref;
+				$attribs["class"] .= " local-link";
 			}
-		} else {
-		    # Add id to loop_reference links
-		    if ( isset( $attribs["data-target"])) {
-		        $attribs["href"] .= "#". $attribs["data-target"];
-		    }
+			if ( isset ($attribs['id'] ) ) {
+				if ( $attribs['id'] == "imprintlink" || $attribs['id'] == "privacylink" ) { 
+					$attribs["class"] = $attribs["class"] . "local-link";
+				} 
+			} 
+		}
+		
+		# Add id to loop_reference links
+		if ( isset( $attribs["data-target"])) {
+			$attribs["href"] .= "#". $attribs["data-target"];
 		}
 
 		return true;

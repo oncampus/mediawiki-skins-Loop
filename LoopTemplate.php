@@ -1179,7 +1179,7 @@ class LoopTemplate extends BaseTemplate {
 		if ( $this->user->isLoggedIn() && LoopBugReport::isAvailable() != false && $this->renderMode != "offline" ) {
 			$html .= $this->linkRenderer->makeLink(
 				Title::newFromText( "Special:LoopBugReport" ),
-				new HtmlArmor( "Betatest " . $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				new HtmlArmor( $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array( "url" => urlencode( $url ), "page" => $this->title->mTextform )
 			);
@@ -1312,44 +1312,48 @@ class LoopTemplate extends BaseTemplate {
 					new TitleValue( NS_SPECIAL, 'LoopExport/pdf' ), 
 					new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'export-linktext-pdf' ) ), 
 					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-pdf' ),
-							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf' )
+							"aria-label" => $this->getSkin()->msg ( 'export-linktext-pdf'),
+							"id" => "loop-pdf-download" 
 					) 
 				);
 				$html .= '<span>'.$pdfExportLink.'</span><br/>';
 				$showPanel = true;
-			}			
-			if ( $user->isAllowed( 'loop-export-xml' ) && LoopExportXml::isAvailable( $this->loopSettings ) ) {
-				$xmlExportLink = $this->linkRenderer->makelink( 
-					new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
-					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) ), 
-					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
-							"aria-label" => $this->getSkin()->msg ( 'export-linktext-xml' )
-					) 
-				);
-				$html .= '<span>'.$xmlExportLink.'</span><br/>';
-				$showPanel = true;
-			}	
-			if ( $user->isAllowed( 'loop-export-html' ) && LoopExportHtml::isAvailable( $this->loopSettings ) ) {
-				$htmlExportLink = $this->linkRenderer->makelink( 
-					new TitleValue( NS_SPECIAL, 'LoopExport/html' ), 
-					new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-html' ) ), 
-					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-html' ),
-							"aria-label" => $this->getSkin()->msg ( 'export-linktext-html' )
-					) 
-				);
-				$html .= '<span>'.$htmlExportLink.'</span><br/>';
-				$showPanel = true;
 			}
-			if ( $user->isAllowed( 'loop-export-mp3' ) && LoopExportMp3::isAvailable( $this->loopSettings ) ) {
-				$mp3ExportLink = $this->linkRenderer->makelink( 
-					new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
-					new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
-					array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
-							"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' )
-					) 
-				);
-				$html .= '<span>'.$mp3ExportLink.'</span><br/>';
-				$showPanel = true;
+			if ( $this->renderMode != "offline" ) {
+				if ( $user->isAllowed( 'loop-export-xml' ) && LoopExportXml::isAvailable( $this->loopSettings ) ) {
+					$xmlExportLink = $this->linkRenderer->makelink( 
+						new TitleValue( NS_SPECIAL, 'LoopExport/xml' ), 
+						new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-xml' ) ), 
+						array( 	"title" => $this->getSkin()->msg ( 'export-linktext-xml' ),
+								"aria-label" => $this->getSkin()->msg ( 'export-linktext-xml' )
+						) 
+					);
+					$html .= '<span>'.$xmlExportLink.'</span><br/>';
+					$showPanel = true;
+				}	
+				if ( $user->isAllowed( 'loop-export-html' ) && LoopExportHtml::isAvailable( $this->loopSettings ) ) {
+					$htmlExportLink = $this->linkRenderer->makelink( 
+						new TitleValue( NS_SPECIAL, 'LoopExport/html' ), 
+						new HtmlArmor( '<span class="ic ic-file-xml"></span> ' . $this->getSkin()->msg ( 'export-linktext-html' ) ), 
+						array( 	"title" => $this->getSkin()->msg ( 'export-linktext-html' ),
+								"aria-label" => $this->getSkin()->msg ( 'export-linktext-html' )
+						) 
+					);
+					$html .= '<span>'.$htmlExportLink.'</span><br/>';
+					$showPanel = true;
+				}
+				if ( $user->isAllowed( 'loop-export-mp3' ) && LoopExportMp3::isAvailable( $this->loopSettings ) ) {
+					$mp3ExportLink = $this->linkRenderer->makelink( 
+						new TitleValue( NS_SPECIAL, 'LoopExport/mp3' ), 
+						new HtmlArmor( '<span class="ic ic-file-mp3"></span> ' . $this->getSkin()->msg ( 'export-linktext-mp3' ) ), 
+						array( 	"title" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
+								"aria-label" => $this->getSkin()->msg ( 'export-linktext-mp3' ),
+								"id" => "loop-mp3-download" 
+						) 
+					);
+					$html .= '<span>'.$mp3ExportLink.'</span><br/>';
+					$showPanel = true;
+				}
 			}
 			
 			$html .= '</div></div></div>';

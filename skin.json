@@ -37,8 +37,11 @@
 			],
 			"description": "Available skin styles"
 		},
-		"LoopAvailableStyles": {
-			"value": [ ],
+		"LoopAvailableSkinStyles": {
+			"value": [ 
+				"style-blue", 
+				"style-green"
+			],
 			"description": "Skin styles available in LoopSettings"
 		},
 		"LoopEditableSkinStyles": {
@@ -142,6 +145,22 @@
 			"class": "ResourceLoaderSkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-oncampus/loop-oncampus.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-vfh": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-vfh/loop-vfh.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-thl": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-thl/loop-thl.less": {
 					"media": "all"
 				}
 			}
