@@ -22,10 +22,38 @@
     padding-bottom: 7px;
 }
 
+.loop_consent.is_h5p {
+    position: relative;
+    overflow: hidden;
+
+    h4 span {
+        font-size: 1.7em;
+    }
+
+    .loop_consent_text {
+        z-index: 1;
+    }
+
+    &:after {
+        content: "\e91c \e91c \e91c \e91c \A \e91c \e91c \e91c \e91c \A \e91c \e91c \e91c \e91c \A \e91c \e91c \e91c \e91c \A \e91c \e91c \e91c \e91c \A \e91c \e91c \e91c \e91c";
+        font-family: 'loopfont' !important;
+        position: absolute;
+        top: -60px;
+        left: -145px;
+        height: 100%;
+        width: 100%;
+        color: rgba(255,255,255,0.1);
+        white-space: pre;
+        letter-spacing: 4rem;
+        font-size: 10rem;
+        transform: rotate(-45deg);
+        line-height: .8;
+    }
+}
+
 
 @media (max-width: 576px) {
 	.loop_consent {
-        display: block;
         height: 100% !important; //override set height by js
     }
 
