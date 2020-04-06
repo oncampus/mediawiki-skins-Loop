@@ -225,4 +225,29 @@ $( document ).ready( function () {
 		}
 	});
 
+	$('.loop_consent_agree').click(function() {
+		if(!document.cookie.match(/^(.*;)?\s*LoopConsent\s*=\s*[^;]+(.*)?$/)) {
+			let date = new Date();
+			date.setTime(date.getTime() + ( 24 * 60 * 60 * 1000 * 365 ));
+			document.cookie = 'LoopConsent=true; expires=' + date.toUTCString() + '; path=/';
+			//location.reload(true);
+			window.location.search = 'consent=true';
+		}
+	});
+
+	function calcAspectRatio() {
+		$('.loop_consent').each(function() {
+			let width = $( this ).width();			
+			$( this ).height(Math.round((width/16)*9));
+		});
+	}
+
+	$('.loop_consent').each(function() {
+		calcAspectRatio();
+	});
+
+	$( window ).resize(function() {
+		calcAspectRatio();
+	});
+
 });
