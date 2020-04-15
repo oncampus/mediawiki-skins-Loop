@@ -33,21 +33,28 @@
 		"LoopSkinStyles": {
 			"value": [ 
 				"style-blue", 
-				"style-green"
+				"style-bluegray", 
+				"style-gray", 
+				"style-green", 
+				"style-purple", 
+				"style-red", 
+				"style-yellow"
 			],
 			"description": "Available skin styles"
 		},
 		"LoopAvailableSkinStyles": {
-			"value": [ 
-				"style-blue", 
-				"style-green"
-			],
+			"value": [],
 			"description": "Skin styles available in LoopSettings"
 		},
 		"LoopEditableSkinStyles": {
 			"value": [ 
 				"style-blue", 
-				"style-green"
+				"style-bluegray", 
+				"style-gray", 
+				"style-green", 
+				"style-purple", 
+				"style-red", 
+				"style-yellow"
 			],
 			"description": "Styles that allow a custom logo"
 		},
@@ -141,6 +148,46 @@
 				}
 			}
 		},
+		"skins.style-gray": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/common/loop-gray/loop-gray.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-purple": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/common/loop-purple/loop-purple.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-red": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/common/loop-red/loop-red.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-bluegray": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/common/loop-bluegray/loop-bluegray.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-yellow": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/common/loop-yellow/loop-yellow.less": {
+					"media": "all"
+				}
+			}
+		},
 		"skins.style-oncampus": {
 			"class": "ResourceLoaderSkinModule",
 			"styles": {
@@ -161,6 +208,38 @@
 			"class": "ResourceLoaderSkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-thl/loop-thl.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-ttxtt": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-ttxtt/loop-ttxtt.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-allensbach": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-allensbach/loop-allensbach.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-jade": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-jade/loop-jade.less": {
+					"media": "all"
+				}
+			}
+		},
+		"skins.style-ram": {
+			"class": "ResourceLoaderSkinModule",
+			"styles": {
+				"resources/styles/less/skins/custom/loop-ram/loop-ram.less": {
 					"media": "all"
 				}
 			}
