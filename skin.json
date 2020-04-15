@@ -37,8 +37,7 @@
 				"style-gray", 
 				"style-green", 
 				"style-purple", 
-				"style-red", 
-				"style-yellow"
+				"style-red"
 			],
 			"description": "Available skin styles"
 		},
@@ -53,8 +52,7 @@
 				"style-gray", 
 				"style-green", 
 				"style-purple", 
-				"style-red", 
-				"style-yellow"
+				"style-red"
 			],
 			"description": "Styles that allow a custom logo"
 		},
@@ -176,14 +174,6 @@
 			"class": "ResourceLoaderSkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-bluegray/loop-bluegray.less": {
-					"media": "all"
-				}
-			}
-		},
-		"skins.style-yellow": {
-			"class": "ResourceLoaderSkinModule",
-			"styles": {
-				"resources/styles/less/skins/common/loop-yellow/loop-yellow.less": {
 					"media": "all"
 				}
 			}
