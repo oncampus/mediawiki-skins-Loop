@@ -1,7 +1,14 @@
 @import "../../../abstracts/variables.less";
 
-@banner-background: url(@banner-bg-url);
-@accent-color: #506aa4;
+@theme-colour: @gray;
+
+@banner-background: @gray;
+@banner-background-position: 0 0;
+@accent-color: @theme-colour;
+@components-color: darken( @theme-colour, 10% );
+@content-outter-background: lighten( @bluegray, 40%);
+@nav-button-background: @content-outter-background;
+@link-color: @accent-color;
 
 /* The following rules change the top banner's width to screen size. */
 
