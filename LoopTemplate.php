@@ -197,7 +197,6 @@ class LoopTemplate extends BaseTemplate {
 										} // end of excluding rendermode-epub 
 										
 										global $wgLoopLegacyShowTitles, $wgLoopLegacyPageNumbering;
-										
 										if ( $wgLoopLegacyShowTitles ) {
 											
 											if ( isset( $loopStructure->mainPage ) ) {
@@ -205,8 +204,6 @@ class LoopTemplate extends BaseTemplate {
 												$article_id = $this->title->getArticleID();
 												$lsi = LoopStructureItem::newFromIds($article_id); 
 												
-												
-
 												if ( $lsi ) {
 													if ( $wgLoopLegacyPageNumbering ) {
 														$pageNumber = $lsi->tocNumber;
@@ -224,7 +221,7 @@ class LoopTemplate extends BaseTemplate {
 												
 											if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
 												
-												echo '<h1 id="title">'.$this->title->mTextform;
+												echo '<h1 id="title">'.$displayTitle;
 		
 												if ( $this->editMode && $this->renderMode == 'default' ) { 
 													echo $this->linkRenderer->makeLink(
