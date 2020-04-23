@@ -6,7 +6,10 @@
     margin-bottom: 1rem;
 }
 
-.loopspoilercontainer_default,
+.container_default {
+    display: inline;
+}
+
 .loopspoilercontainer_transparent {
     display: block;
 }
@@ -15,14 +18,17 @@
     border: 2px solid @components-color;
 }
 
-.btn.loopspoiler_type_default,
-.btn.loopspoiler_type_in_text {
+.loopspoiler_default_content .embedvideowrap,
+.loopspoiler_transparent_content .embedvideowrap {
+    width: 100% !important;
+}
+
+.btn.loopspoiler_type_default {
     background-color: @components-color;
     color: #fff;
 }
 
-.btn.loopspoiler_type_transparent,
-.btn.loopspoiler_type_in_text_transparent {
+.btn.loopspoiler_type_transparent {
 	background-color: transparent;
 	color: @components-color;
 }
@@ -34,33 +40,25 @@
     border: 2px solid @components-color;
 }
 
-.btn.loopspoiler_type_default .loopspoiler_content_wrapper,
 .btn.loopspoiler_type_transparent .loopspoiler_content_wrapper {
     margin-bottom: 10px;
 }
 
-.btn.loopspoiler_type_in_text,
-.btn.loopspoiler_type_in_text_transparent {
+.btn.loopspoiler_type_default {
 	padding: 0px 5px;
 }
 
 .btn.spoileractive {
- border-bottom-left-radius: 0;
-   border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
-.btn.loopspoiler_type_in_text_transparent,
 .btn.loopspoiler_type_transparent {
     transition: none;
+    display: block;
 }
 
-.btn.spoileractive.loopspoiler_type_in_text_transparent {
-    margin-top: -2px;
-}
-
-.btn.spoileractive.loopspoiler_type_in_text_transparent,
 .btn.spoileractive.loopspoiler_type_transparent,
-.btn.spoileractive.loopspoiler_type_in_text_transparent:active,
 .btn.spoileractive.loopspoiler_type_transparent:active {
     border-bottom-color: #fff;
     transition: none;
@@ -70,9 +68,26 @@
     border-bottom-right-radius: 0;
 }
 
-.loopspoiler_type_in_text.loopspoiler_content_wrapper + p,
-.loopspoiler_type_in_text_transparent.loopspoiler_content_wrapper + p {
+.loopspoiler_type_default.loopspoiler_content_wrapper + p {
     display: inline;
+}
+
+.loopspoiler_default_content {
+    position: absolute;
+    background: #fff;
+    border: 2px solid #3f5482;
+    padding: .75rem;
+    margin-top: -2px;
+    margin-right: .75rem;
+    box-shadow: 0 2px 7px 0px rgba(63, 84, 130, 0.5);
+}
+
+.loopspoiler_transparent_content {
+    background: #fff;
+    border: 2px solid #3f5482;
+    padding: .75rem;
+    margin-top: -2px;
+    margin-right: .75rem;
 }
 
 /* if loop area is inside loop spoiler*/
