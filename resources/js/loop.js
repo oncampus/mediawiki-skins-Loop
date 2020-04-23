@@ -164,8 +164,6 @@ $( document ).ready( function () {
 		}
 	}
 
-	// $("p:has(.loopspoiler)").addClass("d-inline");
-
 	$(".loopzoom").each(function() {
 		var zoom_id = $(this).attr('id');
 		var html = $(this).get(0).innerHTML;
