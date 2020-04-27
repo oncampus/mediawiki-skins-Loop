@@ -80,6 +80,7 @@
     margin-top: -2px;
     margin-right: .75rem;
     box-shadow: 0 2px 7px 0px rgba(63, 84, 130, 0.5);
+    z-index: 1000;
 }
 
 .loopspoiler_transparent_content {
@@ -88,6 +89,7 @@
     padding: .75rem;
     margin-top: -2px;
     margin-right: .75rem;
+    z-index: 1000;
 }
 
 /* if loop area is inside loop spoiler*/
@@ -96,6 +98,9 @@
     width: 100%;
 }
 
+.loopspoiler .mwe-math-element {
+    display: none;
+}
 @media(max-width: 991px) {
     .loopspoiler_content_wrapper .looparea {
         margin: 0 1rem;
