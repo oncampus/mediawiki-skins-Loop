@@ -2,18 +2,6 @@
 /** ***  L O O P   S P O I L E R   *** **/
 /** *** *** *** *** *** *** ** *** *** **/
 
-.loopspoiler-container {
-    margin-bottom: 1rem;
-}
-
-.container_default {
-    display: inline;
-}
-
-.loopspoilercontainer_transparent {
-    display: block;
-}
-
 .btn.loopspoiler {
     border: 2px solid @components-color;
 }
@@ -33,18 +21,14 @@
 	color: @components-color;
 }
 
-.loopspoiler_content_wrapper {
-	background: #fff;
-    display: none;
-    padding: 0.75rem 0.75rem;
-    border: 2px solid @components-color;
-}
-
 .btn.loopspoiler_type_transparent .loopspoiler_content_wrapper {
     margin-bottom: 10px;
 }
 
 .btn.loopspoiler_type_default {
+	padding: 0px 5px;
+}
+.btn.loopspoiler_type_transparent {
 	padding: 0px 5px;
 }
 
@@ -55,7 +39,6 @@
 
 .btn.loopspoiler_type_transparent {
     transition: none;
-    display: block;
 }
 
 .btn.spoileractive.loopspoiler_type_transparent,
@@ -81,15 +64,18 @@
     margin-right: .75rem;
     box-shadow: 0 2px 7px 0px rgba(63, 84, 130, 0.5);
     z-index: 1000;
+    width: ~"calc(100% - 1.7rem)";
 }
 
 .loopspoiler_transparent_content {
+    position: absolute;
     background: #fff;
     border: 2px solid #3f5482;
     padding: .75rem;
     margin-top: -2px;
     margin-right: .75rem;
     z-index: 1000;
+    width: ~"calc(100% - 1.7rem)";
 }
 
 /* if loop area is inside loop spoiler*/
