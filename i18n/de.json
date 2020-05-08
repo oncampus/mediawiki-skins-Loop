@@ -46,9 +46,17 @@
 	"loop-no-mainpage-warning": "Bitte legen Sie ein Inhaltsverzeichnis an.",
 	"loop-audio-unavailable": "Diese Funktion ist zurzeit nicht verfügbar.",
 	"loop-fr-panel-title": "Seitenstatus",
-	"loop-fr-stable": "Dies ist die geprüfte Version dieser Seite.",
-	"loop-fr-olderthanlateststable": "Es gibt eine neuere, geprüfte Version dieser Seite.",
-	"loop-fr-newerthanlateststable": "Diese Seite enthält noch nicht überprüfte Änderungen.",
-	"loop-fr-neverstabilized": "Diese Seite wurde noch nicht geprüft.",
-	"loop-fr-pendingchanges": "Für diese Seite {{PLURAL:$1|liegt|liegen}} $1 {{PLURAL:$1|Änderungsvorschlag|Änderungsvorschläge}} vor."
+	"loop-fr-stable": "Dies ist die autorisierte Version dieser Seite.",
+	"loop-fr-olderthanlateststable": "Es gibt eine neuere, autorisierte Version dieser Seite.",
+	"loop-fr-newerthanlateststable": "Diese Seite enthält noch nicht autorisierte Änderungen.",
+	"loop-fr-neverstabilized": "Diese Seite wurde noch nicht autorisiert.",
+	"loop-fr-pendingchanges": "Für diese Seite {{PLURAL:$1|liegt|liegen}} $1 {{PLURAL:$1|Änderungsvorschlag|Änderungsvorschläge}} vor.",
+	"revreview-submit-unreview": "Autorisierung entziehen",
+	"revreview-submit-review": "Seite autorisieren",
+	"revreview-submit-reviewed": "Seite wurde autorisiert!",
+	"revreview-submit-unreviewed": "Autorisierung entzogen!",
+	"revreview-tt-flag": "Diese Version als Standard autorisieren, um sie anzuzeigen für PDF und andere Exporte zu benutzen.",
+	"revreview-tt-unflag": "Diese Version nicht mehr anzeigen lassen, indem die Autorisierung entzogen wird.",
+	"revreview-current": "Unautorisierte Änderungen"
+
 }
