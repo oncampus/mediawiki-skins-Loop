@@ -120,6 +120,9 @@ $( document ).ready( function () {
 	// Page button tooltips
 	$('.page-symbol').tooltip({ boundary: 'window' })
 
+	// Page button tooltips
+	$('.loopeditmode-hint').tooltip({ boundary: 'window' })
+
 	// Jump to top button
 	$('#page-topjump').click(function(){ 
 		$('html, body').animate({ scrollTop: 0 }, 'fast');

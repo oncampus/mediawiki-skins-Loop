@@ -21,6 +21,7 @@
 	"loop-epubmode-preview": "Seitenvorschau ePub",
 	"loop-editmode-toogle-on": "Bearbeitungsmodus einschalten",
 	"loop-editmode-toogle-off": "Bearbeitungsmodus ausschalten",
+	"loop-editmode-hint": "Vorschau - Wird nur im Bearbeitungsmodus angezeigt",
 	"loop-purge-cache": "Cache leeren",
 	"loop-page-icons-jumptotop": "Zum Seitenanfang",
 	"loop-page-icons-reportbug": "Fehler melden",
