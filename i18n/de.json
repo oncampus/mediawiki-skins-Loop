@@ -58,6 +58,7 @@
 	"revreview-submit-unreviewed": "Autorisierung entzogen!",
 	"revreview-tt-flag": "Diese Version als Standard autorisieren, um sie anzuzeigen für PDF und andere Exporte zu benutzen.",
 	"revreview-tt-unflag": "Diese Version nicht mehr anzeigen lassen, indem die Autorisierung entzogen wird.",
-	"revreview-current": "Unautorisierte Änderungen"
+	"revreview-current": "Unautorisierte Änderungen",
+	"quiz_correction": "Prüfen"
 
 }

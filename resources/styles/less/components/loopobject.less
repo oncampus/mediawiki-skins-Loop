@@ -3,17 +3,19 @@
 /** *** *** *** *** *** *** *** *** **/
 
 .loop_object {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.loop_object_content>p {
+.loop_object_content > p {
 	margin: 0px;
 }
 
 .loop_object_content {
 	//margin-bottom:5px;
 	display: inline-block;
+	max-width: 100%;
+    overflow: hidden;
 }
 
 .loop_object.float-right {
@@ -56,7 +58,7 @@
 }
 
 .loop_object_title_content {
-	font-weight: bold;
+	font-weight: 600;
 }
 
 .loop-listofobjects-image {
@@ -76,6 +78,10 @@
 	min-width: 200px;
 }
 
+.loop_object .wikitable {
+    margin: 0 0 0.3rem 0;
+}
+
 .list_of_objects .loop-listofobjects-type {
 	width: 15%;
 }
@@ -85,6 +91,13 @@
 
 .looparea-task .loop_task .loop_object_footer .loop_object_icon {
 	display: none;
+}
+.loop_task .loop_object_footer {
+    margin-bottom: 0.5rem;
+}
+
+.loop_formula .loop_object_footer {
+    margin-top: 0.75rem;
 }
 
 @media (max-width: 576px) {
