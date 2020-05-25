@@ -21,6 +21,7 @@
 	"loop-epubmode-preview": "Previsualización ePub",
 	"loop-editmode-toogle-on": "Activar el modo de edición",
 	"loop-editmode-toogle-off": "Desactivar el modo de edición",
+	"loop-editmode-hint": "Vista previa - solo se muestra en modo de edición",
 	"loop-purge-cache": "Borrar caché",
 	"loop-page-icons-jumptotop": "Ir a inicio",
 	"loop-page-icons-reportbug": "Informe de errores",
