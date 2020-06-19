@@ -54,3 +54,18 @@ a:hover {
 b {
 	font-weight: bold;
 }
+
+a.external:after {
+	font-family: "loopfont";
+	padding-left: 5px;
+	font-size: 0.9rem;
+    vertical-align: bottom;
+	content: @ic-link-external;
+}
+a.internal:before {
+	font-family: "loopfont";
+	padding-right: 3px;
+	font-size: 0.9rem;
+    vertical-align: bottom;
+	content: @ic-toc;
+}
