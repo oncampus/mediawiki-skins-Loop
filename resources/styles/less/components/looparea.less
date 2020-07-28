@@ -55,6 +55,12 @@
     border-right: none;
 }
 
+.renderhide .looparea-left {
+	opacity: 0;
+}
+.renderhide .looparea-right {
+	background: transparent;
+}
 @media(min-width: 991px) {
 
     .looparea.rendericon .looparea-left {
@@ -101,7 +107,7 @@
         background: #f7f7f7;
         padding-left: 15px !important; /* temporär wegen Bootstrap-CSS-Klassen*/
 	}
-	
+
 	.rendericon .looparea-left {
 		background: none;
 	}
@@ -118,7 +124,7 @@
 	.looparea-right p:last-of-type {
 		margin-bottom: 0.5rem !important;
     }
-    
+
 }
 
 @media(max-width: 767px) {
@@ -127,7 +133,7 @@
 		margin-left: -8px;
 		margin-right: -8px;
 	}
-	
+
 }
 
 /* fix conflicting font touching border */
@@ -136,10 +142,10 @@
 	.looparea-left-type {
 		letter-spacing: 0;
     }
-    
+
 	.looparea-left {
 		margin-left: 5px;
 		min-width: 80px;
     }
-    
+
 }
