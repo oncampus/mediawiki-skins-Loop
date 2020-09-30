@@ -217,7 +217,7 @@ $( document ).ready( function () {
 
 	/* Featherlight */
 	$( '.responsive-image' ).each(function( index ) {
-		if ( ! $(this).hasClass("image-editmode") ) {
+		if ( ! $(this).hasClass("image-editmode") && ! $(this).parent().parent().hasClass("modal-content") ) {
 			let url = $( this ).attr( 'src' );
 			//downsized images receive a featherlight box for the original pic
 			if ( url.indexOf( "/thumb/" ) ) {
