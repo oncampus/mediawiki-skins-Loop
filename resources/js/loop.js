@@ -220,13 +220,14 @@ $( document ).ready( function () {
 		if ( ! $(this).hasClass("image-editmode") && ! $(this).parent().parent().hasClass("modal-content") ) {
 			let url = $( this ).attr( 'src' );
 			//downsized images receive a featherlight box for the original pic
-			if ( url.indexOf( "/thumb/" ) ) {
+			if ( url.indexOf( "/thumb/" ) >= 0 ) {
 				url = url.substr(0, url.lastIndexOf( "/" ) ).replace( "/thumb/", "/" );
 			}
+
 			$( this ).wrap( '<a href="' + url + '"></a>' );
 			$( this ).featherlight( url );
 		}
-		
+
 	});
 
 	$('.loop_consent_agree').click(function() {
