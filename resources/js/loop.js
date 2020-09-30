@@ -2,21 +2,21 @@ $( document ).ready( function () {
 	var html = $( 'html' );
 	var body = $( 'body' );
 	var mobileNavBtn = $( '#toggle-mobile-menu-btn' );
-	var navMenu = $( '#sidebar-wrapper' ); 
+	var navMenu = $( '#sidebar-wrapper' );
 	var mobileSearchBtn = $( '#toggle-mobile-search-btn' );
 	var mobileSearchBar = $( '#mobile-searchbar' );
 	var pageNavBtn = $( '#dropdownMenuButton' );
 	var userNavBtn = $( '#user-menu-dropdown' );
 	var tocNav = $('#toc-nav');
 	var tocSpecialNav = $('#toc-specialpages');
-	
+
 	/**
 	 * Set position of footer for short pages to bottom of the window.
-	 */	
-	
+	 */
+
 	$('#page-wrapper').css( 'min-height', $( window ).height() - $("#footer").height() );
 	$('footer').animate({"opacity": "1"}, 200);
-	
+
 	/**
 	 * Accessibility workaround for page menu.
 	 * Simulates states to make the tab key trigger working on buttons
@@ -60,9 +60,9 @@ $( document ).ready( function () {
 	mobileSearchBtn.click( function (){
 		mobileSearchBar.toggleClass( 'd-none' );
 		mobileSearchBar.toggleClass( 'd-block' );
-		mobileSearchBar.find( 'input' ).focus(); 
+		mobileSearchBar.find( 'input' ).focus();
 	});
-	
+
 	// TOC navigation function
 	$(".toc-caret").click( function (){
 		$(this).parent().toggleClass("openNode")
@@ -72,11 +72,11 @@ $( document ).ready( function () {
 	// Page audio button
 	$("#t2s-button").click( function (){
 		$service_url = $("#loopexportrequestlink").attr("href");
-		
+
 		$(this).removeClass("ic-audio").addClass("rotating ic-buffering")
 		$("#audio-wrapper").removeClass("col-1").addClass("col-12 col-sm-5 col-lg-4")
 		$("#breadcrumb-area").removeClass("col-11").addClass("col-12 col-sm-7 col-lg-8")
-		
+
 		$.ajax({
 			url: $service_url,
 			cache: false,
@@ -110,13 +110,13 @@ $( document ).ready( function () {
 					//'fullscreen', // Toggle fullscreen
 				]
 			});
-			
-		}).fail(function(xhr, textStatus, errorThrown) { 
+
+		}).fail(function(xhr, textStatus, errorThrown) {
 			//console.log(textStatus + " : " + errorThrown );
 		});
 	});
-	
-	
+
+
 	// Page button tooltips
 	$('.page-symbol').tooltip({ boundary: 'window' })
 
@@ -124,11 +124,11 @@ $( document ).ready( function () {
 	$('.loopeditmode-hint').tooltip({ boundary: 'window' })
 
 	// Jump to top button
-	$('#page-topjump').click(function(){ 
+	$('#page-topjump').click(function(){
 		$('html, body').animate({ scrollTop: 0 }, 'fast');
 	 })
-	
-	
+
+
 	$(window).on( "resize", function() { resizeTables( false ) } )
 	$(document).ready( resizeTables( true ) )
 
@@ -178,7 +178,7 @@ $( document ).ready( function () {
 	var SwipeArea = document.querySelector("body");
 	var SwipeWidth = ((window.innerWidth)/2);
 	var SwipeWidthMax = 320;
-		
+
 	if (SwipeWidth > SwipeWidthMax) {
 		SwipeWidth = SwipeWidthMax;
 	}
@@ -186,7 +186,7 @@ $( document ).ready( function () {
 	var SwipeStartX = null;
 	var SwipeEndX = null;
 	var SwipeLengthX = null;
-		
+
 	var SwipeStartY = null;
 	var SwipeEndY = null;
 	var SwipeLengthY = null;
@@ -194,7 +194,7 @@ $( document ).ready( function () {
 	SwipeArea.addEventListener("touchstart", SwipeStart, false);
 	SwipeArea.addEventListener("touchend", SwipeEnd, false);
 
-	function SwipeStart(evt) {                                         
+	function SwipeStart(evt) {
 		SwipeStartX = evt.changedTouches[0].clientX;
 		SwipeStartY = evt.changedTouches[0].clientY;
 	};
@@ -204,7 +204,7 @@ $( document ).ready( function () {
 		SwipeEndY = evt.changedTouches[0].clientY;
 		SwipeLengthX = SwipeStartX - SwipeEndX;
 		SwipeLengthY = SwipeStartY - SwipeEndY;
-			
+
 		if (Math.abs(SwipeLengthX) > Math.abs(SwipeLengthY)) {
 			if (SwipeLengthX > SwipeWidth && mw.config.exists( 'jsSwipeNext' )) {
 				window.location.href = mw.config.get('jsSwipeNext');
@@ -218,9 +218,9 @@ $( document ).ready( function () {
 	/* Featherlight */
 
 	$( '.responsive-image' ).each(function( index ) {
-		if( $( this ).attr( 'width' ) >= 750 ) { // if slightly larger than #page-content (~ 736px)
+		if( $( this ).attr( 'width' ) >= $("#page-content").width() ) { // if slightly larger than #page-content (~ 736px)
 			let url = $( this ).attr( 'src' );
-		
+
 			$( this ).wrap( '<a href="' + url + '"></a>' );
 			$( this ).featherlight( url );
 		}
@@ -238,7 +238,7 @@ $( document ).ready( function () {
 
 	function calcAspectRatio() {
 		$('.loop_consent').each(function() {
-			let width = $( this ).width();			
+			let width = $( this ).width();
 			$( this ).height(Math.round((width/16)*9));
 		});
 	}
