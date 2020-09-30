@@ -216,14 +216,17 @@ $( document ).ready( function () {
 	};
 
 	/* Featherlight */
-
 	$( '.responsive-image' ).each(function( index ) {
-		if( $( this ).attr( 'width' ) >= $("#page-content").width() ) { // if slightly larger than #page-content (~ 736px)
+		if ( ! $(this).hasClass("image-editmode") ) {
 			let url = $( this ).attr( 'src' );
-
+			//downsized images receive a featherlight box for the original pic
+			if ( url.indexOf( "/thumb/" ) ) {
+				url = url.substr(0, url.lastIndexOf( "/" ) ).replace( "/thumb/", "/" );
+			}
 			$( this ).wrap( '<a href="' + url + '"></a>' );
 			$( this ).featherlight( url );
 		}
+		
 	});
 
 	$('.loop_consent_agree').click(function() {
@@ -231,7 +234,6 @@ $( document ).ready( function () {
 			let date = new Date();
 			date.setTime(date.getTime() + ( 24 * 60 * 60 * 1000 * 365 ));
 			document.cookie = 'LoopConsent=true; expires=' + date.toUTCString() + '; path=/';
-			//location.reload(true);
 			window.location.search = 'consent=true';
 		}
 	});
