@@ -7,14 +7,14 @@
     margin-bottom: 10px;
 }
 
-.loop_object_content > p {
+.loop_object_content > p:last-of-type {
 	margin: 0px;
 }
 
 .loop_object_content {
 	//margin-bottom:5px;
 	display: inline-block;
-	max-width: 100%;
+	width: 100%;
     overflow: hidden;
 }
 
@@ -92,6 +92,9 @@
 .looparea-task .loop_task .loop_object_footer .loop_object_icon {
 	display: none;
 }
+.loop_task .loop_object .loop_object_footer .loop_object_icon {
+	display: inline !important;
+}
 .loop_task .loop_object_footer {
     margin-bottom: 0.5rem;
 }
@@ -100,6 +103,9 @@
     margin-top: 0.75rem;
 }
 
+.loop_object_content > p>object {
+	width: 100% !important;
+}
 @media (max-width: 576px) {
 
 	.loop_object {
