@@ -293,7 +293,7 @@ class LoopTemplate extends BaseTemplate {
 		
 		$user = $this->user;
 		
-		if( !in_array( "shared", $user->getGroups() )) {
+		if( !in_array( "shared", $user->getGroups() ) && !in_array( "shared_basic", $user->getGroups() ) ) {
 			if( $user->isLoggedIn () ) {
 				if ( ! $userName = $user->getRealName ()) {
 					$userName = $user->getName ();
@@ -335,7 +335,7 @@ class LoopTemplate extends BaseTemplate {
 							new HtmlArmor( '<span class="ic ic-logout pr-1"></span>' . $this->getSkin()->msg( 'logout' ) ." (Session)" ),
 							array('class' => 'dropdown-item',
 								'title' => $this->getSkin()->msg( 'logout' ),
-								'alt' => $this->getSkin()->msg( 'lgout' ) )
+								'alt' => $this->getSkin()->msg( 'logout' ) )
 							);
 					}
 				}
@@ -393,6 +393,30 @@ class LoopTemplate extends BaseTemplate {
 				}
 			}
 			
+		} else { #shared users
+			global $wgRequest;
+			$sessionProvider = $wgRequest->getSession()->getProvider();
+			#dd($sessionProvider);
+			echo '<div id="usermenu" class="">
+				<div class="dropdown float-right mt-2">
+					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" aria-label="' . $this->getSkin()->msg("loop-toggle-usermenu") . '">
+						<span class="ic ic-personal-urls float-left pr-1 pt-1"></span>
+					</button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
+			if ( get_class( $sessionProvider ) == "LoopSessionProvider" ) {
+				echo $this->linkRenderer->makelink(
+					new TitleValue( NS_SPECIAL, 'LoopLogout' ),
+					new HtmlArmor( '<span class="ic ic-logout pr-1"></span>' . $this->getSkin()->msg( 'logout' ) ."" ),
+					array('class' => 'dropdown-item',
+						'title' => $this->getSkin()->msg( 'logout' ),
+						'alt' => $this->getSkin()->msg( 'logout' ) )
+					);
+			} else {
+				echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
+			}
+			echo '	</div>
+				</div>
+			</div>';
 		}
 		
 	}
