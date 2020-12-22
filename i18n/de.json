@@ -22,6 +22,7 @@
 	"loop-editmode-toogle-on": "Bearbeitungsmodus einschalten",
 	"loop-editmode-toogle-off": "Bearbeitungsmodus ausschalten",
 	"loop-editmode-hint": "Vorschau - Wird nur im Bearbeitungsmodus angezeigt",
+	"loop-editmode-hint-toc": "Wird ohne Einträge nur im Bearbeitungsmodus angezeigt",
 	"loop-purge-cache": "Cache leeren",
 	"loop-page-icons-jumptotop": "Zum Seitenanfang",
 	"loop-page-icons-reportbug": "Fehler melden",
