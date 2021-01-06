@@ -250,7 +250,7 @@ $(document).ready(function () {
     }
   });
 
-function loop_consent_agree() {
+  $('.loop_consent_agree').click(function() {
     if (!document.cookie.match(/^(.*;)?\s*LoopConsent\s*=\s*[^;]+(.*)?$/)) {
       let date = new Date();
       date.setTime(date.getTime() + 24 * 60 * 60 * 1000 * 365);
@@ -258,7 +258,7 @@ function loop_consent_agree() {
         "LoopConsent=true; expires=" + date.toUTCString() + "; path=/";
       window.location.search = "consent=true";
     }
-  };
+  });
 
   function calcAspectRatio() {
     $(".loop_consent").each(function () {
