@@ -1,5 +1,7 @@
 <?php
 
+if ( !defined( 'MEDIAWIKI' ) ) die ( "This file cannot be run standalone.\n" );
+
 use MediaWiki\MediaWikiServices;
 
 class LoopSkinHooks {
@@ -21,10 +23,11 @@ class LoopSkinHooks {
 
 		global $wgDefaultUserOptions;
 
-		$loopeditmode = $skin->getUser()->getOption( 'LoopEditMode', false, true );
-		$looprendermode = $skin->getUser()->getOption( 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$editMode = $userOptionsLookup->getOption( $skin->getUser(), 'LoopEditMode', false, true );
+		$renderMode = $userOptionsLookup->getOption( $skin->getUser(), 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 
-		if ( $loopeditmode && $looprendermode == "default" ) {
+		if ( $editMode && $renderMode == "default" ) {
 			$result[ 'editsection' ][ 'text' ] = new HtmlArmor('<span class="ic ic-edit"></span>');
 		} else {
 			$result[ 'editsection' ][ 'text' ] = '';
@@ -46,11 +49,12 @@ class LoopSkinHooks {
 	 */
 	public static function onHtmlPageLinkRendererEnd( $linkRenderer, $target, $isKnown, &$text, &$attribs, &$ret ) {
 
-		global $wgOut, $wgCanonicalServer;
+		global $wgOut, $wgCanonicalServer, $wgDefaultUserOptions;
 
-		$looprendermode = $wgOut->getUser()->getOption( 'LoopRenderMode', false, true );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$renderMode = $userOptionsLookup->getOption( $wgOut->getUser(), 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 
-		if ( $looprendermode == "offline" ) {
+		if ( $renderMode == "offline" ) {
 			$loopHtml = new LoopHtml();
 
 			if ( isset( $target->mArticleID ) ) { # don't pick special page links
@@ -123,8 +127,9 @@ class LoopSkinHooks {
 		$loopSkinStyleRequestValue = 'style-' . $request->getText( 'skin' );
 
 		if( in_array( $loopSkinStyleRequestValue, $wgLoopUrlSkinStyles ) ) {
-			$user->setOption( 'LoopSkinStyle', $loopSkinStyleRequestValue );
-			$user->saveSettings();
+			$userOptionsManager = MediaWikiServices::getInstance()->getUserOptionsManager();
+			$userOptionsManager->setOption( $user, 'LoopSkinStyle', $loopSkinStyleRequestValue );
+			$userOptionsManager->saveOptions($user);
 		}
 
 		return true;

@@ -5,7 +5,7 @@ Skin for the Learning Object Online Platform
 
 LOOP ist die neue Autorensoftware der Technischen Hochschule Lübeck. Die Abkürzung steht für Learning Object Online Platform. 
 
-LOOP findet man unter [loop.oncampus.de](https://loop.oncampus.de)
+LOOP findet man unter [eduloop.de](https://eduloop.de)
 
 ### Bestandteile
 
