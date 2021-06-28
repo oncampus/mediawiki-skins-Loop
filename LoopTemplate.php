@@ -291,7 +291,10 @@ class LoopTemplate extends BaseTemplate {
 		<footer>
 			<?php $this->outputFooter( ); ?>
 		</footer>
+
 	<?php
+		# Legacy for MsUpload
+	 	echo $this->getSkin()->getOutput()->getBottomScripts();
 		}
 	}
 

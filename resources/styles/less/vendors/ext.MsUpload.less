@@ -2,29 +2,42 @@
 /**  MSUPLOAD  **/
 /** *** ** *** **/
 
-#msupload-dropzone#msupload-dropzone {
+#msupload-dropzone {
 	height: auto !important;
-	margin-bottom: 3px !important;
+	margin: 0 !important;
+	padding: 5px !important;
+	padding-top: 12px !important;
 }
 #wikiEditor-ui-toolbar .group-insert #msupload-container{
 	display: none !important;
 }
-
-#msupload-dropzone,#msupload-bottom {
+#msupload-dropzone,
+#msupload-bottom {
+	color: @font-on-accent-color !important;
 	height: auto !important;
 	-ms-user-select: none;-webkit-user-select: none;-moz-user-select: none;user-select: none;
-	
 }
 #msupload-div {
 	opacity: 0.7;
 	background: @wikieditor-msupload-color !important;
 }
 .drop-over {
-	background: @wikieditor-msupload-color !important;
+	background: shade( @wikieditor-msupload-color, 10% ) !important;
+	height: auto !important;
+	font-weight: bold;
 }
 #msupload-div.msupload-dragging {
 	opacity: 1;
 }
-#msupload-div.msupload-dragging #msupload-div {
-	height: 50px !important;
+#msupload-div.msupload-dragging #msupload-div,
+#msupload-dropzone {
+	min-height: 50px !important;
+}
+#msupload-dropzone,
+#msupload-status,
+#msupload-bottom a {
+	color: @font-on-accent-color !important;
+}
+#msupload-bottom #msupload-files {
+    background-position-y: 3px;
 }
