@@ -22,6 +22,7 @@
 	"loop-editmode-toogle-on": "Slå på redigeringsläget",
 	"loop-editmode-toogle-off": "Slå av redigeringsläget",
 	"loop-editmode-hint": "Förhandsvisning - visas endast i redigeringsläget",
+	"loop-editmode-hint-toc": "Only displayed in edit mode if empty",
 	"loop-purge-cache": "Rensa cachen",
 	"loop-page-icons-jumptotop": "Till toppen",
 	"loop-page-icons-reportbug": "Rapportera ett fel",

@@ -2,7 +2,7 @@
 	"@metadata": {
 		"authors": [
             "Francisco Tahhan"
-            
+
 		]
 	},
 	"loop-skinname": "Diseño del LOOP",
@@ -22,6 +22,7 @@
 	"loop-editmode-toogle-on": "Activar el modo de edición",
 	"loop-editmode-toogle-off": "Desactivar el modo de edición",
 	"loop-editmode-hint": "Vista previa - solo se muestra en modo de edición",
+	"loop-editmode-hint-toc": "Only displayed in edit mode if empty",
 	"loop-purge-cache": "Borrar caché",
 	"loop-page-icons-jumptotop": "Ir a inicio",
 	"loop-page-icons-reportbug": "Informe de errores",
