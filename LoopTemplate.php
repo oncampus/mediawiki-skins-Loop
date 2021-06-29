@@ -300,8 +300,7 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputUserMenu() {
 
-		#$personTools = $this->getPersonalTools ();
-		$personTools = $this->getSkin()->getPersonalToolsForMakeListItem ( [] );
+		$personTools = $this->getSkin()->getPersonalToolsForMakeListItem ( $this->get( 'personal_urls' ) );
 
 		if( !in_array( "shared", $this->userGroupManager->getUserGroups($this->user) ) && !in_array( "shared_basic", $this->userGroupManager->getUserGroups($this->user) ) ) {
 			if( $this->user->isRegistered () ) {
@@ -318,21 +317,17 @@ class LoopTemplate extends BaseTemplate {
 						</button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu-dropdown">';
 
-				#if ( isset ( $personTools ['userpage'] ) ) {
-				#	echo '<a class="dropdown-item" href="' . $personTools ['userpage'] ['links'] [0] ['href'] . '" alt="'.$personTools ['userpage'] ['links'] [0] ['text'].'"><span class="ic ic-personal-urls pr-1"></span> ' . $personTools ['userpage'] ['links'] [0] ['text'] . '</a>';
-				#}
-
-				if ( isset ( $personTools ['watchlist'] ) ) {
+				if ( array_key_exists ( 'watchlist', $personTools ) ) {
 					echo '<a class="dropdown-item" href="' . $personTools ['watchlist'] ['links'] [0] ['href'] . '" alt="'.$personTools ['watchlist'] ['links'] [0] ['text'].'"><span class="ic ic-watch pr-1"></span> ' . $personTools ['watchlist'] ['links'] [0] ['text'] . '</a>';
 					$divide = true;
 				}
 
-				if ( isset ( $personTools ['preferences'] ) && ! in_array( "shared", $this->userGroupManager->getUserGroups($this->user) ) ) {
+				if ( array_key_exists ('preferences', $personTools ) && ! in_array( "shared", $this->userGroupManager->getUserGroups($this->user) ) ) {
 					echo '<a class="dropdown-item" href="' . $personTools ['preferences'] ['links'] [0] ['href'] . '" alt="'.$personTools ['preferences'] ['links'] [0] ['text'].'"><span class="ic ic-preferences pr-1"></span> ' . $personTools ['preferences'] ['links'] [0] ['text'] . '</a>';
 					$divide = true;
 				}
 
-				if ( isset ( $personTools ['logout'] )) {
+				if ( array_key_exists ( 'logout', $personTools ) ) {
 					echo $divide ? '<div class="dropdown-divider"></div>' : "";
 					echo '<a class="dropdown-item" href="' . $personTools ['logout'] ['links'] [0] ['href'] . '" alt="'.$personTools ['logout'] ['links'] [0] ['text'].'"><span class="ic ic-logout pr-1"></span> ' . $personTools ['logout'] ['links'] [0] ['text'] . '</a>';
 				} else {
@@ -355,8 +350,7 @@ class LoopTemplate extends BaseTemplate {
 
 			} else {
 
-				$loggedin = false;
-				if ( isset ( $personTools ['login'] ) ) {
+				if ( array_key_exists ( 'login', $personTools ) ) {
 					$loginType = 'login';
 				} elseif ( isset ( $personTools ['login-private'] ) ) {
 					$loginType = 'login-private';
@@ -364,7 +358,7 @@ class LoopTemplate extends BaseTemplate {
 					$loginType = false;
 				}
 
-				if ( isset ( $personTools ['createaccount'] ) ) {
+				if ( array_key_exists ( 'createaccount', $personTools ) ) {
 					echo '<div id="usermenu"><div class="dropdown float-right mt-2">
 					<button class="btn btn-light btn-sm dropdown-toggle" type="button" id="user-menu-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					<span class="ic ic-personal-urls float-left pr-md-1 pt-1"></span><span class="d-none d-sm-block float-left">';
@@ -867,7 +861,11 @@ class LoopTemplate extends BaseTemplate {
 	private function outputAudioButton( ) {
 
 		$article_id = $this->title->getArticleID();
-		if ( LoopExportPageMp3::isAvailable( $this->loopSettings ) && $this->data['isarticle'] && $article_id > 0 && $this->permissionManager->userHasAllRights( $this->user, ['loop-pageaudio', 'read'] ) ) {
+		if ( LoopExportPageMp3::isAvailable( $this->loopSettings )
+			&& $this->data['isarticle'] && $article_id > 0
+			&& $this->permissionManager->userHasRight( $this->user, 'read' )
+			&& $this->permissionManager->userHasRight( $this->user, 'loop-pageaudio' )
+			) {
 
 			global $wgOut;
 
@@ -895,7 +893,7 @@ class LoopTemplate extends BaseTemplate {
 
 		global $wgLoopFeedbackLevel;
 
-		if ( $this->permissionManager->userHasAllRights( $this->user, ['edit', 'read'] ) ) {
+		if ( $this->permissionManager->userHasRight( $this->user, 'edit' ) ) {
 
 		$content_navigation_skip=array();
 		$content_navigation_skip['namespaces']['main'] = true;
