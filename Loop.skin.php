@@ -32,7 +32,7 @@ class SkinLoop extends SkinTemplate {
 		 	'skins.loop-plyr'
 		));
 		$out->addModules( array(
-			'skins.loop-plyr.js',
+			#'skins.loop-plyr.js',
 			'skins.loop-bootstrap.js',
 			'skins.featherlight.js',
 			'skins.loop.js'
