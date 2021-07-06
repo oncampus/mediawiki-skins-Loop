@@ -128,7 +128,7 @@
 		},
 		"skins.loop-plyr.js": {
 			"scripts": [
-					"node_modules/plyr/dist/plyr.min.js"
+					"node_modules/plyr/dist/plyr.js"
 				]
 		},
 		"skins.style-blue": {
