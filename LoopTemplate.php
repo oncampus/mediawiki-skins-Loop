@@ -30,6 +30,7 @@ class LoopTemplate extends BaseTemplate {
 		$this->user = $this->getSkin()->getUser();
 		$this->title = $this->getSkin()->getTitle();
 		$this->parserFactory = $this->mwService->getParserFactory();
+		$this->lsi = LoopStructureItem::newFromIds($this->title->getArticleId());
 
 		$this->userOptionsLookup = $this->mwService->getUserOptionsLookup();
 		$this->renderMode = $this->userOptionsLookup->getOption( $this->user, 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
@@ -209,17 +210,14 @@ class LoopTemplate extends BaseTemplate {
 
 											if ( isset( $this->loopStructure->mainPage ) ) {
 
-												$article_id = $this->title->getArticleID();
-												$lsi = LoopStructureItem::newFromIds($article_id);
-
-												if ( $lsi ) {
+												if ( $this->lsi ) {
 													if ( $wgLoopLegacyPageNumbering ) {
-														$pageNumber = $lsi->tocNumber;
+														$pageNumber = $this->lsi->tocNumber;
 													} else {
 														$pageNumber = '';
 													}
 
-													$displayTitle = $pageNumber.' '.$lsi->tocText;
+													$displayTitle = $pageNumber.' '.$this->lsi->tocText;
 												} else {
 													$displayTitle = $this->title->mTextform;
 												}
@@ -428,9 +426,6 @@ class LoopTemplate extends BaseTemplate {
 
 		$mainPage = $this->loopStructure->mainPage;
 
-		$article_id = $this->title->getArticleID();
-		$lsi = LoopStructureItem::newFromIds( $article_id );
-
 		$disabled = ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) || $mainPage ) ? "" : "disabled";
 		$home_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" '.$disabled.' aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
 
@@ -454,11 +449,11 @@ class LoopTemplate extends BaseTemplate {
 
 		// Previous Chapter
 
-		if ( $lsi ) {
-			$previousChapterItem = $lsi->getPreviousChapterItem();
-			$previousPageItem = LoopStructureItem::newFromIds( $lsi->previousArticle );
-			$nextPageItem = LoopStructureItem::newFromIds( $lsi->nextArticle );
-			$nextChapterItem = $lsi->getNextChapterItem();
+		if ( $this->lsi ) {
+			$previousChapterItem = $this->lsi->getPreviousChapterItem();
+			$previousPageItem = LoopStructureItem::newFromIds( $this->lsi->previousArticle );
+			$nextPageItem = LoopStructureItem::newFromIds( $this->lsi->nextArticle );
+			$nextChapterItem = $this->lsi->getNextChapterItem();
 		}
 		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ).'" ';
 
@@ -483,8 +478,8 @@ class LoopTemplate extends BaseTemplate {
 		}
 
 		// Previous Page
-		if ( $lsi ) {
-			$previousPage = $lsi->previousArticle;
+		if ( $this->lsi ) {
+			$previousPage = $this->lsi->previousArticle;
 			$previousPageItem = LoopStructureItem::newFromIds($previousPage);
 		}
 
@@ -533,7 +528,7 @@ class LoopTemplate extends BaseTemplate {
 		// next button
 		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 
-		if ( ! isset( $lsi->nextArticle ) || $lsi->nextArticle == 0 || ! $this->permissionManager->userHasRight($this->user, 'read') ) {
+		if ( ! isset( $this->lsi->nextArticle ) || $this->lsi->nextArticle == 0 || ! $this->permissionManager->userHasRight($this->user, 'read') ) {
 			$next_page_button .= 'disabled="disabled"><span class="ic ic-page-next"></span></button>';
 			echo '<a href="#">'.$next_page_button.'</a>';
 		} else {
@@ -584,18 +579,15 @@ class LoopTemplate extends BaseTemplate {
 
 			$bottomNav = '<div class="btn-group">';
 
-			$article_id = $this->title->getArticleID();
-			$lsi = LoopStructureItem::newFromIds( $article_id );
-
 			// Previous Page
-			if ( $lsi ) {
-				$previousPageItem = LoopStructureItem::newFromIds( $lsi->previousArticle );
-				$nextPageItem = LoopStructureItem::newFromIds( $lsi->nextArticle );
+			if ( $this->lsi ) {
+				$previousPageItem = LoopStructureItem::newFromIds( $this->lsi->previousArticle );
+				$nextPageItem = LoopStructureItem::newFromIds( $this->lsi->nextArticle );
 			}
 
 			$previous_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn mr-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 
-			if ( ! isset( $lsi->previousArticle ) || $lsi->previousArticle == 0 || ! $this->permissionManager->userHasRight( $this->user, 'read') ) {
+			if ( ! isset( $this->lsi->previousArticle ) || $this->lsi->previousArticle == 0 || ! $this->permissionManager->userHasRight( $this->user, 'read') ) {
 				$previous_page_button .= 'disabled="disabled"><span class="ic ic-page-previous"></span></button>';
 			} else {
 				$previous_page_button .= '><span class="ic ic-page-previous"></span></button>';
@@ -616,7 +608,7 @@ class LoopTemplate extends BaseTemplate {
 			// next button
 			$next_page_button = '<button type="button" class="btn btn-light page-bottom-nav-btn" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 
-			if ( ! isset( $lsi->nextArticle ) || $lsi->nextArticle == 0 || ! $this->permissionManager->userHasRight( $this->user, 'read') ) {
+			if ( ! isset( $this->lsi->nextArticle ) || $this->lsi->nextArticle == 0 || ! $this->permissionManager->userHasRight( $this->user, 'read') ) {
 				$next_page_button .= 'disabled="disabled"><span class="ic ic-page-next"></span></button>';
 				$bottomNav .= '<a href="#">'.$next_page_button.'</a>';
 			} else {
@@ -639,7 +631,7 @@ class LoopTemplate extends BaseTemplate {
 			$bottomNav .= "</div>";
 
 			// just print bottom nav if next or previous page exists
-			if ( isset( $lsi->previousArticle ) || isset( $lsi->nextArticle ) ) {
+			if ( isset( $this->lsi->previousArticle ) || isset( $this->lsi->nextArticle ) ) {
 				echo $bottomNav;
 			}
 
@@ -649,20 +641,17 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputToc() {
 
-		global $wgDefaultUserOptions, $wgLoopLegacyPageNumbering;
-
-		$article_id = $this->title->getArticleID();
-		$lsi = LoopStructureItem::newFromIds( $article_id );
+		global $wgLoopLegacyPageNumbering;
 
 		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
 
 		if ( isset( $this->loopStructure->mainPage ) ) {
 
-			if ( $lsi ) {
+			if ( $this->lsi ) {
 				// get the current active tocNum
-				$activeTocNum = $lsi->tocNumber;
-				$activeTocText = $lsi->tocText;
+				$activeTocNum = $this->lsi->tocNumber;
+				$activeTocText = $this->lsi->tocText;
 
 					if( ! empty( $activeTocNum )) {
 
@@ -849,11 +838,8 @@ class LoopTemplate extends BaseTemplate {
 
 		if ( isset( $this->loopStructure->mainPage ) ) {
 
-			$article_id = $this->title->getArticleID();
-			$lsi = LoopStructureItem::newFromIds( $article_id );
-
-			if( $lsi ) {
-				echo $lsi->getBreadcrumb();
+			if( $this->lsi ) {
+				echo $this->lsi->getBreadcrumb();
 			}
 		}
 	}
@@ -1130,8 +1116,19 @@ class LoopTemplate extends BaseTemplate {
 		}
 
 		if ( $this->permissionManager->userHasRight( $this->user, "purgecache" ) ) {
-			echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'PurgeCache' ), new HtmlArmor( '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ) ),
-					array('class' => 'dropdown-item') );
+			echo $this->linkRenderer->makelink(
+				new TitleValue( NS_SPECIAL, 'PurgeCache' ),
+				new HtmlArmor( '<span class="ic ic-cache"></span> ' . $this->getSkin()->msg ( 'purgecache' ) ),
+				array('class' => 'dropdown-item') );
+		}
+
+		if ( $this->lsi && $this->permissionManager->userHasRight( $this->user, "loop-pdf-test" ) ) {
+			echo $this->linkRenderer->makelink(
+				new TitleValue( NS_SPECIAL, 'LoopExportPdfTest' ),
+				new HtmlArmor( '<span class="ic ic-file-pdf"></span> ' . $this->getSkin()->msg ( 'loop-pdf-single-test' ) ),
+				array('class' => 'dropdown-item'),
+				array( 'articleId' => $this->title->getArticleId() )
+			);
 		}
 
 		echo $this->linkRenderer->makelink( new TitleValue( NS_SPECIAL, 'Specialpages' ), new HtmlArmor( '<span class="ic ic-sidebar-menu"></span> ' . $this->getSkin()->msg ( 'specialpages' ) ),
@@ -1445,8 +1442,7 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputFooter ( ) {
 
-		global $wgRightsText, $wgRightsIcon, $wgRightsUrl, $wgLoopExtraFooter, $wgLoopImprintLink, $wgLoopPrivacyLink,
-		$wgLoopRightsType, $wgLoopSocialIcons;
+		global $wgRightsText, $wgRightsIcon, $wgRightsUrl, $wgLoopExtraFooter, $wgLoopRightsType, $wgLoopSocialIcons;
 
 		$html = "";
 		$html .= '<div class="container-fluid pl-0 pr-0" id="footer">';
@@ -1456,9 +1452,9 @@ class LoopTemplate extends BaseTemplate {
 					<div id="extra-footer-content" class="p-3">';
 
 			//$article = Article::newFromTitle( $this->title, $this->getSkin()->getContext() );
-			$localParser = $this->parserFactory->create();
+			$parser = $this->parserFactory->create();
 			$tmpTitle = Title::newFromText( 'NO TITLE' );
-			$parserOutput = $localParser->parse( "{{MediaWiki:ExtraFooter}}", $tmpTitle, new ParserOptions() );
+			$parserOutput = $parser->parse( "{{MediaWiki:ExtraFooter}}", $tmpTitle, new ParserOptions() );
 
 			$html .= $parserOutput->mText;
 
