@@ -457,7 +457,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$previous_chapter_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-chapter' ).'" ';
 
-		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
+		$previous_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" accesskey="p" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-previous-page' ).'" ';
 
 		if ( ! isset( $previousChapterItem->article ) || ! $this->permissionManager->userHasRight($this->user, 'read') ) {
 			$previous_chapter_button .= 'disabled="disabled"><span class="ic ic-chapter-previous"></span></button>';
@@ -526,7 +526,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 
 		// next button
-		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
+		$next_page_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" accesskey="n" aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-next-page' ).'" ';
 
 		if ( ! isset( $this->lsi->nextArticle ) || $this->lsi->nextArticle == 0 || ! $this->permissionManager->userHasRight($this->user, 'read') ) {
 			$next_page_button .= 'disabled="disabled"><span class="ic ic-page-next"></span></button>';
@@ -1284,7 +1284,7 @@ class LoopTemplate extends BaseTemplate {
 	private function outputExportPanel () {
 		$showPanel = false;
 
-		if ( $this->permissionManager->userHasAnyRight( $this->user, ['loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3'] ) ) { # TODO other export formats
+		if ( $this->permissionManager->userHasAnyRight( $this->user, 'loop-export-xml', 'loop-export-pdf', 'loop-export-html', 'loop-export-mp3' ) ) { # TODO other export formats
 			$html = '<div class="panel-wrapper">';
 			$html .=		'<div class="panel-heading">';
 			$html .=			'<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg( 'loop-export-headline' ) .'</header>';
