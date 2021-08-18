@@ -18,7 +18,7 @@ class LoopTemplate extends BaseTemplate {
 
 		global $wgDefaultUserOptions, $wgLoopLegacyPageNumbering, $wgReadOnly;
 
-		if ( $wgReadOnly === false ) {
+		if ( $wgReadOnly === false || is_null( $wgReadOnly ) ) {
 
 			$this->mwService = MediaWikiServices::getInstance();
 			$this->permissionManager = $this->mwService->getPermissionManager();
