@@ -296,6 +296,7 @@ class LoopTemplate extends BaseTemplate {
 			echo $this->getSkin()->getOutput()->getBottomScripts();
 			}
 		} else {
+			header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate");
 			$this->html( 'headelement' );
 			echo "<p class='text-center mt-2'>";
 			echo "<img class='text-center mb-5' src='/mediawiki/skins/Loop/resources/img/logo_loop.svg' /><br>";
