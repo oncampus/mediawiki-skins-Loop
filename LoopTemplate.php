@@ -16,110 +16,128 @@ class LoopTemplate extends BaseTemplate {
 
 	public function execute() {
 
-		global $wgDefaultUserOptions, $wgLoopLegacyPageNumbering;
+		global $wgDefaultUserOptions, $wgLoopLegacyPageNumbering, $wgReadOnly;
 
-		$this->mwService = MediaWikiServices::getInstance();
-		$this->permissionManager = $this->mwService->getPermissionManager();
-		$this->userGroupManager = $this->mwService->getUserGroupManager();
-		$this->loopStructure = new LoopStructure();
-		$this->loopStructure->loadStructureItems();
-		$this->linkRenderer = $this->mwService->getLinkRenderer();
-		$this->linkRenderer->setForceArticlePath(true); #required for readable links
-		$this->loopSettings = new LoopSettings();
-		$this->loopSettings->loadSettings();
-		$this->user = $this->getSkin()->getUser();
-		$this->title = $this->getSkin()->getTitle();
-		$this->parserFactory = $this->mwService->getParserFactory();
-		$this->lsi = LoopStructureItem::newFromIds($this->title->getArticleId());
+		if ( $wgReadOnly === false ) {
 
-		$this->userOptionsLookup = $this->mwService->getUserOptionsLookup();
-		$this->renderMode = $this->userOptionsLookup->getOption( $this->user, 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
-		$this->editMode = $this->userOptionsLookup->getOption( $this->user, 'LoopEditMode', false, true );
-		$this->skinStyle = $this->userOptionsLookup->getOption( $this->user, 'LoopSkinStyle', false, true );
+			$this->mwService = MediaWikiServices::getInstance();
+			$this->permissionManager = $this->mwService->getPermissionManager();
+			$this->userGroupManager = $this->mwService->getUserGroupManager();
+			$this->loopStructure = new LoopStructure();
+			$this->loopStructure->loadStructureItems();
+			$this->linkRenderer = $this->mwService->getLinkRenderer();
+			$this->linkRenderer->setForceArticlePath(true); #required for readable links
+			$this->loopSettings = new LoopSettings();
+			$this->loopSettings->loadSettings();
+			$this->user = $this->getSkin()->getUser();
+			$this->title = $this->getSkin()->getTitle();
+			$this->parserFactory = $this->mwService->getParserFactory();
+			$this->lsi = LoopStructureItem::newFromIds($this->title->getArticleId());
 
+			$this->userOptionsLookup = $this->mwService->getUserOptionsLookup();
+			$this->renderMode = $this->userOptionsLookup->getOption( $this->user, 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
+			$this->editMode = $this->userOptionsLookup->getOption( $this->user, 'LoopEditMode', false, true );
+			$this->skinStyle = $this->userOptionsLookup->getOption( $this->user, 'LoopSkinStyle', false, true );
 
-		$this->html( 'headelement' );
-		if( $this->renderMode != "epub" ) { ?>
-		<div id="page-wrapper">
-			<header>
-				<div class="container p-0" id="banner-wrapper">
-					<div class="container p-0" id="banner-container">
-						<div class="w-100" id="banner-logo-container">
-							<div class="container">
-								<div class="row">
-									<div class="col-9" id="logo-wrapper">
-										<?php
-										global $wgLoopCustomLogo;
-											$customLogo = '';
-											if( $wgLoopCustomLogo["useCustomLogo"] && ! empty( $wgLoopCustomLogo["customFilePath"] ) && $this->getSkin()->isEditable( $this->skinStyle ) ) {
-												$customLogo = ' style="background-image:url('.$wgLoopCustomLogo["customFilePath"].');"';
-											}
-											if( isset( $this->loopStructure->mainPage ) ) {
-												echo $this->linkRenderer->makelink(
-													Title::newFromID( $this->loopStructure->mainPage ),
-													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
-													array('id' => 'loop-logo')
-												);
-											} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
-												echo $this->linkRenderer->makelink(
-													Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
-													new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
-													array('id' => 'loop-logo')
-												);
-											} else {
-												echo '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>';
-											}
-										?>
-									</div>
-									<div class="col-3 text-right">
-										<?php if( $this->renderMode != "offline" ) {
-											$this->outputUserMenu();
-										}?>
+			$this->html( 'headelement' );
+			if( $this->renderMode != "epub" ) { ?>
+			<div id="page-wrapper">
+				<header>
+					<div class="container p-0" id="banner-wrapper">
+						<div class="container p-0" id="banner-container">
+							<div class="w-100" id="banner-logo-container">
+								<div class="container">
+									<div class="row">
+										<div class="col-9" id="logo-wrapper">
+											<?php
+											global $wgLoopCustomLogo;
+												$customLogo = '';
+												if( $wgLoopCustomLogo["useCustomLogo"] && ! empty( $wgLoopCustomLogo["customFilePath"] ) && $this->getSkin()->isEditable( $this->skinStyle ) ) {
+													$customLogo = ' style="background-image:url('.$wgLoopCustomLogo["customFilePath"].');"';
+												}
+												if( isset( $this->loopStructure->mainPage ) ) {
+													echo $this->linkRenderer->makelink(
+														Title::newFromID( $this->loopStructure->mainPage ),
+														new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
+														array('id' => 'loop-logo')
+													);
+												} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
+													echo $this->linkRenderer->makelink(
+														Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
+														new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
+														array('id' => 'loop-logo')
+													);
+												} else {
+													echo '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>';
+												}
+											?>
+										</div>
+										<div class="col-3 text-right">
+											<?php if( $this->renderMode != "offline" ) {
+												$this->outputUserMenu();
+											}?>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="container" id="title-container">
-							<?php
-								if( isset( $this->loopStructure->mainPage ) ) {
-									$title = Title::newFromID( $this->loopStructure->mainPage );
-									echo $this->linkRenderer->makelink(
-										$title,
-										new HtmlArmor( '<header class="h1 p-1" id="loop-title">'. $title . '</header>' )
-									);
-								} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
-									global $wgSitename;
-									echo $this->linkRenderer->makelink(
-										Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
-										new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>' )
-									);
-								} else {
-									global $wgSitename;
-									echo '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>';
-								}
-							?>
-						</div>
-						<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
-							<div class="container p-0" id="page-navigation-container">
-								<div class="row m-0 p-0" id="page-navigation-row">
-									<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
-										<?php $this->outputNavigation();
-											echo '<div class="btn-group float-right">';
-											if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user,  'read' ) ) {
-												echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" ><span class="ic ic-search"></span></button>';
-												$this->outputPageEditMenu( );
-											}
-											if ( isset( $this->loopStructure->mainPage ) && $this->permissionManager->userHasRight( $this->user, 'read') ) {?>
-												<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
-										<?php }?>
+							<div class="container" id="title-container">
+								<?php
+									if( isset( $this->loopStructure->mainPage ) ) {
+										$title = Title::newFromID( $this->loopStructure->mainPage );
+										echo $this->linkRenderer->makelink(
+											$title,
+											new HtmlArmor( '<header class="h1 p-1" id="loop-title">'. $title . '</header>' )
+										);
+									} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
+										global $wgSitename;
+										echo $this->linkRenderer->makelink(
+											Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
+											new HtmlArmor( '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>' )
+										);
+									} else {
+										global $wgSitename;
+										echo '<h1 class="p-1" id="loop-title">'. $wgSitename . '</h1>';
+									}
+								?>
+							</div>
+							<div class="w-100 p-0 align-bottom" id="page-navigation-wrapper">
+								<div class="container p-0" id="page-navigation-container">
+									<div class="row m-0 p-0" id="page-navigation-row">
+										<div class="col-12 col-lg-9 p-0 m-0" id="page-navigation-col">
+											<?php $this->outputNavigation();
+												echo '<div class="btn-group float-right">';
+												if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user,  'read' ) ) {
+													echo '<button type="button" id="toggle-mobile-search-btn" class="btn btn-light page-nav-btn d-md-none" ><span class="ic ic-search"></span></button>';
+													$this->outputPageEditMenu( );
+												}
+												if ( isset( $this->loopStructure->mainPage ) && $this->permissionManager->userHasRight( $this->user, 'read') ) {?>
+													<button id="toggle-mobile-menu-btn" type="button" class="btn btn-light page-nav-btn d-lg-none" aria-label="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>" title="<?php echo $this->getSkin()->msg("loop-toggle-sidebar"); ?>"><span class="ic ic-sidebar-menu"></span></button>
+											<?php }?>
+										</div>
+										<?php if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user,  'read' ) ) { ?>
+											<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
+												<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
+													<?php
+														echo $this->getSkin()->makeSearchInput(
+															array(
+																'id' => 'page-search-input-md',
+																'class' => 'form-control form-control-sm pt-2 pb-2',
+																'placeholder' => $this->getSkin()->msg("full-text-search")
+															)
+														);
+													?>
+													<button type="submit" class="d-none"></button>
+												</form>
+											</div>
+										<?php } ?>
 									</div>
 									<?php if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user,  'read' ) ) { ?>
-										<div id="page-searchbar-md" class="d-none d-md-block d-lg-none col-4 d-xl-none float-right">
-											<form id="search-tablet" action="<?php $this->text( 'wgScript' ); ?>">
-												<?php
+										<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
+											<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
+											<?php
 													echo $this->getSkin()->makeSearchInput(
 														array(
-															'id' => 'page-search-input-md',
+															'id' => 'page-search-input-lg-xl',
 															'class' => 'form-control form-control-sm pt-2 pb-2',
 															'placeholder' => $this->getSkin()->msg("full-text-search")
 														)
@@ -127,16 +145,28 @@ class LoopTemplate extends BaseTemplate {
 												?>
 												<button type="submit" class="d-none"></button>
 											</form>
+											<div class="clear"></div>
 										</div>
-									<?php } ?>
-								</div>
+									<?php }?>
+								</div> <!--End of row-->
+							</div> <!--End of nativation container-->
+						</div>
+					</div>
+					</div>
+				</header>
+
+				<!--BREADCRUMB SECTION -->
+				<section>
+					<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
+						<div class="container">
+							<div class="row">
 								<?php if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user,  'read' ) ) { ?>
-									<div id="page-searchbar-lg-xl" class="d-lg-block d-none d-sm-none col-3 float-left">
-										<form id="search-desktop" action="<?php $this->text( 'wgScript' ); ?>">
-										<?php
+									<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
+										<form id="search-mobile" action="<?php $this->text( 'wgScript' ); ?>">
+											<?php
 												echo $this->getSkin()->makeSearchInput(
 													array(
-														'id' => 'page-search-input-lg-xl',
+														'id' => 'page-search-input-sm',
 														'class' => 'form-control form-control-sm pt-2 pb-2',
 														'placeholder' => $this->getSkin()->msg("full-text-search")
 													)
@@ -144,155 +174,132 @@ class LoopTemplate extends BaseTemplate {
 											?>
 											<button type="submit" class="d-none"></button>
 										</form>
-										<div class="clear"></div>
 									</div>
 								<?php }?>
 							</div> <!--End of row-->
-						</div> <!--End of nativation container-->
+						</div> <!--End of container-->
 					</div>
-				</div>
-				</div>
-			</header>
-
-			<!--BREADCRUMB SECTION -->
-			<section>
-				<div id="mobile-searchbar" class="text-center d-none d-md-none d-lg-none d-xl-none">
-					<div class="container">
+					<nav class="container" id="breadcrumb-container">
 						<div class="row">
-							<?php if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user,  'read' ) ) { ?>
-								<div class="d-block col-12 pl-0 pr-0 pt-2 pb-0">
-									<form id="search-mobile" action="<?php $this->text( 'wgScript' ); ?>">
-										<?php
-											echo $this->getSkin()->makeSearchInput(
-												array(
-													'id' => 'page-search-input-sm',
-													'class' => 'form-control form-control-sm pt-2 pb-2',
-													'placeholder' => $this->getSkin()->msg("full-text-search")
-												)
-											);
-										?>
-										<button type="submit" class="d-none"></button>
-									</form>
+							<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 p-0" id="breadcrumb-wrapper">
+								<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pr-2 pr-sm-0 float-left" id="breadcrumb-area">
+									<?php $this->outputBreadcrumb () ?>
 								</div>
-							<?php }?>
-						</div> <!--End of row-->
-					</div> <!--End of container-->
-				</div>
-				<nav class="container" id="breadcrumb-container">
-					<div class="row">
-						<div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9 p-0" id="breadcrumb-wrapper">
-							<div class="col-11 mt-2 mb-2 mt-md-2 mb-md-2 pl-2 pr-2 pr-sm-0 float-left" id="breadcrumb-area">
-								<?php $this->outputBreadcrumb () ?>
+								<?php if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user, 'read') && $this->data['isarticle'] ) {
+
+									$this->outputAudioButton();
+								}?>
 							</div>
-							<?php if( $this->renderMode != "offline" && $this->permissionManager->userHasRight( $this->user, 'read') && $this->data['isarticle'] ) {
+						</div> <!--End of row-->
+					</nav>
+				</section> <!--End of Breadcrumb section-->
 
-								$this->outputAudioButton();
-							}?>
-						</div>
-					</div> <!--End of row-->
-				</nav>
-			</section> <!--End of Breadcrumb section-->
+				<!-- CONTENT SECTION -->
+				<section>
+					<div class="container" id="page-container">
+						<div class="row">
+							<div class="col-12 col-lg-9" id="content-wrapper">
+								<div class="row mb-3" id="content-inner-wrapper">
+									<div class="col-12 pr-1 pr-sm-2 pr-md-3 pl-1 pl-sm-2 pl-md-3">
+										<div class="col-12 col-lg-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
 
-			<!-- CONTENT SECTION -->
-			<section>
-				<div class="container" id="page-container">
-					<div class="row">
-						<div class="col-12 col-lg-9" id="content-wrapper">
-							<div class="row mb-3" id="content-inner-wrapper">
-								<div class="col-12 pr-1 pr-sm-2 pr-md-3 pl-1 pl-sm-2 pl-md-3">
-									<div class="col-12 col-lg-11 pl-2 pr-2 pr-md-3 pl-md-3 pt-3 pb-3 mt-3 float-right" id="page-content">
+											<?php
+											} // end of excluding rendermode-epub
 
-	           							<?php
-										} // end of excluding rendermode-epub
+											global $wgLoopLegacyShowTitles, $wgLoopLegacyPageNumbering;
+											if ( $wgLoopLegacyShowTitles ) {
 
-										global $wgLoopLegacyShowTitles, $wgLoopLegacyPageNumbering;
-										if ( $wgLoopLegacyShowTitles ) {
+												if ( isset( $this->loopStructure->mainPage ) ) {
 
-											if ( isset( $this->loopStructure->mainPage ) ) {
+													if ( $this->lsi ) {
+														if ( $wgLoopLegacyPageNumbering ) {
+															$pageNumber = $this->lsi->tocNumber;
+														} else {
+															$pageNumber = '';
+														}
 
-												if ( $this->lsi ) {
-													if ( $wgLoopLegacyPageNumbering ) {
-														$pageNumber = $this->lsi->tocNumber;
+														$displayTitle = $pageNumber.' '.$this->lsi->tocText;
 													} else {
-														$pageNumber = '';
+														$displayTitle = $this->title->mTextform;
 													}
-
-													$displayTitle = $pageNumber.' '.$this->lsi->tocText;
 												} else {
 													$displayTitle = $this->title->mTextform;
 												}
-											} else {
-												$displayTitle = $this->title->mTextform;
-											}
 
-											if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
+												if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
 
-												echo '<h1 id="title">'.$displayTitle;
+													echo '<h1 id="title">'.$displayTitle;
 
-												if ( $this->editMode && $this->renderMode == 'default' ) {
-													echo $this->linkRenderer->makeLink(
-														$this->title,
-														new HtmlArmor('<i class="ic ic-edit"></i>'),
-														array(
-															"id" => "editpagelink",
-															"class" => "ml-2"
-														),
-														array( "action" => "edit" )
-													);
+													if ( $this->editMode && $this->renderMode == 'default' ) {
+														echo $this->linkRenderer->makeLink(
+															$this->title,
+															new HtmlArmor('<i class="ic ic-edit"></i>'),
+															array(
+																"id" => "editpagelink",
+																"class" => "ml-2"
+															),
+															array( "action" => "edit" )
+														);
+													}
+													echo '</h1>';
 												}
-												echo '</h1>';
 											}
-										}
-										?>
+											?>
 
-										<?php $this->html( 'bodytext' );
-										if( $this->renderMode != "epub" ) {?>
-									</div>
-									<div class="col-12 col-lg-11 pl-0 pr-0 float-right">
-									<?php $this->outputPageSymbols(); ?>
+											<?php $this->html( 'bodytext' );
+											if( $this->renderMode != "epub" ) {?>
+										</div>
+										<div class="col-12 col-lg-11 pl-0 pr-0 float-right">
+										<?php $this->outputPageSymbols(); ?>
+										</div>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-12 text-center mb-3">
+										<?php $this->outputBottomNavigation(); ?>
+									</div>
+								</div> <!--End of row-->
 							</div>
-							<div class="row">
-								<div class="col-12 text-center mb-3">
-									<?php $this->outputBottomNavigation(); ?>
-								</div>
-							</div> <!--End of row-->
-						</div>
-						<?php if ( $this->permissionManager->userHasRight( $this->user,  'read' ) && isset( $this->loopStructure->mainPage ) || $this->permissionManager->userHasRight( $this->user,  'loop-toc-edit' ) ) { ?>
-							<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
-							<?php if ( $this->permissionManager->userHasRight( $this->user,  'review' ) && $this->editMode && $this->data['isarticle'] && $this->renderMode != "offline" ) {
-									$this->outputFlaggedRevsPanel();
-								} ?>
-								<div class="panel-wrapper">
-									<?php 	$this->outputToc();
-
-									if ( isset( $this->loopStructure->mainPage ) ) {
-										$this->outputSpecialPages();
+							<?php if ( $this->permissionManager->userHasRight( $this->user,  'read' ) && isset( $this->loopStructure->mainPage ) || $this->permissionManager->userHasRight( $this->user,  'loop-toc-edit' ) ) { ?>
+								<div class="col-10 col-sm-7 col-md-4 col-lg-3 col-xl-3 d-none d-sm-none d-md-none d-lg-block d-xl-block pr-3 pr-lg-0 pt-3 pt-lg-0" id="sidebar-wrapper">
+								<?php if ( $this->permissionManager->userHasRight( $this->user,  'review' ) && $this->editMode && $this->data['isarticle'] && $this->renderMode != "offline" ) {
+										$this->outputFlaggedRevsPanel();
 									} ?>
-								</div>
-								<?php
-									$this->outputFeedbackSidebar();
-									$this->outputCustomSidebar();
+									<div class="panel-wrapper">
+										<?php 	$this->outputToc();
 
-									if ( isset( $this->loopStructure->mainPage ) ) {
-										$this->outputExportPanel( );
-									}
-								?>
+										if ( isset( $this->loopStructure->mainPage ) ) {
+											$this->outputSpecialPages();
+										} ?>
+									</div>
+									<?php
+										$this->outputFeedbackSidebar();
+										$this->outputCustomSidebar();
+
+										if ( isset( $this->loopStructure->mainPage ) ) {
+											$this->outputExportPanel( );
+										}
+									?>
+							</div>
+							<?php } ?>
 						</div>
-						<?php } ?>
 					</div>
-				</div>
-			</section>
-		</div>
-		<!--FOOTER SECTION-->
-		<footer>
-			<?php $this->outputFooter( ); ?>
-		</footer>
+				</section>
+			</div>
+			<!--FOOTER SECTION-->
+			<footer>
+				<?php $this->outputFooter( ); ?>
+			</footer>
 
-	<?php
-		# Legacy for MsUpload
-	 	echo $this->getSkin()->getOutput()->getBottomScripts();
+		<?php
+			# Legacy for MsUpload
+			echo $this->getSkin()->getOutput()->getBottomScripts();
+			}
+		} else {
+			$this->html( 'headelement' );
+			echo "<p class='text-center mt-2'>";
+			echo "<img class='text-center mb-5' src='/mediawiki/skins/Loop/resources/img/logo_loop.svg' /><br>";
+			echo $this->getSkin()->msg( 'loop-maintenance', $wgReadOnly === true ? "" : $wgReadOnly )->parse() ."</p>";
 		}
 	}
 
