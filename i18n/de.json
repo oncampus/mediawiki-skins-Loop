@@ -60,6 +60,7 @@
 	"revreview-tt-flag": "Diese Version als Standard autorisieren, um sie anzuzeigen für PDF und andere Exporte zu benutzen.",
 	"revreview-tt-unflag": "Diese Version nicht mehr anzeigen lassen, indem die Autorisierung entzogen wird.",
 	"revreview-current": "Unautorisierte Änderungen",
-	"quiz_correction": "Prüfen"
+	"quiz_correction": "Prüfen",
+	"loop-pdf-single-test": "Diese Seite als PDF testen"
 
 }

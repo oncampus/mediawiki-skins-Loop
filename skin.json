@@ -4,10 +4,11 @@
 	"type": "skin",
 	"ValidSkinNames": {
 		"loop": "Loop"
-	},		
+	},
 	"author": [
-		"Marc Vorreiter",
+		"Technische Hochschule Lübeck, Institut für Interaktive Systeme",
 		"Dennis Krohn",
+		"Marc Vorreiter",
 		"Dustin Neß"
 	],
 	"version": "2.0",
@@ -16,11 +17,11 @@
 	"descriptionmsg": "loopskin-desc",
 	"licence-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.33.0",
+		"MediaWiki": ">= 1.35",
 		"extensions": {
-			"Loop": ">= 2.0"
+			"Loop": ">= 2.1"
 		}
-	},	
+	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
 		"remoteSkinPath": "Loop"
@@ -31,12 +32,12 @@
 			"description" : "Defines type of render mode. [ default | offline ]"
 		},
 		"LoopSkinStyles": {
-			"value": [ 
-				"style-blue", 
-				"style-bluegray", 
-				"style-gray", 
-				"style-green", 
-				"style-purple", 
+			"value": [
+				"style-blue",
+				"style-bluegray",
+				"style-gray",
+				"style-green",
+				"style-purple",
 				"style-red"
 			],
 			"description": "Available skin styles"
@@ -46,12 +47,12 @@
 			"description": "Skin styles available in LoopSettings"
 		},
 		"LoopEditableSkinStyles": {
-			"value": [ 
-				"style-blue", 
-				"style-bluegray", 
-				"style-gray", 
-				"style-green", 
-				"style-purple", 
+			"value": [
+				"style-blue",
+				"style-bluegray",
+				"style-gray",
+				"style-green",
+				"style-purple",
 				"style-red"
 			],
 			"description": "Styles that allow a custom logo"
@@ -79,7 +80,7 @@
 	"ResourceModules": {
 		"skins.loop-bootstrap": {
 			"styles": "vendor/twbs/bootstrap/dist/css/bootstrap.css"
-		},	
+		},
 		"skins.loop-icons": {
 			"styles": "resources/loopicons/style.css"
 		},
@@ -127,7 +128,7 @@
 		},
 		"skins.loop-plyr.js": {
 			"scripts": [
-					"node_modules/plyr/dist/plyr.min.js"
+					"node_modules/plyr/dist/plyr.js"
 				]
 		},
 		"skins.style-blue": {
@@ -234,7 +235,7 @@
 				}
 			}
 		}
-	},	
+	},
 	"MessagesDirs": {
 		"Loop": [
 			"i18n"

@@ -4,6 +4,10 @@
  *
  * @ingroup Skins
  */
+if ( !defined( 'MEDIAWIKI' ) ) die ( "This file cannot be run standalone.\n" );
+
+use MediaWiki\MediaWikiServices;
+
 class SkinLoop extends SkinTemplate {
 	public $skinname = 'loop';
 	public $stylename = 'Loop';
@@ -17,10 +21,10 @@ class SkinLoop extends SkinTemplate {
 
 		global $wgStylePath, $wgFavicon;
 		$wgFavicon = "$wgStylePath/Loop/resources/img/favicon.ico";
-		
+
 		$out->addHeadItem('meta_ie_edge', '<meta http-equiv="X-UA-Compatible" content="IE=edge">');
 		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1.0' );
-		
+
 		$out->addModuleStyles( array(
 			'skins.loop-icons',
 			'skins.loop-bootstrap',
@@ -33,13 +37,14 @@ class SkinLoop extends SkinTemplate {
 			'skins.featherlight.js',
 			'skins.loop.js'
 		));
-		
-		$skinStyle = $out->getUser()->getOption( 'LoopSkinStyle' );
+
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$skinStyle = $userOptionsLookup->getOption( $out->getUser(), 'LoopSkinStyle' );
 
 		$out->addModuleStyles( array(
 			'skins.'.$skinStyle,
 		));
-		
+
 	}
 
 	/**
@@ -48,7 +53,7 @@ class SkinLoop extends SkinTemplate {
 	 * @param OutputPage $out
 	 */
 	function setupSkinUserCss( OutputPage $out ) {
-		parent::setupSkinUserCss( $out );
+		parent::setupSkinUserCss( $out ); #TODO remove?
 	}
 
 	/**
@@ -57,7 +62,7 @@ class SkinLoop extends SkinTemplate {
 	 * @param String $skinstyle
 	 */
 	public function isEditable( $skinstyle ) {
-		
+
 		global $wgLoopEditableSkinStyles;
 
 		if ( in_array( $skinstyle, $wgLoopEditableSkinStyles ) ) {

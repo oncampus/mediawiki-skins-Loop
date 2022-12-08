@@ -1,19 +1,19 @@
 {
   "name": "loopskin",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A skin for the mediawiki extension LOOP",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oncampus/mediawiki-skins-Loop.git"
   },
-  "author": "oncampus",
+  "author": "Technische Hochschule Lübeck, Institut für Interaktive Systeme",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/oncampus/mediawiki-skins-Loop/issues"
   },
   "homepage": "https://github.com/oncampus/mediawiki-skins-Loop#readme",
   "dependencies": {
-    "plyr": "^3.5.2",
+    "plyr": "3.6.4",
     "featherlight": "1.7.13"
   }
 }
