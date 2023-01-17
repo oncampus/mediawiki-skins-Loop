@@ -1417,22 +1417,30 @@ class LoopTemplate extends BaseTemplate {
 					} else {
 						$sidebarPage = false;
 					}
-
 					if ( $sidebarPage ) {
 						$sidebarTitle = Title::newFromText( $sidebarPage );
 
 						$sidebarWP = new WikiPage( $sidebarTitle );
+						$error = false;
+						if ( $sidebarWP->getID() != 0 ) {
+							$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
+							$sidebarText = $sidebarParserOutput->getText();
 
-						$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
-						$sidebarText = $sidebarParserOutput->getText();
-						if ( !empty ( $sidebarText ) ) {
-							$sidebarContentOutput = $sidebarText;
+							if ( !empty ( $sidebarText ) ) {
+								$sidebarContentOutput = $sidebarText;
+							} else {
+								$error = true;
+							}
 						} else {
-							$sidebarContentOutput = "<div class='errorbox mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
-							$showPanel = false;
+							$error = true;
 						}
-						if ( $this->editMode ) {
-							$showPanel = true;
+						if ( $error ) {
+							$sidebarContentOutput = "<div class='alert alert-danger mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
+							$showPanel = false;
+
+							if ( $this->editMode ) {
+								$showPanel = true;
+							}
 						}
 						if ( $showPanel ) {
 							$html .= '<div class="panel-wrapper custom-panel">';
@@ -1446,7 +1454,6 @@ class LoopTemplate extends BaseTemplate {
 				}
 			}
 		}
-
 		echo $html;
 	}
 
