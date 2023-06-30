@@ -3,7 +3,15 @@
 	"namemsg": "loop-skinname",
 	"type": "skin",
 	"ValidSkinNames": {
-		"loop": "Loop"
+		"loop": {
+			"displayname": "Loop",
+			"class": "SkinLoop",
+			"args": [ {
+				"name": "loop",
+				"bodyOnly": true
+			}
+			]
+		}
 	},
 	"author": [
 		"Technische Hochschule Lübeck, Institut für Interaktive Systeme",
@@ -11,15 +19,15 @@
 		"Marc Vorreiter",
 		"Dustin Neß"
 	],
-	"version": "2.0",
+	"version": "2.2.0",
 	"url": "https://github.com/oncampus/mediawiki-skins-Loop",
 	"description":	"LoopSkin",
 	"descriptionmsg": "loopskin-desc",
 	"licence-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.35",
+		"MediaWiki": ">= 1.39",
 		"extensions": {
-			"Loop": ">= 2.1"
+			"Loop": ">= 2.2.0"
 		}
 	},
 	"ResourceFileModulePaths": {
@@ -62,6 +70,7 @@
 			"description": "Styles that are allowed to be set from URL"
 		}
 	},
+
     "DefaultUserOptions": {
 		"LoopSkinStyle": "style-blue"
 	},

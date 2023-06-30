@@ -39,7 +39,6 @@ class LoopTemplate extends BaseTemplate {
 			$this->editMode = $this->userOptionsLookup->getOption( $this->user, 'LoopEditMode', false, true );
 			$this->skinStyle = $this->userOptionsLookup->getOption( $this->user, 'LoopSkinStyle', false, true );
 
-			$this->html( 'headelement' );
 			if( $this->renderMode != "epub" ) { ?>
 			<div id="page-wrapper">
 				<header>
@@ -220,10 +219,10 @@ class LoopTemplate extends BaseTemplate {
 
 														$displayTitle = $pageNumber.' '.$this->lsi->tocText;
 													} else {
-														$displayTitle = $this->title->mTextform;
+														$displayTitle = $this->title->getText();
 													}
 												} else {
-													$displayTitle = $this->title->mTextform;
+													$displayTitle = $this->title->getText();
 												}
 
 												if (  $this->title->getNamespace() == NS_MAIN || $this->title->getNamespace() == NS_GLOSSARY ) {
@@ -297,7 +296,6 @@ class LoopTemplate extends BaseTemplate {
 			}
 		} else {
 			header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate");
-			$this->html( 'headelement' );
 			echo "<p class='text-center mt-2'>";
 			echo "<img class='text-center mb-5' src='/mediawiki/skins/Loop/resources/img/logo_loop.svg' /><br>";
 			echo $this->getSkin()->msg( 'loop-maintenance', $wgReadOnly === true ? "" : $wgReadOnly )->parse() ."</p>";
@@ -1068,18 +1066,21 @@ class LoopTemplate extends BaseTemplate {
 				foreach ( $pages as $page ) {
 					if ( $page->isListed() ) {
 						if ( $page->getFinalGroupName() == "loop" ) {
-							$groups[] = $page->getPageTitle()->mTextform;
+							$groups[] = $page->getPageTitle()->getText();
 						}
 					}
 				}
 				$renderEditModeButton = false;
 				foreach ( $groups as $specialPage ) {
-					if ( $this->title->mTextform == $specialPage ) {
+					if ( $this->title->getText() == $specialPage ) {
 						$renderEditModeButton = true;
 					}
 				}
 			} elseif ( $ns == NS_MAIN || $ns == NS_GLOSSARY ) {
 				$renderEditModeButton = true;
+			}
+			if ( $this->user->isAnon() ) {
+				$renderEditModeButton = false;
 			}
 
 			if ( $renderEditModeButton ) {
@@ -1164,7 +1165,7 @@ class LoopTemplate extends BaseTemplate {
 				Title::newFromText( "Special:LoopBugReport" ),
 				new HtmlArmor( $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
-				array( "url" => urlencode( $url ), "page" => $this->title->mTextform )
+				array( "url" => urlencode( $url ), "page" => $this->title->getText() )
 			);
 		}
 		$html .= '</div>';
@@ -1376,7 +1377,7 @@ class LoopTemplate extends BaseTemplate {
 	}
 
 	public function outputCustomSidebar() {
-		global $wgParserConf, $wgParserOptions, $wgLoopExtraSidebar;
+		global $wgParserOptions, $wgLoopExtraSidebar;
 		$html = "";
 		$matches = array();
 		$parserOptions = ParserOptions::newFromUser( $this->user );
@@ -1386,11 +1387,11 @@ class LoopTemplate extends BaseTemplate {
 
 		if ( $wgLoopExtraSidebar ) {
 			$tmpTitle = Title::newFromText( 'NO TITLE' );
-			$parserOutput = $parser->parse( "{{MediaWiki:ExtraSidebar}}", $tmpTitle, new ParserOptions() );
+			$parserOutput = $parser->parse( "{{MediaWiki:ExtraSidebar}}", $tmpTitle, new ParserOptions($this->user) );
 			$html .= '<div class="panel-wrapper custom-panel">';
 			$html .= '<div class="panel-heading"></div>';
 			$html .= '<div class="panel-body pl-3 pr-3 pb-3 pt-2">';
-			$html .= $parserOutput->mText;
+			$html .= $parserOutput->getText();
 			$html .= '</div>';
 			$html .= '</div>';
 		}
@@ -1416,21 +1417,30 @@ class LoopTemplate extends BaseTemplate {
 					} else {
 						$sidebarPage = false;
 					}
-
 					if ( $sidebarPage ) {
 						$sidebarTitle = Title::newFromText( $sidebarPage );
 
 						$sidebarWP = new WikiPage( $sidebarTitle );
+						$error = false;
+						if ( $sidebarWP->getID() != 0 ) {
+							$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
+							$sidebarText = $sidebarParserOutput->getText();
 
-						$sidebarParserOutput = $sidebarWP->getParserOutput( $parserOptions, null, true );
-						if ( isset ($sidebarParserOutput->mText) ) {
-							$sidebarContentOutput = $sidebarParserOutput->mText;
+							if ( !empty ( $sidebarText ) ) {
+								$sidebarContentOutput = $sidebarText;
+							} else {
+								$error = true;
+							}
 						} else {
-							$sidebarContentOutput = "<div class='errorbox mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
-							$showPanel = false;
+							$error = true;
 						}
-						if ( $this->editMode ) {
-							$showPanel = true;
+						if ( $error ) {
+							$sidebarContentOutput = "<div class='alert alert-danger mb-0'>".$this->getSkin()->msg ( 'loopsidebar-error-notfound', $sidebarPage ) ."</div>";
+							$showPanel = false;
+
+							if ( $this->editMode ) {
+								$showPanel = true;
+							}
 						}
 						if ( $showPanel ) {
 							$html .= '<div class="panel-wrapper custom-panel">';
@@ -1444,7 +1454,6 @@ class LoopTemplate extends BaseTemplate {
 				}
 			}
 		}
-
 		echo $html;
 	}
 
@@ -1459,12 +1468,11 @@ class LoopTemplate extends BaseTemplate {
 			$html .= '<div class="col-12 text-center" id="extra-footer">
 					<div id="extra-footer-content" class="p-3">';
 
-			//$article = Article::newFromTitle( $this->title, $this->getSkin()->getContext() );
 			$parser = $this->parserFactory->create();
 			$tmpTitle = Title::newFromText( 'NO TITLE' );
-			$parserOutput = $parser->parse( "{{MediaWiki:ExtraFooter}}", $tmpTitle, new ParserOptions() );
+			$parserOutput = $parser->parse( "{{MediaWiki:ExtraFooter}}", $tmpTitle, new ParserOptions($this->user) );
 
-			$html .= $parserOutput->mText;
+			$html .= $parserOutput->getText();
 
 			$html .=  '</div></div>';
 		}
@@ -1526,7 +1534,8 @@ class LoopTemplate extends BaseTemplate {
 			$pending = $this->fr->revsArePending();
 			$stableRev = $this->fr->getBestFlaggedRevId();
 			$queryValues = $this->getSkin()->getContext()->getRequest()->getQueryValues();
-			$latestRev = $this->title->flaggedRevsArticle->mLatest;
+			$latestRev = $this->title->getLatestRevID(Title::READ_LATEST);
+
 			if ( isset( $queryValues["diff"] ) ) { # don't show rev on diff pages
 				return false;
 			} elseif ( isset( $queryValues["oldid"] ) ) { #  ?oldid=XX shows one specific edit. stable, older or newer.

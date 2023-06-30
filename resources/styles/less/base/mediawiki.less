@@ -1,4 +1,16 @@
-/* mostly contains Mediawiki overwrites */
+/** *** *** ** *** *** **/
+/** MEDIAWIKI IMPORTS  **/
+/** *** *** ** *** *** **/
+
+@import "../../../../../../resources/src/mediawiki.skinning/accessibility.less";
+@import "../../../../../../resources/src/mediawiki.skinning/content.thumbnails-common.less";
+@import "../../../../../../resources/src/mediawiki.skinning/content.links.less";
+@import "../../../../../../resources/src/mediawiki.skinning/content.externallinks.less";
+@import "../../../../../../resources/src/mediawiki.skinning/content.body.less";
+@import "../../../../../../resources/src/mediawiki.skinning/content.tables.less";
+@import "../../../../../../resources/src/mediawiki.skinning/i18n-all-lists-margins.less";
+
+/* Mediawiki overwrites: */
 
 /** *** *** ** *** *** **/
 /** MEDIAWIKI GENERAL  **/
@@ -59,6 +71,14 @@ code {
 	margin-bottom: 0.5rem;
 }
 
+.mw-highlight pre {
+	line-height: 125%;
+}
+
+.mw-highlight.mw-content-ltr .lineno {
+    float: left;
+}
+
 .mw-editsection-bracket, editsection {
 	display: none;
 	margin-bottom: 1rem
@@ -75,6 +95,7 @@ code {
 
 #content-inner-wrapper .mw-content-ltr ul, .mw-content-rtl .mw-content-ltr ul {
 	margin: 0 0 1rem 2.2rem;
+	padding: 0;
 }
 
 .thumb.tright .thumbinner,
@@ -143,7 +164,7 @@ td {
 /** *** *** *** *** *** *** *** *** *** *** **/
 /** MEDIAWIKI-UI and OO-UI INPUT CHANGES **/
 /** *** *** *** *** *** *** *** *** *** *** **/
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button, 
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button,
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:checked + span,
 .mw-ui-button.mw-ui-progressive {
 	color: @mw-ui-highlighted-button-font-color;

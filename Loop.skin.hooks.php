@@ -58,7 +58,7 @@ class LoopSkinHooks {
 			$loopHtml = new LoopHtml();
 
 			if ( isset( $target->mArticleID ) ) { # don't pick special page links
-				$targetTitle = $target->mTextform ;
+				$targetTitle = $target->getText() ;
 				$lsi = LoopStructureItem::newFromText( $targetTitle );
 				if ( $lsi ) { # links to internal pages in structure
 					$newHref = $loopHtml->resolveUrl( $target->mUrlform, '.html');
