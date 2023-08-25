@@ -399,7 +399,10 @@
   content: "\e923";
 }
 .ic-padlet:before {
-  content: "\e92e";
+	content: "\e92e";
+}
+.ic-taskcard:before {
+	content: "\e978";
 }
 .ic-prezi:before {
   content: "\e934";
