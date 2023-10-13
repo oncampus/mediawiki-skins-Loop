@@ -96,7 +96,7 @@ $(document).ready(function () {
       dataType: "html",
     })
       .done(function (data) {
-        console.log(data)
+        //console.log(data)
         $("#t2s-audio source").attr("src", data);
         $("#t2s-button").hide();
         const player = new Plyr("#t2s-audio", {
@@ -104,9 +104,10 @@ $(document).ready(function () {
           autoplay: false,
 			invertTime: true,
           muted: false,
-          iconUrl:
+          /*iconUrl:
             mw.config.get("stylepath") +
             "/Loop/node_modules/plyr/dist/plyr.svg", // use svg icons from server, not from cdn
+          */
           controls: [
             "play", // Play/pause playback
             "progress", // The progress bar and scrubber for playback and buffering
@@ -129,7 +130,7 @@ $(document).ready(function () {
         });
       })
       .fail(function (xhr, textStatus, errorThrown) {
-        console.log(textStatus + " : " + errorThrown );
+        //console.log(textStatus + " : " + errorThrown );
       });
   });
 
