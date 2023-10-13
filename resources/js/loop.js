@@ -95,7 +95,7 @@ $(document).ready(function () {
       cache: false,
       dataType: "html",
     })
-      .done(function (data) {
+      .success(function (data) {
         //console.log(data)
         $("#t2s-audio source").attr("src", data);
         $("#t2s-button").hide();
