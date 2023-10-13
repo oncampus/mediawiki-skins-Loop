@@ -101,11 +101,9 @@ $(document).ready(function () {
         $("#t2s-button").hide();
 		const audioElement = document.getElementById("t2s-audio");
 		audioElement.load(); // Attempt to reload the audio
-		  audioElement.play();
         const player = new Plyr("#t2s-audio", {
           volume: 1,
           autoplay: false,
-			invertTime: true,
           muted: false,
           iconUrl:
             mw.config.get("stylepath") +
