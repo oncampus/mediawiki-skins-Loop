@@ -104,7 +104,7 @@ $(document).ready(function () {
 				const player = new Plyr("#t2s-audio", {
 					volume: 1,
 					autoplay: false,
-					invertTime: true,
+					invertTime: false,
 					muted: false,
 					iconUrl:
 						mw.config.get("stylepath") +
