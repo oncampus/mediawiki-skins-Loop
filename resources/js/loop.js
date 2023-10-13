@@ -95,7 +95,7 @@ $(document).ready(function () {
       cache: false,
       //dataType: "html",
     })
-      .done(function (data) {
+      .ready(function (data) {
         //console.log(data)
         $("#t2s-audio source").attr("src", data);
         $("#t2s-button").hide();
@@ -104,10 +104,9 @@ $(document).ready(function () {
           autoplay: false,
 			invertTime: true,
           muted: false,
-          /*iconUrl:
+          iconUrl:
             mw.config.get("stylepath") +
             "/Loop/node_modules/plyr/dist/plyr.svg", // use svg icons from server, not from cdn
-          */
           controls: [
             "play", // Play/pause playback
             "progress", // The progress bar and scrubber for playback and buffering
