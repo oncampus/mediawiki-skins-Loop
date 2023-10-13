@@ -96,7 +96,7 @@ $(document).ready(function () {
       dataType: "html",
     })
       .done(function (data) {
-        //console.log(data)
+        console.log(data)
         $("#t2s-audio source").attr("src", data);
         $("#t2s-button").hide();
         const player = new Plyr("#t2s-audio", {
@@ -129,7 +129,7 @@ $(document).ready(function () {
         });
       })
       .fail(function (xhr, textStatus, errorThrown) {
-        //console.log(textStatus + " : " + errorThrown );
+        console.log(textStatus + " : " + errorThrown );
       });
   });
 
