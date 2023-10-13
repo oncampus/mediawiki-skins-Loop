@@ -93,9 +93,9 @@ $(document).ready(function () {
     $.ajax({
       url: $service_url,
       cache: false,
-      //dataType: "html",
+      dataType: "html",
     })
-      .ready(function (data) {
+      .done(function (data) {
         //console.log(data)
         $("#t2s-audio source").attr("src", data);
         $("#t2s-button").hide();
