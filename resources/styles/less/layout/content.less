@@ -38,3 +38,18 @@ iframe.responsive-frame {
     min-width: 80vw;
     max-height: 80vh;
 }
+
+// Display an Ordered List with Nested Counters
+ol {
+	counter-reset: item;
+}
+ol > li {
+	counter-increment: item;
+}
+ol ol > li {
+	display: block;
+}
+ol ol > li:before {
+	content: counters(item, ".") ". ";
+	margin-left: -20px;
+}
