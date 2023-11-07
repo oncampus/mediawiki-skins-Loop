@@ -40,21 +40,35 @@ iframe.responsive-frame {
 }
 
 //Fix space for ordered lists
+
 .mw-content-ltr ol {
+	counter-reset: item;
 	margin-left: 1.4rem;
 	padding-left: 0.8rem;
+}
+.mw-content-ltr ol li {
+	counter-increment: item;
+	margin-left: 0;
+}
+
+.mw-content-ltr ol ol li{
+	display: block;
+	margin-bottom: 0.1rem;
+}
+
+.mw-content-ltr ol ol li::before{
+	margin-left: -1.8rem;
+	content: counters(item, ".") ". ";
 }
 
 //same space for unordered Lists
 .mw-content-ltr ul {
+	counter-reset: none;
 	margin-left: 1.4rem;
 }
 //same space for subpoints
 .mw-content-ltr ul ul li{
-	margin-left: 1rem;
+	margin-left: 0.1rem;
 	margin-bottom: 0.1rem;
 }
 
-.mw-content-ltr ol ol li{
-	margin-bottom: 0.1rem;
-}
