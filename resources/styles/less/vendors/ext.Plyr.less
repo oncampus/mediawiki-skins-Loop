@@ -1,6 +1,7 @@
 .plyr {
 	width: 100%;
 	user-select: none;
+	z-index: 1 !important;
 }
 
 .plyr--audio .plyr__controls {
@@ -14,8 +15,15 @@
 	color: @accent-color !important;
 }
 
-.plyr--audio .plyr__control.plyr__tab-focus, 
-.plyr--audio .plyr__control:hover, 	
+.plyr--audio .plyr__menu__container{
+		top: 100%;
+		bottom: inherit;
+		margin-bottom: 0;
+		margin-top: 10px;
+}
+
+.plyr--audio .plyr__control.plyr__tab-focus,
+.plyr--audio .plyr__control:hover,
 .plyr--audio .plyr__control[aria-expanded=true] {
 	background-color: @accent-color !important;
 	color: @font-on-accent-color !important;
