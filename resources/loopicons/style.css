@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'loopfont';
-  src:  url('fonts/loopfont.eot?ylab1e');
-  src:  url('fonts/loopfont.eot?ylab1e#iefix') format('embedded-opentype'),
-    url('fonts/loopfont.ttf?ylab1e') format('truetype'),
-    url('fonts/loopfont.woff?ylab1e') format('woff'),
-    url('fonts/loopfont.svg?ylab1e#loopfont') format('svg');
+  src:  url('fonts/loopfont.eot?kk946f');
+  src:  url('fonts/loopfont.eot?kk946f#iefix') format('embedded-opentype'),
+    url('fonts/loopfont.ttf?kk946f') format('truetype'),
+    url('fonts/loopfont.woff?kk946f') format('woff'),
+    url('fonts/loopfont.svg?kk946f#loopfont') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -13,7 +13,7 @@
 [class^="ic-"], [class*=" ic-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'loopfont' !important;
-  speak: none;
+  speak: never;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -399,10 +399,7 @@
   content: "\e923";
 }
 .ic-padlet:before {
-	content: "\e92e";
-}
-.ic-taskcard:before {
-	content: "\e978";
+  content: "\e92e";
 }
 .ic-prezi:before {
   content: "\e934";
@@ -424,4 +421,13 @@
 }
 .ic-we-bold:before {
   content: "\e930";
+}
+.ic-taskcard:before {
+  content: "\e978";
+}
+.ic-volume-low:before {
+  content: "\ea28";
+}
+.ic-volume-mute2:before {
+  content: "\ea2a";
 }
