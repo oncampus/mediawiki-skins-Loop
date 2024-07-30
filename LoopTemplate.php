@@ -264,6 +264,9 @@ class LoopTemplate extends BaseTemplate {
 								<?php if ( $this->permissionManager->userHasRight( $this->user,  'review' ) && $this->editMode && $this->data['isarticle'] && $this->renderMode != "offline" ) {
 										$this->outputFlaggedRevsPanel();
 									} ?>
+									<?php
+									$this->outPutProgressBar();
+									?>
 									<div class="panel-wrapper">
 										<?php 	$this->outputToc();
 
@@ -278,6 +281,9 @@ class LoopTemplate extends BaseTemplate {
 										if ( isset( $this->loopStructure->mainPage ) ) {
 											$this->outputExportPanel( );
 										}
+									?>
+									<?php
+									$this->extraProgressPanel();
 									?>
 							</div>
 							<?php } ?>
@@ -647,7 +653,7 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputToc() {
 
-		global $wgLoopLegacyPageNumbering;
+		global $wgLoopLegacyPageNumbering, $wgLoopProgressTrackingMode;
 
 		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
@@ -711,6 +717,7 @@ class LoopTemplate extends BaseTemplate {
 						$tmpText = $lsi->tocText;
 					}
 
+
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
 
@@ -740,6 +747,16 @@ class LoopTemplate extends BaseTemplate {
 
 					}
 					*/
+
+					if($wgLoopProgressTrackingMode == 'track'){
+						$progress = LoopProgress::getProgress($lsi->article);
+						if($progress != Null) {
+							if ($progress->lp_progress == 1) {
+								$tmpText .= ' ✓';
+							}
+						}
+					}
+
 					if( ! $rootNode ) {
 
 						// outputs the first node (mainpage)
@@ -1573,6 +1590,40 @@ class LoopTemplate extends BaseTemplate {
 		} else {
 			return false;
 		}
+	}
+
+	private function extraProgressPanel() {
+		$html = "";
+
+		if(LoopProgress::showProgress()) {
+			$html .= '<div class="panel-wrapper custom-panel">';
+			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progress-title")->text() . '</header></div>';
+			$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+
+			$html .= LoopProgress::renderProgress();
+
+			$html .= '</div>';
+			$html .= '</div>';
+		}
+
+		echo $html;
+	}
+
+	private function outPutProgressBar() {
+		$html = "";
+
+		if(LoopProgress::showProgressBar()) {
+			$html .= '<div class="panel-wrapper">';
+			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progressbar-title")->text() . '</header></div>';
+			$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+
+			$html .= LoopProgress::renderProgressBar();
+
+			$html .= '</div>';
+			$html .= '</div>';
+		}
+
+		echo $html;
 	}
 
 	private function outputFlaggedRevsPanel () {
