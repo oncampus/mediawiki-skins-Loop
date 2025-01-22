@@ -1,0 +1,194 @@
+/** *** *** *** *** *** *** ** *** *** **/
+/** ***  L O O P   Personalization   *** **/
+/** *** *** *** *** *** *** ** *** *** **/
+
+
+#not_edited_filter, #not_understood_filter, #understood_filter, #save_note_button, #page_understood {
+	border:none;
+}
+
+#personal_notes {
+	width:100%;
+	margin-bottom: 0.1em;
+}
+
+.show_understood .not_edited {
+	display: none;
+}
+.show_understood .page_not_understood {
+	display: none;
+}
+
+.show_not_edited_filter .page_understood {
+	display: none;
+}
+.show_not_edited_filter .page_not_understood {
+	display: none;
+}
+
+.show_not_understood_filter .not_edited {
+	display: none;
+}
+.show_not_understood_filter .page_understood {
+	display: none;
+}
+
+.not_active {
+	opacity: 0.2;
+}
+
+h5::after {
+	content:  " \25BC";
+	float:right;
+	margin-right:0.3em;
+}
+
+.note_text_title .note_text {
+	content:"\25B2";
+}
+
+.note_text_title .note_text {
+	display:none;
+}
+
+#not_edited_filter,  #not_edited_button{
+	background-color: #4b5459;
+	border: 1px solid #4b5459;
+	box-shadow: none;
+}
+#not_understood_filter, #not_understood_button {
+	background-color: #ff3a3a;
+	box-shadow: none;
+}
+
+#understood_filter, #understood_button {
+	background-color: green;
+	box-shadow: none;
+}
+
+.main {
+	display: block;
+}
+
+.prog-wrapper {
+	display: grid;
+	width: 15rem;
+	height: 5rem; //15rem;
+	background: @base-color;
+	padding: 1rem;
+}
+
+.loading-wrapper {
+	position: relative;
+	max-height: 2rem;
+	outline: @accent-color 0.1rem solid;
+	display: grid;
+}
+
+.loading-bar-prog {
+	height: 100%;
+	background: @accent-color;
+}
+
+.loading-bar {
+	height: 100%;
+	background: transparent;
+	z-index: 1 !important;
+}
+
+.loading-contents {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	&.loading-contents-left {
+		z-index: 3;
+		color: @base-color;
+	}
+	&.loading-contents-right {
+		z-index: 2;
+		color: @accent-color;
+	}
+	& .loading-state {
+		font-size: 1.25rem;
+		font-weight: 400;
+	}
+}
+
+progress {
+	vertical-align: baseline;
+}
+
+.progress-button {
+	border-radius: 0.5rem;;
+	box-shadow:none;
+	background-color: transparent;
+	border: 1px solid #ff6f6f;
+}
+
+/**
+ * Remove the default vertical scrollbar in IE 10+.
+ */
+
+textarea {
+	overflow: auto;
+}
+
+[hidden] {
+	display: none;
+}
+
+.notebook-row input {
+	position: absolute;
+	opacity: 0;
+	z-index: -1;
+}
+.notebook-row label {
+	position: relative;
+	background-color: @components-background;
+	line-height: 22px;
+	border: 1px solid @border-color;
+	border-bottom: none !important;
+}
+.notebook-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height .35s;
+	border: 1px solid @border-color;
+	border-top: 0;
+	border-bottom: 1px solid @border-color;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.notebook-row input:checked ~ .notebook-content {
+	max-height: 100%;
+}
+.notebook-row input[type=checkbox] + label::before {
+	content: "\23F5";
+	padding-right: 10px;
+}
+.notebook-row input[type=checkbox]:checked + label::before {
+	content: "\23F7";
+	padding-right: 10px;
+}
+
+#notebook-logo {
+	background-image: url(@notebook-url);
+	background-repeat: no-repeat;
+	height: 2.4rem;
+	width: 2.4rem;
+	background-position: 0 center;
+	display:block;
+}
+
+.marked-understood {
+	color:green;
+}
+.marked-not-understood {
+	color:red;
+}

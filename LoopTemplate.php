@@ -73,6 +73,9 @@ class LoopTemplate extends BaseTemplate {
 										</div>
 										<div class="col-3 text-right">
 											<?php if( $this->renderMode != "offline" ) {
+
+												LoopProgress::createNotebookLink();
+
 												$this->outputUserMenu();
 											}?>
 										</div>
@@ -265,7 +268,9 @@ class LoopTemplate extends BaseTemplate {
 										$this->outputFlaggedRevsPanel();
 									} ?>
 									<?php
-									$this->outPutProgressBar();
+									if(LoopProgress::hasProgressPermission()) {
+										$this->outPutProgressBar();
+									}
 									?>
 									<div class="panel-wrapper">
 										<?php 	$this->outputToc();
@@ -748,11 +753,13 @@ class LoopTemplate extends BaseTemplate {
 					}
 					*/
 
-					if($wgLoopProgressTrackingMode == 'track'){
+					if(LoopProgress::hasProgressPermission()) {
 						$progress = LoopProgress::getProgress($lsi->article);
 						if($progress != Null) {
-							if ($progress->lp_progress == 1) {
-								$tmpText .= ' ✓';
+							if ($progress == LoopProgress::UNDERSTOOD) {
+								$tmpText .= '<span class="marked-understood"> ✓</span>';
+							} elseif ($progress == LoopProgress::NOT_UNDERSTOOD) {
+								$tmpText .= '<span class="marked-not-understood"> ✗</span>';
 							}
 						}
 					}
@@ -1185,6 +1192,9 @@ class LoopTemplate extends BaseTemplate {
 				array( "url" => urlencode( $url ), "page" => $this->title->getText() )
 			);
 		}
+
+		$html .= LoopProgress::getUnderstoodSelection();
+
 		$html .= '</div>';
 
 		$html .= '<div class="col-6 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
@@ -1224,6 +1234,11 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$html .= '	<button class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'" aria-label="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></button>
 				</div>';
+
+		$html .= LoopProgress::getNoteSaveButton();
+
+		$html .= LoopProgress::renderProgress();
+
 		echo $html;
 	}
 
@@ -1392,6 +1407,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		echo $html;
 	}
+
 
 	public function outputCustomSidebar() {
 		global $wgParserOptions, $wgLoopExtraSidebar;
@@ -1595,6 +1611,7 @@ class LoopTemplate extends BaseTemplate {
 	private function extraProgressPanel() {
 		$html = "";
 
+		/*
 		if(LoopProgress::showProgress()) {
 			$html .= '<div class="panel-wrapper custom-panel">';
 			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progress-title")->text() . '</header></div>';
@@ -1605,6 +1622,7 @@ class LoopTemplate extends BaseTemplate {
 			$html .= '</div>';
 			$html .= '</div>';
 		}
+		*/
 
 		echo $html;
 	}
@@ -1615,8 +1633,9 @@ class LoopTemplate extends BaseTemplate {
 		if(LoopProgress::showProgressBar()) {
 			$html .= '<div class="panel-wrapper">';
 			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progressbar-title")->text() . '</header></div>';
-			$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
+			//$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
 
+			$html .= '<div>';
 			$html .= LoopProgress::renderProgressBar();
 
 			$html .= '</div>';
