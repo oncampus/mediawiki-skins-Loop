@@ -704,7 +704,7 @@ class LoopTemplate extends BaseTemplate {
 				$html = '<div class="panel-heading">
 							<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</header>
 						</div>
-						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul>';
+						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul id="toc-ul">';
 
 				$rootNode = false;
 
@@ -752,14 +752,14 @@ class LoopTemplate extends BaseTemplate {
 
 					}
 					*/
-
+					$progress_marker = ' ';
 					if(LoopProgress::hasProgressPermission()) {
 						$progress = LoopProgress::getProgress($lsi->article);
 						if($progress != Null) {
 							if ($progress == LoopProgress::UNDERSTOOD) {
-								$tmpText .= '<span class="marked-understood"> ✓</span>';
+								$progress_marker = '<span class="marked-understood"> ✓</span>';
 							} elseif ($progress == LoopProgress::NOT_UNDERSTOOD) {
-								$tmpText .= '<span class="marked-not-understood"> ✗</span>';
+								$progress_marker = '<span class="marked-not-understood"> ✗</span>';
 							}
 						}
 					}
@@ -772,7 +772,7 @@ class LoopTemplate extends BaseTemplate {
 								$tmpTitle,
 								new HtmlArmor(
 									'<span class="tocnumber '. $tmpChapter .'"></span>
-									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' ),
+									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' . $progress_marker ),
 								array(
 									'class' => 'aToc')
 							);
@@ -832,7 +832,7 @@ class LoopTemplate extends BaseTemplate {
 							$tmpTitle,
 							new HtmlArmor(
 								$pageNumbering . '
-								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' ),
+								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' . $progress_marker ),
 							array(
 								'class' => 'aToc ml-1',
 								'title' => $tmpAltText
@@ -1193,8 +1193,6 @@ class LoopTemplate extends BaseTemplate {
 			);
 		}
 
-		$html .= LoopProgress::getUnderstoodSelection();
-
 		$html .= '</div>';
 
 		$html .= '<div class="col-6 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
@@ -1235,7 +1233,10 @@ class LoopTemplate extends BaseTemplate {
 		$html .= '	<button class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'" aria-label="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></button>
 				</div>';
 
+		$html .= '<div id="understood-section">';
+		$html .= LoopProgress::getUnderstoodSelection();
 		$html .= LoopProgress::getNoteSaveButton();
+		$html .= '</div>';
 
 		$html .= LoopProgress::renderProgress();
 

@@ -3,13 +3,9 @@
 /** *** *** *** *** *** *** ** *** *** **/
 
 
-#not_edited_filter, #not_understood_filter, #understood_filter, #save_note_button, #page_understood {
-	border:none;
-}
-
 #personal_notes {
 	width:100%;
-	margin-bottom: 0.1em;
+	margin-bottom: 0.2em;
 }
 
 .show_understood .not_edited {
@@ -34,13 +30,18 @@
 }
 
 .not_active {
-	opacity: 0.2;
+	background-color: white !important;
+	color: black !important;
+}
+#not_understood_button.not_active span {
+	color: @negative-base-color !important;
 }
 
-h5::after {
-	content:  " \25BC";
-	float:right;
-	margin-right:0.3em;
+#understood_button.not_active span:first-child{
+	color: @positive-base-color !important;
+}
+#understood_button.not_active span{
+	margin: auto auto;
 }
 
 .note_text_title .note_text {
@@ -52,18 +53,41 @@ h5::after {
 }
 
 #not_edited_filter,  #not_edited_button{
-	background-color: #4b5459;
-	border: 1px solid #4b5459;
 	box-shadow: none;
 }
 #not_understood_filter, #not_understood_button {
-	background-color: #ff3a3a;
 	box-shadow: none;
 }
 
 #understood_filter, #understood_button {
-	background-color: green;
 	box-shadow: none;
+}
+#not_understood_button, #not_edited_button, #understood_button, #understood_filter,  #not_understood_filter, #not_edited_filter, #save_note_button{
+	font-weight: 600;
+	font-size:0.8em;
+	margin:3px;
+}
+#not_edited_button, #not_edited_filter {
+	border: 2px solid @neutral-base-color;
+	background-color: @neutral-accent-color;
+	color:white;
+	margin-left: 0;
+}
+#understood_button, #understood_filter {
+	border: 2px solid @positive-base-color;
+	background-color: @positive-accent-color;
+	color:white;
+}
+#not_understood_button, #not_understood_filter {
+	border: 2px solid @negative-base-color;
+	background-color:red;
+	color:white;
+}
+
+#save_note_button {
+	border:2px solid @note-color;
+	background-color:white;
+	float:right;
 }
 
 .main {
@@ -73,7 +97,7 @@ h5::after {
 .prog-wrapper {
 	display: grid;
 	width: 15rem;
-	height: 5rem; //15rem;
+	height: 5rem;
 	background: @base-color;
 	padding: 1rem;
 }
@@ -123,11 +147,26 @@ progress {
 	vertical-align: baseline;
 }
 
+// shared for new buttons
 .progress-button {
-	border-radius: 0.5rem;;
+	border-radius: 0.5rem;
 	box-shadow:none;
-	background-color: transparent;
-	border: 1px solid #ff6f6f;
+	padding: 0.25rem;
+	font-size: 0.8rem !important;
+}
+
+#save_note_button_img {
+	background-image: url(@open-notebook-url);
+	background-repeat: no-repeat;
+	width:1.1rem;
+	height:1.1rem;
+	transform: scale(1.3);
+	vertical-align: middle;
+	display:inline-block;
+}
+
+#understood-section {
+	margin-top:2rem;
 }
 
 /**
@@ -187,10 +226,15 @@ textarea {
 }
 
 .marked-understood {
-	color:green;
+	position:relative;
+	z-index:200;
+	color: @positive-base-color;
+
 }
 .marked-not-understood {
-	color:red;
+	color:@negative-accent-color;
+	position:relative;
+	z-index:200;
 }
 
 #extend-all {
@@ -199,4 +243,22 @@ textarea {
 	height: 2.4rem;
 	width: 2.4rem;
 	background-position: 0 center;
+	float:right;
+}
+
+.filter_button_panel {
+	display:flex;
+	float:right;
+}
+
+.status-active {
+	display:inline !important;
+}
+
+.status-saved {
+	background-color:@note-accent-color !important;
+}
+
+#save_note_button p {
+	display:none;
 }
