@@ -33,7 +33,7 @@
 	background-color: white !important;
 	color: black !important;
 }
-#not_understood_button.not_active span {
+#not_understood_button.not_active span:first-child {
 	color: @negative-base-color !important;
 }
 
@@ -65,7 +65,7 @@
 #not_understood_button, #not_edited_button, #understood_button, #understood_filter,  #not_understood_filter, #not_edited_filter, #save_note_button{
 	font-weight: 600;
 	font-size:0.8em;
-	margin:3px;
+	margin: 3px;
 }
 #not_edited_button, #not_edited_filter {
 	border: 2px solid @neutral-base-color;
@@ -96,9 +96,7 @@
 
 .prog-wrapper {
 	display: grid;
-	width: 15rem;
 	height: 5rem;
-	background: @base-color;
 	padding: 1rem;
 }
 
@@ -153,6 +151,8 @@ progress {
 	box-shadow:none;
 	padding: 0.25rem;
 	font-size: 0.8rem !important;
+
+	min-width:60px;
 }
 
 #save_note_button_img {
@@ -227,14 +227,16 @@ textarea {
 
 .marked-understood {
 	position:relative;
-	z-index:200;
 	color: @positive-base-color;
 
 }
 .marked-not-understood {
 	color:@negative-accent-color;
 	position:relative;
-	z-index:200;
+}
+.marked-not-edited {
+	color:@neutral-accent-color;
+	position:relative;
 }
 
 #extend-all {
@@ -261,4 +263,50 @@ textarea {
 
 #save_note_button p {
 	display:none;
+}
+
+.hide_note {
+	display:none;
+}
+
+.sidebar-progress-marker {
+	position: absolute !important;
+	right: 0px !important;
+	background-color: @sidebar-background;
+	z-index:200;
+	min-width: 20px;
+	text-align: center;
+}
+
+#toc-nav a {
+	max-width: 215px !important;
+	display: inline-block !important;
+	overflow: clip !important;
+}
+
+.toc-tree li a:after {
+	right: 0;
+}
+
+.understood_states {
+	display: flex;
+	width: 100%;
+}
+#understood-section {
+	display: grid;
+	width: 100%;
+	grid-template-columns: 3fr 1fr;
+}
+
+@media (max-width: 990px) {
+	.sidebar-progress-marker {
+		position: absolute !important;
+		right: 20px !important;
+		background-color:@sidebar-background;
+	}
+}
+@media (max-width: 600px) {
+	.progress_button_responsive_text {
+		display:none !important;
+	}
 }

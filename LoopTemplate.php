@@ -754,12 +754,13 @@ class LoopTemplate extends BaseTemplate {
 					*/
 					$progress_marker = ' ';
 					if(LoopProgress::hasProgressPermission()) {
+						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ⬤</span>';
 						$progress = LoopProgress::getProgress($lsi->article);
 						if($progress != Null) {
 							if ($progress == LoopProgress::UNDERSTOOD) {
-								$progress_marker = '<span class="marked-understood"> ✓</span>';
+								$progress_marker = '<span class="marked-understood sidebar-progress-marker"> ✓</span>';
 							} elseif ($progress == LoopProgress::NOT_UNDERSTOOD) {
-								$progress_marker = '<span class="marked-not-understood"> ✗</span>';
+								$progress_marker = '<span class="marked-not-understood sidebar-progress-marker"> ✗</span>';
 							}
 						}
 					}
@@ -1634,7 +1635,6 @@ class LoopTemplate extends BaseTemplate {
 		if(LoopProgress::showProgressBar()) {
 			$html .= '<div class="panel-wrapper">';
 			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progressbar-title")->text() . '</header></div>';
-			//$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
 
 			$html .= '<div>';
 			$html .= LoopProgress::renderProgressBar();
