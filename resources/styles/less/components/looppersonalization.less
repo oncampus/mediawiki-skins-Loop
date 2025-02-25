@@ -2,26 +2,22 @@
 /** ***  L O O P   Personalization   *** **/
 /** *** *** *** *** *** *** ** *** *** **/
 
-
 #personal_notes {
 	width:100%;
 	margin-bottom: 0.2em;
 }
-
 .show_understood .not_edited {
 	display: none;
 }
 .show_understood .page_not_understood {
 	display: none;
 }
-
 .show_not_edited_filter .page_understood {
 	display: none;
 }
 .show_not_edited_filter .page_not_understood {
 	display: none;
 }
-
 .show_not_understood_filter .not_edited {
 	display: none;
 }
@@ -45,10 +41,6 @@
 }
 
 .note_text_title .note_text {
-	content:"\25B2";
-}
-
-.note_text_title .note_text {
 	display:none;
 }
 
@@ -62,11 +54,7 @@
 #understood_filter, #understood_button {
 	box-shadow: none;
 }
-#not_understood_button, #not_edited_button, #understood_button, #understood_filter,  #not_understood_filter, #not_edited_filter, #save_note_button{
-	font-weight: 600;
-	font-size:0.8em;
-	margin: 3px;
-}
+
 #not_edited_button, #not_edited_filter {
 	border: 2px solid @neutral-base-color;
 	background-color: @neutral-accent-color;
@@ -145,14 +133,15 @@ progress {
 	vertical-align: baseline;
 }
 
-// shared for new buttons
+// shared for buttons
 .progress-button {
 	border-radius: 0.5rem;
 	box-shadow:none;
 	padding: 0.25rem;
 	font-size: 0.8rem !important;
-
 	min-width:60px;
+	font-weight: 600;
+	margin: 3px;
 }
 
 #save_note_button_img {
@@ -169,16 +158,8 @@ progress {
 	margin-top:2rem;
 }
 
-/**
- * Remove the default vertical scrollbar in IE 10+.
- */
-
 textarea {
 	overflow: auto;
-}
-
-[hidden] {
-	display: none;
 }
 
 .notebook-row input {
@@ -262,10 +243,6 @@ textarea {
 }
 
 #save_note_button p {
-	display:none;
-}
-
-.hide_note {
 	display:none;
 }
 
