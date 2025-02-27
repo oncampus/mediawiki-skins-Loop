@@ -754,13 +754,13 @@ class LoopTemplate extends BaseTemplate {
 					*/
 					$progress_marker = ' ';
 					if(LoopProgress::hasProgressPermission()) {
-						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ⬤</span>';
+						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ' . LoopProgress::NOT_EDITED_SYMBOL . '</span>';
 						$progress = LoopProgress::getProgress($lsi->article);
 						if($progress != Null) {
 							if ($progress == LoopProgress::UNDERSTOOD) {
-								$progress_marker = '<span class="marked-understood sidebar-progress-marker"> ✓</span>';
+								$progress_marker = '<span class="marked-understood sidebar-progress-marker"> ' . LoopProgress::UNDERSTOOD_SYMBOL . '</span>';
 							} elseif ($progress == LoopProgress::NOT_UNDERSTOOD) {
-								$progress_marker = '<span class="marked-not-understood sidebar-progress-marker"> ✗</span>';
+								$progress_marker = '<span class="marked-not-understood sidebar-progress-marker"> ' . LoopProgress::NOT_UNDERSTOOD_SYMBOL . '</span>';
 							}
 						}
 					}
