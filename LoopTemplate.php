@@ -287,9 +287,6 @@ class LoopTemplate extends BaseTemplate {
 											$this->outputExportPanel( );
 										}
 									?>
-									<?php
-									$this->extraProgressPanel();
-									?>
 							</div>
 							<?php } ?>
 						</div>
@@ -1608,25 +1605,6 @@ class LoopTemplate extends BaseTemplate {
 		} else {
 			return false;
 		}
-	}
-
-	private function extraProgressPanel() {
-		$html = "";
-
-		/*
-		if(LoopProgress::showProgress()) {
-			$html .= '<div class="panel-wrapper custom-panel">';
-			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progress-title")->text() . '</header></div>';
-			$html .= '<div class="panel-body pl-3 pr-3 pb-3">';
-
-			$html .= LoopProgress::renderProgress();
-
-			$html .= '</div>';
-			$html .= '</div>';
-		}
-		*/
-
-		echo $html;
 	}
 
 	private function outPutProgressBar() {
