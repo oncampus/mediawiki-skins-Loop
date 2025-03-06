@@ -73,6 +73,9 @@ class LoopTemplate extends BaseTemplate {
 										</div>
 										<div class="col-3 text-right">
 											<?php if( $this->renderMode != "offline" ) {
+
+												LoopProgress::createNotebookLink();
+
 												$this->outputUserMenu();
 											}?>
 										</div>
@@ -264,6 +267,11 @@ class LoopTemplate extends BaseTemplate {
 								<?php if ( $this->permissionManager->userHasRight( $this->user,  'review' ) && $this->editMode && $this->data['isarticle'] && $this->renderMode != "offline" ) {
 										$this->outputFlaggedRevsPanel();
 									} ?>
+									<?php
+									if(LoopProgress::hasProgressPermission()) {
+										$this->outPutProgressBar();
+									}
+									?>
 									<div class="panel-wrapper">
 										<?php 	$this->outputToc();
 
@@ -647,7 +655,7 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputToc() {
 
-		global $wgLoopLegacyPageNumbering;
+		global $wgLoopLegacyPageNumbering, $wgLoopProgressTrackingMode;
 
 		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
@@ -693,7 +701,7 @@ class LoopTemplate extends BaseTemplate {
 				$html = '<div class="panel-heading">
 							<header class="h5 panel-title mb-0 pl-3 pr-3 pt-2 pb-2">' . $this->getSkin()->msg( 'loop-toc-headline' ) . $editButton .'</header>
 						</div>
-						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul>';
+						<div id="toc-nav" class="panel-body pr-1 pl-2 pb-2 pl-xl-2 pt-0 toc-tree"><ul id="toc-ul">';
 
 				$rootNode = false;
 
@@ -710,6 +718,7 @@ class LoopTemplate extends BaseTemplate {
 						$tmpTitle = Title::newFromText( $lsi->tocText );
 						$tmpText = $lsi->tocText;
 					}
+
 
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
@@ -740,6 +749,19 @@ class LoopTemplate extends BaseTemplate {
 
 					}
 					*/
+					$progress_marker = ' ';
+					if(LoopProgress::hasProgressPermission()) {
+						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ' . LoopProgress::NOT_EDITED_SYMBOL . '</span>';
+						$progress = LoopProgress::getProgress($lsi->article);
+						if($progress != Null) {
+							if ($progress == LoopProgress::UNDERSTOOD) {
+								$progress_marker = '<span class="marked-understood sidebar-progress-marker"> ' . LoopProgress::UNDERSTOOD_SYMBOL . '</span>';
+							} elseif ($progress == LoopProgress::NOT_UNDERSTOOD) {
+								$progress_marker = '<span class="marked-not-understood sidebar-progress-marker"> ' . LoopProgress::NOT_UNDERSTOOD_SYMBOL . '</span>';
+							}
+						}
+					}
+
 					if( ! $rootNode ) {
 
 						// outputs the first node (mainpage)
@@ -748,7 +770,7 @@ class LoopTemplate extends BaseTemplate {
 								$tmpTitle,
 								new HtmlArmor(
 									'<span class="tocnumber '. $tmpChapter .'"></span>
-									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' ),
+									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' . $progress_marker ),
 								array(
 									'class' => 'aToc')
 							);
@@ -808,7 +830,7 @@ class LoopTemplate extends BaseTemplate {
 							$tmpTitle,
 							new HtmlArmor(
 								$pageNumbering . '
-								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' ),
+								<span class="toctext '. $activeClass .'">'.$tmpText  .'</span>' . $progress_marker ),
 							array(
 								'class' => 'aToc ml-1',
 								'title' => $tmpAltText
@@ -1168,6 +1190,7 @@ class LoopTemplate extends BaseTemplate {
 				array( "url" => urlencode( $url ), "page" => $this->title->getText() )
 			);
 		}
+
 		$html .= '</div>';
 
 		$html .= '<div class="col-6 text-right float-right p-0 pt-1 pb-2" id="content-wrapper-bottom-icons">';
@@ -1207,6 +1230,14 @@ class LoopTemplate extends BaseTemplate {
 		}
 		$html .= '	<button class="page-symbol align-middle ic ic-top cursor-pointer" id="page-topjump" title="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'" aria-label="'.$this->getSkin()->msg( 'loop-page-icons-jumptotop' ) .'"></button>
 				</div>';
+
+		$html .= '<div id="understood-section">';
+		$html .= LoopProgress::getUnderstoodSelection();
+		$html .= LoopProgress::getNoteSaveButton();
+		$html .= '</div>';
+
+		$html .= LoopProgress::renderProgress();
+
 		echo $html;
 	}
 
@@ -1375,6 +1406,7 @@ class LoopTemplate extends BaseTemplate {
 		}
 		echo $html;
 	}
+
 
 	public function outputCustomSidebar() {
 		global $wgParserOptions, $wgLoopExtraSidebar;
@@ -1573,6 +1605,23 @@ class LoopTemplate extends BaseTemplate {
 		} else {
 			return false;
 		}
+	}
+
+	private function outPutProgressBar() {
+		$html = "";
+
+		if(LoopProgress::showProgressBar()) {
+			$html .= '<div class="panel-wrapper">';
+			$html .= '<div class="panel-heading mb-2"><header class="h5 panel-title mb-0 pl-3 pr-3 pt-2">' . $this->getSkin()->msg("loop-progressbar-title")->text() . '</header></div>';
+
+			$html .= '<div>';
+			$html .= LoopProgress::renderProgressBar();
+
+			$html .= '</div>';
+			$html .= '</div>';
+		}
+
+		echo $html;
 	}
 
 	private function outputFlaggedRevsPanel () {
