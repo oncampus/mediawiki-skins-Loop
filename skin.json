@@ -141,7 +141,7 @@
 				]
 		},
 		"skins.style-blue": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-blue/loop-blue.less": {
 					"media": "all"
@@ -149,7 +149,7 @@
 			}
 		},
 		"skins.style-green": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-green/loop-green.less": {
 					"media": "all"
@@ -157,7 +157,7 @@
 			}
 		},
 		"skins.style-gray": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-gray/loop-gray.less": {
 					"media": "all"
@@ -165,7 +165,7 @@
 			}
 		},
 		"skins.style-purple": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-purple/loop-purple.less": {
 					"media": "all"
@@ -173,7 +173,7 @@
 			}
 		},
 		"skins.style-red": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-red/loop-red.less": {
 					"media": "all"
@@ -181,7 +181,7 @@
 			}
 		},
 		"skins.style-bluegray": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/common/loop-bluegray/loop-bluegray.less": {
 					"media": "all"
@@ -189,7 +189,7 @@
 			}
 		},
 		"skins.style-oncampus": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-oncampus/loop-oncampus.less": {
 					"media": "all"
@@ -197,7 +197,7 @@
 			}
 		},
 		"skins.style-vfh": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-vfh/loop-vfh.less": {
 					"media": "all"
@@ -205,7 +205,7 @@
 			}
 		},
 		"skins.style-thl": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-thl/loop-thl.less": {
 					"media": "all"
@@ -213,7 +213,7 @@
 			}
 		},
 		"skins.style-ttxtt": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-ttxtt/loop-ttxtt.less": {
 					"media": "all"
@@ -221,7 +221,7 @@
 			}
 		},
 		"skins.style-allensbach": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-allensbach/loop-allensbach.less": {
 					"media": "all"
@@ -229,7 +229,7 @@
 			}
 		},
 		"skins.style-jade": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-jade/loop-jade.less": {
 					"media": "all"
@@ -237,7 +237,7 @@
 			}
 		},
 		"skins.style-ram": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"resources/styles/less/skins/custom/loop-ram/loop-ram.less": {
 					"media": "all"
