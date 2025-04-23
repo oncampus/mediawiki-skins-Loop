@@ -1433,7 +1433,10 @@ class LoopTemplate extends BaseTemplate {
 			$contentText = '';
 			if ( $wp->getLatest() != 0 ) {
 				$content = $wp->getContent();
-				$contentText = ContentHandler::getContentText( $content );
+
+				if($content and ($content instanceof TextContent) and !$content->isEmpty()){
+					$contentText = $content->getText();
+				}
 			}
 			$parser->extractTagsAndParams( array( 'loop_sidebar' ) , $contentText, $matches);
 			foreach ($matches as $match) {
