@@ -1566,7 +1566,7 @@ class LoopTemplate extends BaseTemplate {
 			$pending = $this->fr->revsArePending();
 			$stableRev = $this->fr->getBestFlaggedRevId();
 			$queryValues = $this->getSkin()->getContext()->getRequest()->getQueryValues();
-			$latestRev = $this->title->getLatestRevID(Title::READ_LATEST);
+			$latestRev = $this->title->getLatestRevID(IDBAccessObject::READ_LATEST); //Title::READ_LATEST);
 
 			if ( isset( $queryValues["diff"] ) ) { # don't show rev on diff pages
 				return false;
