@@ -27,8 +27,16 @@ class LoopSkinHooks {
 		$editMode = $userOptionsLookup->getOption( $skin->getUser(), 'LoopEditMode', false, true );
 		$renderMode = $userOptionsLookup->getOption( $skin->getUser(), 'LoopRenderMode', $wgDefaultUserOptions['LoopRenderMode'], true );
 
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$sectionLink = $linkRenderer->makeLink(
+			$title,
+			new HtmlArmor( '<span class="ic ic-edit"></span>' ),
+			['title' => $tooltip],
+			['action' => 'edit', 'section' => $section]
+		);
+
 		if ( $editMode && $renderMode == "default" ) {
-			$result[ 'editsection' ][ 'text' ] = new HtmlArmor('<span class="ic ic-edit"></span>');
+			$result[ 'editsection' ][ 'html' ] = $sectionLink; //'🖋️';
 		} else {
 			$result[ 'editsection' ][ 'text' ] = '';
 		}
