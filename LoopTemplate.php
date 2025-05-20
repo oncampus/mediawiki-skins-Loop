@@ -1660,7 +1660,9 @@ class LoopTemplate extends BaseTemplate {
 
 			$dom = new domDocument;
 			$dom->formatOutput = true;
-			$dom->loadHTML( '<?xml encoding="utf-8" ?>' . $this->data['dataAfterContent'], LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOXMLDECL );
+
+			// commented out for now
+			/* $dom->loadHTML( '<?xml encoding="utf-8" ?>' . $this->data['dataAfterContent'], LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOXMLDECL ); */
 
 			if ( $dom->getElementById( 'mw-fr-reviewform' ) ) {
 
