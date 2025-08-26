@@ -39,6 +39,14 @@ body {
 	height: auto !important;
 }
 
+//fix images
+span.responsive-image img.mw-file-element {
+	max-width: 100%;
+	height: auto;        /* preserve aspect ratio */
+	object-fit: contain; /* prevents cropping if a height is ever applied */
+	display: block;      /* avoids inline gaps when wrapped in <a> */
+}
+
 .thumbcaption, .thumb.tright .noresize div a {
 	display: none;
 }

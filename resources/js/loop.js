@@ -237,21 +237,27 @@ $(document).ready(function () {
 	}
 
 	/* Featherlight */
-	$(".responsive-image").each(function (index) {
+	$(".responsive-image").each(function () {
 		if (
 			!$(this).hasClass("image-editmode") &&
 			!$(this).parent().parent().hasClass("modal-content")
 		) {
-			let url = $(this).attr("src");
-			//downsized images receive a featherlight box for the original pic
-			if (url.indexOf("/thumb/") >= 0) {
-				url = url.substr(0, url.lastIndexOf("/")).replace("/thumb/", "/");
-			}
+			let $img = $(this).find("img.mw-file-element"); // Find the image inside
 
-			$(this).wrap('<a href="' + url + '"></a>');
-			$(this).featherlight(url);
+			if ($img.length && $img.attr("src") !== undefined) {
+				let url = $img.attr("src");
+
+				// Fix thumb URL -> original image
+				if (url.indexOf("/thumb/") >= 0) {
+					url = url.substr(0, url.lastIndexOf("/")).replace("/thumb/", "/");
+				}
+
+				$img.wrap('<a href="' + url + '"></a>'); // Wrap image with link
+				$img.featherlight(url); // Attach Featherlight
+			}
 		}
 	});
+
 
 	$('.loop_consent_agree').click(function () {
 		if (!document.cookie.match(/^(.*;)?\s*LoopConsent\s*=\s*[^;]+(.*)?$/)) {
