@@ -14,6 +14,28 @@ class LoopTemplate extends BaseTemplate {
 	 * Outputs the entire contents of the page
 	 */
 
+	/* for now leave everything public */
+	public $mwService;
+	public $permissionManager;
+	public $userGroupManager;
+	public $loopStructure;
+	public $linkRenderer;
+	public $loopSettings;
+	public $user;
+	public $title;
+	public $parserFactory;
+	public $lsi;
+	public $userOptionsLookup;
+	public $renderMode;
+	public $editMode;
+	public $skinStyle;
+	public $userName;
+	public $pendingChanges;
+	public $pageRevMsg;
+	public $pageRevisionStatus;
+	public $fr;
+
+
 	public function execute() {
 
 		global $wgDefaultUserOptions, $wgLoopLegacyPageNumbering, $wgReadOnly;
@@ -55,11 +77,22 @@ class LoopTemplate extends BaseTemplate {
 													$customLogo = ' style="background-image:url('.$wgLoopCustomLogo["customFilePath"].');"';
 												}
 												if( isset( $this->loopStructure->mainPage ) ) {
-													echo $this->linkRenderer->makelink(
-														Title::newFromID( $this->loopStructure->mainPage ),
-														new HtmlArmor( '<div id="logo" class="mb-1 ml-1 mt-1"'.$customLogo.'></div>'),
-														array('id' => 'loop-logo')
-													);
+													try {
+														$title = Title::newFromID($this->loopStructure->mainPage);
+														if($title != Null) {
+															echo $this->linkRenderer->makelink(
+																$title,
+																new HtmlArmor('<div id="logo" class="mb-1 ml-1 mt-1"' . $customLogo . '></div>'),
+																array('id' => 'loop-logo')
+															);
+														} else {
+															echo('<div id="logo" class="mb-1 ml-1 mt-1"' . $customLogo . '></div>');
+														}
+
+													} catch (Exception $e) {
+														//var_dump($this->loopStructure->mainPage);
+														echo("no main page");
+													}
 												} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 													echo $this->linkRenderer->makelink(
 														Title::newFromText( $this->data["sidebar"]["navigation"][0]["text"] ),
@@ -86,10 +119,14 @@ class LoopTemplate extends BaseTemplate {
 								<?php
 									if( isset( $this->loopStructure->mainPage ) ) {
 										$title = Title::newFromID( $this->loopStructure->mainPage );
-										echo $this->linkRenderer->makelink(
-											$title,
-											new HtmlArmor( '<header class="h1 p-1" id="loop-title">'. $title . '</header>' )
-										);
+										try {
+											echo $this->linkRenderer->makelink(
+												$title,
+												new HtmlArmor('<header class="h1 p-1" id="loop-title">' . $title . '</header>')
+											);
+										} catch (Exception $e) {
+											echo('<header class="h1 p-1" id="loop-title">' . $title . '</header>');
+										}
 									} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 										global $wgSitename;
 										echo $this->linkRenderer->makelink(
@@ -220,7 +257,12 @@ class LoopTemplate extends BaseTemplate {
 															$pageNumber = '';
 														}
 
-														$displayTitle = $pageNumber.' '.$this->lsi->tocText;
+														//$displayTitle = $pageNumber.' '.$this->lsi->tocText;
+														$displayTitle = $this->title->getText();
+														// test
+														//$newPage = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( Title::newFromText( $this->title ));
+
+														//$displayTitle = $newPage->getTitle();
 													} else {
 														$displayTitle = $this->title->getText();
 													}
@@ -444,12 +486,19 @@ class LoopTemplate extends BaseTemplate {
 		$home_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" '.$disabled.' aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
 
 		if ( $mainPage ) {
-			echo $this->linkRenderer->makelink(
-				Title::newFromID($mainPage),
-				new HtmlArmor( $home_button ),
-				array('class' => 'nav-btn',
-					'title' => $this->getSkin()->msg( 'loop-navigation-label-home' ) )
+			try {
+				echo $this->linkRenderer->makelink(
+					Title::newFromID($mainPage),
+					new HtmlArmor($home_button),
+					array('class' => 'nav-btn',
+						'title' => $this->getSkin()->msg('loop-navigation-label-home'))
 				);
+			} catch (Exception $e) {
+				$disabled = "disabled";
+				$home_button = '<button type="button" class="btn btn-light page-nav-btn" tabindex="-1" '.$disabled.' aria-label="'.$this->getSkin()->msg( 'loop-navigation-label-home' ).'"><span class="ic ic-home"></span></button>';
+				echo($home_button); //'<span class="nav-btn">' . $this->getSkin()->msg('loop-navigation-label-home') . '</span>');
+			}
+
 		} elseif ( isset ( $this->data["sidebar"]["navigation"][0]["text"] ) ) {
 			global $wgSitename;
 			echo $this->linkRenderer->makelink(
@@ -714,13 +763,14 @@ class LoopTemplate extends BaseTemplate {
 
 					if ( $tmpTitle ) {
 						$tmpText = $tmpTitle->getText();
+						$tmpAltText = $tmpText;
 					} else {
 						$tmpTitle = Title::newFromText( $lsi->tocText );
-						$tmpText = $lsi->tocText;
+						$tmpText =  '<del>'. $lsi->tocText . '</del>'; //
+						$tmpAltText = $lsi->tocText;
 					}
 
 
-					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
 
 					$nextNode = $lsi->nextArticle;
@@ -770,7 +820,7 @@ class LoopTemplate extends BaseTemplate {
 								$tmpTitle,
 								new HtmlArmor(
 									'<span class="tocnumber '. $tmpChapter .'"></span>
-									<span class="toctext '. $activeClass .'">'. $tmpText  .'</span>' . $progress_marker ),
+									<span class="toctext '. $activeClass .'">'. $tmpText .'</span>' . $progress_marker ),
 								array(
 									'class' => 'aToc')
 							);
@@ -819,7 +869,7 @@ class LoopTemplate extends BaseTemplate {
 
 					// outputs the page in a tree
 					if($wgLoopLegacyPageNumbering) {
-						$pageNumbering = '<span class="tocnumber '. $activeClass .'">'.$tmpChapter.'</span>';
+						$pageNumbering = '<span class="tocnumber '. $activeClass .'">'.$tmpChapter .'</span>';
 					} else {
 						$pageNumbering = '';
 					}
