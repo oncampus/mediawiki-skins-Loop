@@ -1186,7 +1186,7 @@ class LoopTemplate extends BaseTemplate {
 			$html .= $this->linkRenderer->makeLink(
 				Title::newFromText( "Special:LoopBugReport" ),
 				new HtmlArmor( $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
-				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				array("class" => "small text-muted font-weight-bold font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array( "url" => urlencode( $url ), "page" => $this->title->getText() )
 			);
 		}
