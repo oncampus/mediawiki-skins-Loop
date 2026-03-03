@@ -237,21 +237,64 @@ $(document).ready(function () {
 	}
 
 	/* Featherlight */
-	$(".responsive-image").each(function (index) {
+	$(".responsive-image").each(function () {
 		if (
 			!$(this).hasClass("image-editmode") &&
 			!$(this).parent().parent().hasClass("modal-content")
 		) {
-			let url = $(this).attr("src");
-			//downsized images receive a featherlight box for the original pic
-			if (url.indexOf("/thumb/") >= 0) {
-				url = url.substr(0, url.lastIndexOf("/")).replace("/thumb/", "/");
+			let $img = $(this).find("img.mw-file-element"); // Find the image inside
+
+			if($img == 0) {
+				$img = $(this);
 			}
 
-			$(this).wrap('<a href="' + url + '"></a>');
-			$(this).featherlight(url);
+			if ($img.length && $img.attr("src") !== undefined) {
+				let url = $img.attr("src");
+
+				// Fix thumb URL -> original image
+				if (url.indexOf("/thumb/") >= 0) {
+					url = url.substr(0, url.lastIndexOf("/")).replace("/thumb/", "/");
+				}
+
+				$img.wrap('<a href="' + url + '"></a>'); // Wrap image with link
+				$img.featherlight(url); // Attach Featherlight
+			}
 		}
 	});
+
+
+	/* Featherlight: Universal MediaWiki image handler */
+	/* Featherlight for all responsive images, nested in any structure */
+
+	$("td.loop-listofobjects-image img.responsive-image").each(function () {
+		let $img = $(this);
+
+		// Skip images in edit mode or inside modal
+		if ($img.hasClass("image-editmode") || $img.closest(".modal-content").length) {
+			return;
+		}
+
+		// Make sure the image has a src
+		let url = $img.attr("src");
+		if (!url) return;
+
+		// Convert thumbnail URL to original image URL
+		if (url.indexOf("/thumb/") >= 0) {
+			url = url.substr(0, url.lastIndexOf("/")).replace("/thumb/", "/");
+		}
+
+		// Wrap in anchor if not already wrapped
+		if (!$img.parent("a").length) {
+			$img.wrap('<a href="' + url + '"></a>');
+		}
+
+		// Attach Featherlight to the link
+		//$img.parent("a").featherlight(url);
+
+		$img.wrap('<a href="' + url + '"></a>');
+		$img.featherlight(url);
+	});
+
 
 	$('.loop_consent_agree').click(function () {
 		if (!document.cookie.match(/^(.*;)?\s*LoopConsent\s*=\s*[^;]+(.*)?$/)) {
@@ -291,3 +334,45 @@ $(document).ready(function () {
 		});
 	});
 });
+
+
+/**
+ * Part to rescale math
+ */
+function wrapAndScaleMath() {
+	$('.mwe-math-element').each(function () {
+		let $math = $(this);
+
+		// Wrap in a container if not already wrapped
+		if (!$math.parent().hasClass('math-scale-wrapper')) {
+			$math.wrap('<span class="math-scale-wrapper" style="display:inline-block;"></span>');
+		}
+
+		let $wrapper = $math.parent('.math-scale-wrapper');
+		let parentWidth = $wrapper.parent().width();
+		let wrapperWidth = $wrapper.width();
+
+		if (wrapperWidth > parentWidth) {
+			let scale = parentWidth / wrapperWidth;
+			$wrapper.css({
+				'transform': 'scale(' + scale + ')',
+				'transform-origin': 'left center',
+				'display': 'inline-block'
+			});
+		} else {
+			$wrapper.css({
+				'transform': 'scale(1)',
+				'transform-origin': 'left center'
+			});
+		}
+	});
+}
+
+// Initial run
+wrapAndScaleMath();
+
+// Re-run on window resize
+$(window).on('resize', function () {
+	wrapAndScaleMath();
+});
+

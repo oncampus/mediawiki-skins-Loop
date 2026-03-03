@@ -39,6 +39,14 @@ body {
 	height: auto !important;
 }
 
+//fix images
+span.responsive-image img.mw-file-element {
+	max-width: 100%;
+	height: auto;        /* preserve aspect ratio */
+	object-fit: contain; /* prevents cropping if a height is ever applied */
+	display: block;      /* avoids inline gaps when wrapped in <a> */
+}
+
 .thumbcaption, .thumb.tright .noresize div a {
 	display: none;
 }
@@ -238,3 +246,22 @@ td {
 .oo-ui-textInputWidget input {
 	height: inherit;
 }
+
+
+.ext-WikiEditor-realtimepreview-button span.oo-ui-labelElement-label {
+	display:none;
+}
+.wikiEditor-ui-toolbar .page-characters div span {
+	height: auto !important;
+}
+
+mjx-container svg {
+	max-width: 100%;
+}
+
+figure[typeof~="mw:File/Thumb"] {
+	float: right;
+	clear: right;
+	margin: 0.5em 0 1.3em 1.4em;
+}
+
