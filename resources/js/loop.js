@@ -10,6 +10,9 @@ $(document).ready(function () {
 	var tocNav = $("#toc-nav");
 	var tocSpecialNav = $("#toc-specialpages");
 
+
+	$('.mw-userlogin-help').hide();
+
 	/**
 	 * Set position of footer for short pages to bottom of the window.
 	 */
