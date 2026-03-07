@@ -1,23 +1,24 @@
 @import "../../../abstracts/variables.less";
 
-@theme-colour: @bluegray;
+@theme-colour: @orange;
 
-@banner-background: url(@banner-bg-url);
+@banner-background: lighten( @gray, 10% );
 @banner-background-position: 0 0;
-@accent-color: darken( @theme-colour, 15% );
-@components-color: darken( @theme-colour, 25% );
+@accent-color: @theme-colour;
+@components-color: darken( @theme-colour, 10% );
 @content-outter-background:#f7f7f7;
 @nav-button-background: #f7f7f7;
-@link-color: darken(@theme-colour, 25% );
+@link-color: darken(@theme-colour, 5% );
+@mw-ui-highlighted-button-bg: lighten( @gray, 10% );
 
 /* The following rules change the top banner's width to screen size. */
 
 #banner-container {
 	max-width: 100% !important;
-	padding-right: none !important;
+	padding-right: 0 !important;
 }
 #page-searchbar-lg-xl {
-	padding-right: 0px !important;
+	padding-right: 0 !important;
 }
 
 /* The rules above change the top banner's width to screen size. */
@@ -26,6 +27,7 @@
 #banner-wrapper {
 	max-width: 100%;
 }
+
 @import "../../../../loop.less";
 
 body.mw-special-Userlogin .mw-htmlform-submit.cdx-button.cdx-button--weight-primary.cdx-button--action-progressive {
