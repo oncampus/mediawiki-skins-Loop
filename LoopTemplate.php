@@ -10,6 +10,26 @@ if ( !defined( 'MEDIAWIKI' ) ) die ( "This file cannot be run standalone.\n" );
 use MediaWiki\MediaWikiServices;
 
 class LoopTemplate extends BaseTemplate {
+	public $mwService;
+	public $permissionManager;  // getPermissionManager();
+	public $userGroupManager;
+	public $loopStructure;
+	public $linkRenderer;
+	public $loopSettings;
+	public $user;
+	public $title;
+	public $parserFactory;
+	public $lsi;
+	public $userOptionsLookup;
+	public $renderMode;
+	public $editMode;
+	public $skinStyle;
+	public $userName;
+	public $fr;
+	public $pendingChanges;
+	public $pageRevMsg;
+	public $pageRevisionStatus;
+
 	/**
 	 * Outputs the entire contents of the page
 	 */
