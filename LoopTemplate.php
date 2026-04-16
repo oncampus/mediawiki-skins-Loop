@@ -660,6 +660,8 @@ class LoopTemplate extends BaseTemplate {
 		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
 
+		$progress_permissions = LoopProgress::hasProgressPermission();
+
 		if ( isset( $this->loopStructure->mainPage ) ) {
 
 			if ( $this->lsi ) {
@@ -750,7 +752,7 @@ class LoopTemplate extends BaseTemplate {
 					}
 					*/
 					$progress_marker = ' ';
-					if(LoopProgress::hasProgressPermission()) {
+					if($progress_permissions) {
 						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ' . LoopProgress::NOT_EDITED_SYMBOL . '</span>';
 						$progress = LoopProgress::getProgress($lsi->article);
 						if($progress != Null) {
