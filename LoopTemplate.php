@@ -728,26 +728,33 @@ class LoopTemplate extends BaseTemplate {
 				$rootNode = false;
 
 				// build TOC tree
+				$structureItems = $this->loopStructure->getStructureitems();
+
+				// batch retrive title objects
+				$articleIds = $this->loopStructure->getArticleIdsFromStructure();
+				$titleObjects = LoopStructure::batch_retrieve_title_objects($articleIds);
 				foreach( $this->loopStructure->getStructureitems() as $lsi) {
 
 					$currentPageTitle = $this->title;
 					$tmpChapter = $lsi->tocNumber;
-					$tmpTitle = Title::newFromID( $lsi->article );
+					$tmpTitle = $titleObjects[$lsi->article];
+					//$tmpTitle = Title::newFromID( $lsi->article ); // db call to page
 
 					if ( $tmpTitle ) {
 						$tmpText = $tmpTitle->getText();
 					} else {
-						$tmpTitle = Title::newFromText( $lsi->tocText );
+						$tmpTitle = Title::newFromText( $lsi->tocText ); // db call
 						$tmpText = $lsi->tocText;
 					}
-
 
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
 
-					$nextNode = $lsi->nextArticle;
+					//$nextNode = $lsi->nextArticle;
 					$nextTocLevel = 1;
-					$nextLsi = LoopStructureItem::newFromIds($nextNode);
+					//$nextLsi = LoopStructureItem::newFromIds($nextNode); // db call
+					$nextLsi = $structureItems[$lsi->sequence + 1];
+
 					if ( $nextLsi ) {
 						$nextTocLevel = $nextLsi->tocLevel;
 					}
@@ -774,7 +781,7 @@ class LoopTemplate extends BaseTemplate {
 					$progress_marker = ' ';
 					if($progress_permissions) {
 						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ' . LoopProgress::NOT_EDITED_SYMBOL . '</span>';
-						$progress = LoopProgress::getProgress($lsi->article);
+						$progress = LoopProgress::getProgress($lsi->article); // db call
 						if($progress != Null) {
 							if ($progress == LoopProgress::UNDERSTOOD) {
 								$progress_marker = '<span class="marked-understood sidebar-progress-marker"> ' . LoopProgress::UNDERSTOOD_SYMBOL . '</span>';
