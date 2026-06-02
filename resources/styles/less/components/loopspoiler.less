@@ -32,7 +32,7 @@
     background: #fff;
     border: 2px solid @components-color;
     padding: .75rem;
-    margin-top: -2px;
+
     margin-bottom: 1.5rem;
     margin-right: .75rem;
     z-index: 1000;
@@ -40,16 +40,18 @@
     overflow-x: auto;
 }
 
+.loopspoiler_content_wrapper {
+	display: inline-block;
+	width: 100%;
+}
+
+
 /* embed videos */
 .loopspoiler_default_content .embedvideowrap,
 .loopspoiler_transparent_content .embedvideowrap {
     width: 100% !important;
 }
 
-/* math tags */
-.loopspoiler .mwe-math-element, .loopspoiler .mw-empty-elt {
-    display: none;
-}
 
 /* loop areas */
 .loopspoiler_content_wrapper .looparea {
@@ -77,5 +79,5 @@ button.loopspoiler .replacemath {
         margin-left: -16px;
         margin-right: -16px;
     }
-    
+
 }
