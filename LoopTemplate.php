@@ -655,7 +655,7 @@ class LoopTemplate extends BaseTemplate {
 
 	private function outputToc() {
 
-		global $wgLoopLegacyPageNumbering, $wgLoopProgressTrackingMode;
+		global $wgLoopLegacyPageNumbering, $wgLoopProgressTrackingMode, $wgOut;
 
 		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
@@ -705,6 +705,12 @@ class LoopTemplate extends BaseTemplate {
 
 				$rootNode = false;
 
+				$allProgress = [];
+				if (LoopProgress::hasProgressPermission()) {
+					$user = $wgOut->getUser();
+					$allProgress = LoopProgressDBHandler::getAllProgressForUser($user);
+				}
+
 				// build TOC tree
 				foreach( $this->loopStructure->getStructureitems() as $lsi) {
 
@@ -752,7 +758,8 @@ class LoopTemplate extends BaseTemplate {
 					$progress_marker = ' ';
 					if(LoopProgress::hasProgressPermission()) {
 						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ' . LoopProgress::NOT_EDITED_SYMBOL . '</span>';
-						$progress = LoopProgress::getProgress($lsi->article);
+						$row = $allProgress[$lsi->article] ?? null;
+						$progress = $row->lp_understood ?? null;
 						if($progress != Null) {
 							if ($progress == LoopProgress::UNDERSTOOD) {
 								$progress_marker = '<span class="marked-understood sidebar-progress-marker"> ' . LoopProgress::UNDERSTOOD_SYMBOL . '</span>';
