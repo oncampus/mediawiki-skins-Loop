@@ -10,6 +10,26 @@ if ( !defined( 'MEDIAWIKI' ) ) die ( "This file cannot be run standalone.\n" );
 use MediaWiki\MediaWikiServices;
 
 class LoopTemplate extends BaseTemplate {
+	public $mwService;
+	public $permissionManager;  // getPermissionManager();
+	public $userGroupManager;
+	public $loopStructure;
+	public $linkRenderer;
+	public $loopSettings;
+	public $user;
+	public $title;
+	public $parserFactory;
+	public $lsi;
+	public $userOptionsLookup;
+	public $renderMode;
+	public $editMode;
+	public $skinStyle;
+	public $userName;
+	public $fr;
+	public $pendingChanges;
+	public $pageRevMsg;
+	public $pageRevisionStatus;
+
 	/**
 	 * Outputs the entire contents of the page
 	 */
@@ -660,6 +680,8 @@ class LoopTemplate extends BaseTemplate {
 		// storage for opened navigation tocs in the toc tree
 		$openedNodes = array();
 
+		$progress_permissions = LoopProgress::hasProgressPermission();
+
 		if ( isset( $this->loopStructure->mainPage ) ) {
 
 			if ( $this->lsi ) {
@@ -756,7 +778,7 @@ class LoopTemplate extends BaseTemplate {
 					}
 					*/
 					$progress_marker = ' ';
-					if(LoopProgress::hasProgressPermission()) {
+					if($progress_permissions) {
 						$progress_marker = '<span class="marked-not-edited sidebar-progress-marker"> ' . LoopProgress::NOT_EDITED_SYMBOL . '</span>';
 						$row = $allProgress[$lsi->article] ?? null;
 						$progress = $row->lp_understood ?? null;
@@ -1192,8 +1214,8 @@ class LoopTemplate extends BaseTemplate {
 		if ( $this->user->isRegistered() && LoopBugReport::isAvailable() != false && $this->renderMode != "offline" ) {
 			$html .= $this->linkRenderer->makeLink(
 				Title::newFromText( "Special:LoopBugReport" ),
-				new HtmlArmor( $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
-				array("class" => "small text-muted font-weight-light font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				new HtmlArmor('<i class="ic-bug1"></i> ' .  $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
+				array("class" => "small text-muted font-weight-bold font-italics", "title" => $this->getSkin()->msg("loop-page-icons-reportbug" )->text() ),
 				array( "url" => urlencode( $url ), "page" => $this->title->getText() )
 			);
 		}

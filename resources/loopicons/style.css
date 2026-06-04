@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'loopfont';
-  src:  url('fonts/loopfont.eot?kk946f');
-  src:  url('fonts/loopfont.eot?kk946f#iefix') format('embedded-opentype'),
-    url('fonts/loopfont.ttf?kk946f') format('truetype'),
-    url('fonts/loopfont.woff?kk946f') format('woff'),
-    url('fonts/loopfont.svg?kk946f#loopfont') format('svg');
+  src:  url('fonts/loopfont.eot?x09py');
+  src:  url('fonts/loopfont.eot?x09py#iefix') format('embedded-opentype'),
+    url('fonts/loopfont.ttf?x09py') format('truetype'),
+    url('fonts/loopfont.woff?x09py') format('woff'),
+    url('fonts/loopfont.svg?x09py#loopfont') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-bug1:before {
+  content: "\e97a";
+  color: #1c274c;
+}
+.ic-stars:before {
+  content: "\e979";
+  color: #3b4b91;
+}
 .ic-cc-by:before {
   content: "\e96e";
 }
