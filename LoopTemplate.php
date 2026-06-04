@@ -734,26 +734,33 @@ class LoopTemplate extends BaseTemplate {
 				}
 
 				// build TOC tree
+				$structureItems = $this->loopStructure->getStructureitems();
+
+				// batch retrive title objects
+				$articleIds = $this->loopStructure->getArticleIdsFromStructure();
+				$titleObjects = LoopStructure::batch_retrieve_title_objects($articleIds);
 				foreach( $this->loopStructure->getStructureitems() as $lsi) {
 
 					$currentPageTitle = $this->title;
 					$tmpChapter = $lsi->tocNumber;
-					$tmpTitle = Title::newFromID( $lsi->article );
+					$tmpTitle = $titleObjects[$lsi->article];
+					//$tmpTitle = Title::newFromID( $lsi->article ); // db call to page
 
 					if ( $tmpTitle ) {
 						$tmpText = $tmpTitle->getText();
 					} else {
-						$tmpTitle = Title::newFromText( $lsi->tocText );
+						$tmpTitle = Title::newFromText( $lsi->tocText ); // db call
 						$tmpText = $lsi->tocText;
 					}
-
 
 					$tmpAltText = $tmpText;
 					$tmpTocLevel = $lsi->tocLevel;
 
-					$nextNode = $lsi->nextArticle;
+					//$nextNode = $lsi->nextArticle;
 					$nextTocLevel = 1;
-					$nextLsi = LoopStructureItem::newFromIds($nextNode);
+					//$nextLsi = LoopStructureItem::newFromIds($nextNode); // db call
+					$nextLsi = $structureItems[$lsi->sequence + 1];
+
 					if ( $nextLsi ) {
 						$nextTocLevel = $nextLsi->tocLevel;
 					}
